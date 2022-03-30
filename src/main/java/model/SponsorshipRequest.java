@@ -31,7 +31,11 @@ public class SponsorshipRequest {
     }
 
     public String getSponsorAccuntEmail(){
-        return this.sponsorAccuntEmail;
+        if(status.equals(SponsorshipStatus.ACCEPTED)){
+        return this.sponsorAccuntEmail;}
+        else {
+            return null;
+        }
     }
 
     public void accept(int percent, String sponsorAccuntEmail){
