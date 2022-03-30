@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventPerformance extends Object {
@@ -9,7 +10,7 @@ public class EventPerformance extends Object {
     private String venueAddress;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private List<String> performerNames;
+    private List<String> performerNames = new ArrayList<>();
     private boolean hasSocialDistancing;
     private boolean hasAirFiltretion;
     private boolean isOutdoors;
