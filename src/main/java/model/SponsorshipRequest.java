@@ -4,7 +4,7 @@ public class SponsorshipRequest {
     private long requestNumber;
     private TicketedEvent event;
     private SponsorshipStatus status;
-    private Integer sponsoredPricePercent;
+    private Integer sponsoredPricePercent = 0;
     private TicketedEvent attribute;
     private String sponsorAccuntEmail;
 
