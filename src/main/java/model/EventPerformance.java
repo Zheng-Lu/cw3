@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class EventPerfermance extends Object {
+public class EventPerformance extends Object {
     private long perfermanceNumber;
     private Event event;
     private String venueAddress;
@@ -16,7 +16,7 @@ public class EventPerfermance extends Object {
     private int capacityLimit;
     private int venueSize;
 
-    public EventPerfermance(long performanceNumber, Event event, String venueAddress, LocalDateTime startDateTime,
+    public EventPerformance(long performanceNumber, Event event, String venueAddress, LocalDateTime startDateTime,
                             LocalDateTime endDateTime, List<String> performerNames, boolean hasSocialDistancing,
                             boolean hasAirFiltration,
                             boolean isOutdoors, int capacityLimit, int venueSize){

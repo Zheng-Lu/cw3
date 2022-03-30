@@ -25,7 +25,7 @@ command/RegisterEntertainmentProviderCommand.java
 state/UserState.java
  state.UserState
 model/EventPerfermance.java
- model.EventPerfermance
+ model.EventPerformance
 controller/Context.java
  controller.Context
 command/CancelBookingCommand.java

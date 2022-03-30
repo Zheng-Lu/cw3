@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 public class Booking extends Object{
     private long bookingNumber;
     private Consumer booker;
-    private EventPerfermance perfermance;
+    private EventPerformance perfermance;
     private int numTickets;
     private double amountPaid;
     private LocalDateTime bookingDateTime;
     private BookingStatus status;
 
-    public Booking(long bookingNumber, Consumer booker, EventPerfermance perfermance, int numTickets,
+    public Booking(long bookingNumber, Consumer booker, EventPerformance perfermance, int numTickets,
                    double amountPaid, LocalDateTime bookingDateTime ){
 
         this.bookingNumber = bookingNumber;
@@ -35,7 +35,7 @@ public class Booking extends Object{
         return this.booker;
     }
 
-    public EventPerfermance getEventPerfermance(){
+    public EventPerformance getEventPerfermance(){
         return this.perfermance;
     }
 
