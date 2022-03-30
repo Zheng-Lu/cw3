@@ -1,10 +1,9 @@
 package model;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Consumer extends User{
     private String name, phoneNumber;
-    private List<Booking> bookingList = new ArrayList<>();
+    private List<Booking> bookingList;
     private ConsumerPreferences preferences;
 
     public Consumer(String name, String email, String phoneNumber, String password, String paymentAccountEmail){
@@ -25,7 +24,7 @@ public class Consumer extends User{
         return this.preferences;
     }
 
-    public void setPreferences​(ConsumerPreferences preferences){
+    public void setPreference(ConsumerPreferences preferences){
         this.preferences = preferences;
     }
 

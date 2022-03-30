@@ -7,9 +7,9 @@ import java.util.List;
 public class EntertainmentProvider extends User {
 
     private String orgName, orgAddress, mainRepName, mainRepEmail;
-    private List<String>otherRepNames = new ArrayList<>();
-    private List<String>otherRepEmails = new ArrayList<>();
-    private List<Event>events = new ArrayList<>();
+    private List<String>otherRepNames;
+    private List<String>otherRepEmails;
+    private List<Event>events;
 
 
     public EntertainmentProvider(String orgName,
