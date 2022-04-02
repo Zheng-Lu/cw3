@@ -14,7 +14,7 @@ public interface EntertainmentProviderSystem {
                                      LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 
-    int getNumTicktesLeft(long eventNumber, long performanceNumber);
+    int getNumTicketsLeft(long eventNumber, long performanceNumber);
 
     void recordNewBooking(long eventNumber, long performanceNumber, long bookingNumber,
                                  String consumerName, String consumerEmail, int bookedTickets);

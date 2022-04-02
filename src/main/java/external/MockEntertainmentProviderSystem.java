@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MockEntertainmentProviderSystem implements EntertainmentProviderSystem{
-    Map<Long, Integer> eventTickets = new HashMap<>();
+
+    // Only usage is to record how many tickets are left for a event(referenced by event number)
+    // And when asked, return the number of tickets left
+    Map<Long, Integer> eventTickets = new HashMap<>(); // store <eventNumber, eventTickets>
     Map<Long, Long> bookingsEvents = new HashMap<>(); // store <bookingNumber, eventNumber>
     Map<Long, Integer> bookings = new HashMap<>();  // store <bookingNumber, bookedTickets>
 
@@ -14,14 +17,14 @@ public class MockEntertainmentProviderSystem implements EntertainmentProviderSys
     }
 
     public void cancelEvent(long eventNumber, String message){
-
+        // dummy
     }
 
     public void recordNewPerformance(long eventNumber, long performanceNumber,
                                      LocalDateTime startDateTime, LocalDateTime endDateTime){
     }
 
-    public int getNumTicktesLeft(long eventNumber, long performanceNumber){
+    public int getNumTicketsLeft(long eventNumber, long performanceNumber){
         return eventTickets.get(eventNumber);
     }
 
@@ -41,10 +44,10 @@ public class MockEntertainmentProviderSystem implements EntertainmentProviderSys
     }
 
     public void recordSponsorshipAcceptance(long eventNumber, int sponsoredPricePercent) {
-
+        // dummy
     }
 
     public void recordSponsorshipRejection(long eventNumber){
-
+        // dummy
     }
 }
