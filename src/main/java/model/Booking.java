@@ -5,23 +5,23 @@ import java.time.LocalDateTime;
 public class Booking extends Object{
     private long bookingNumber;
     private Consumer booker;
-    private EventPerformance perfermance;
+    private EventPerformance performance;
     private int numTickets;
     private double amountPaid;
     private LocalDateTime bookingDateTime;
     private BookingStatus status;
 
-    public Booking(long bookingNumber, Consumer booker, EventPerformance perfermance, int numTickets,
+    public Booking(long bookingNumber, Consumer booker, EventPerformance performance, int numTickets,
                    double amountPaid, LocalDateTime bookingDateTime ){
 
         this.bookingNumber = bookingNumber;
         this.booker = booker;
-        this.perfermance = perfermance;
+        this.performance = performance;
         this.numTickets = numTickets;
         this.amountPaid = amountPaid;
         this.bookingDateTime = bookingDateTime;
         this.status = BookingStatus.Active;
-    };
+    }
 
     public long getBookingNumber(){
         return this.bookingNumber;
@@ -35,8 +35,8 @@ public class Booking extends Object{
         return this.booker;
     }
 
-    public EventPerformance getEventPerfermance(){
-        return this.perfermance;
+    public EventPerformance getEventPerformance(){
+        return this.performance;
     }
 
     public double getAmountPaid(){
@@ -59,6 +59,6 @@ public class Booking extends Object{
     }
 
     public String toString(){
-        return "NOT IMPLEMENTED";
+        return "NOT IMPLEMENTED";  // TODO implement toString
     }
 }
