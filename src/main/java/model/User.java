@@ -25,7 +25,7 @@ public abstract class User extends Object{
         return BCrypt.verifyer().verify(password.toCharArray(), this.passwordHash).verified;
     }
 
-    public void updatePassword​(String newPassword){
+    public void updatePassword(String newPassword){
         this.passwordHash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
     }
 
@@ -33,7 +33,7 @@ public abstract class User extends Object{
         return this.paymentAccountEmail;
     }
 
-    public void setPaymentAccountEmail​(String newPaymentAccountEmail){
+    public void setPaymentAccountEmail(String newPaymentAccountEmail){
         this.paymentAccountEmail = newPaymentAccountEmail;
     }
 

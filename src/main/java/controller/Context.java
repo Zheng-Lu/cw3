@@ -39,6 +39,10 @@ public class Context {
         return this.eventState;
     }
 
+    public IBookingState getBookingState(){
+        return this.bookingState;
+    }
+
     public ISponsorshipState getSponsorshipState(){
         return this.sponsorshipState;
     }
