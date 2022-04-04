@@ -8,7 +8,7 @@ public class Context {
     private PaymentSystem paymentSystem;
     private IUserState userState;
     private IEventState eventState;
-    private BookingState bookingState;
+    private IBookingState bookingState;
     private ISponsorshipState sponsorshipState;
 
     public Context(){
