@@ -20,8 +20,4 @@ public class LogEntry {
         return result;
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }
 }

@@ -6,8 +6,4 @@ public class NonTicketedEvent extends Event {
         super(eventNumber, organiser, title, type);
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }
 }

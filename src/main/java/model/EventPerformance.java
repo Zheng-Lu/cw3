@@ -71,8 +71,4 @@ public class EventPerformance extends Object {
         return this.venueSize;
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }
 }

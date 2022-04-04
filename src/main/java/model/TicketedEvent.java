@@ -41,8 +41,4 @@ public class TicketedEvent extends Event{
         this.sponsorshipRequest = sponsorshipRequest;
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }
 }

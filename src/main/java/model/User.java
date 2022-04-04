@@ -36,10 +36,4 @@ public abstract class User extends Object{
     public void setPaymentAccountEmail(String newPaymentAccountEmail){
         this.paymentAccountEmail = newPaymentAccountEmail;
     }
-
-    @Override
-    public String toString(){
-        return "";
-    }
-
 }

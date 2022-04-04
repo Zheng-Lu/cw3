@@ -58,7 +58,4 @@ public class Booking extends Object{
         return;
     }
 
-    public String toString(){
-        return "NOT IMPLEMENTED";  // TODO implement toString
-    }
 }
