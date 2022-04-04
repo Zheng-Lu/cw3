@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Logger {
-    private Logger instance;
+    private static Logger instance;
     private List<LogEntry> log = new ArrayList<>();
 
     private Logger(){
     }
 
-    public Logger getInstance() {
+    public static Logger getInstance() {
         if(instance == null){
             instance = new Logger();
         }
