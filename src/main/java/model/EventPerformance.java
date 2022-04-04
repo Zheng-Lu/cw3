@@ -55,7 +55,7 @@ public class EventPerformance extends Object {
         return this.hasSocialDistancing;
     }
 
-    public boolean hasAirFiltretionas(){
+    public boolean hasAirFiltration(){
         return this.hasAirFiltretion;
     }
 
