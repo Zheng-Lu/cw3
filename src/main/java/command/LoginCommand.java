@@ -32,7 +32,7 @@ public class LoginCommand extends Object implements ICommand{
             if (Objects.equals(userEntry.getValue().getEmail(), this.email) &&
                     userEntry.getValue().checkPasswordMatch(password)){
                 this.logStatus = LogStatus.USER_LOGIN_SUCCESS;
-                userResult = (User) userEntry;
+                this.userResult = userEntry.getValue();
                 break;
             }
             // email match but password is wrong
