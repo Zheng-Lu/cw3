@@ -23,6 +23,8 @@ public class CancelEventCommand extends Object implements ICommand{
     private Object EntertainmentProvider;
     private Object TicketedEvent;
 
+
+    //shown in uml but not in javadoc, needs better looking
     private enum LogStatus{
         CANCEL_EVENT_SUCCESS,
         CANCEL_EVENT_MESSAGE_MUST_NOT_BE_BLANK,
