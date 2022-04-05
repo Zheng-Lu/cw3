@@ -1,10 +1,14 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.Event;
 import model.EventPerformance;
 import model.NonTicketedEvent;
 import model.TicketedEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GetAvailablePerformanceTicketsCommand implements ICommand{
     private long eventNumber;
@@ -29,19 +33,27 @@ public class GetAvailablePerformanceTicketsCommand implements ICommand{
         Event event = context.getEventState().findEventByNumber(this.eventNumber);
         if (event == null){
             this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_EVENT_NOT_FOUND;
-            return;
         }
-        if (event.getClass() == NonTicketedEvent.class){
+        else if (event.getClass() == NonTicketedEvent.class){
             this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_EVENT_NOT_TICKETED;
-            return;
         }
-        EventPerformance eventPerformance = event.getPerformanceByNumber(this.performanceNumber);
-        if (eventPerformance == null){
-            this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_PERFORMANCE_NOT_FOUND;
-            return;
+        else {
+            EventPerformance eventPerformance = event.getPerformanceByNumber(this.performanceNumber);
+            if (eventPerformance == null) {
+                this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_PERFORMANCE_NOT_FOUND;
+            }
+            else {
+                this.numTicketsResult = event.getOrganiser().getProviderSystem().getNumTicketsLeft(this.eventNumber,
+                        this.performanceNumber);
+                this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_SUCCESS;
+            }
         }
-        this.numTicketsResult = ((TicketedEvent) eventPerformance.getEvent()).getNumTickets();
-        this.logStatus = LogStatus.GET_AVAILABLE_PERFORMANCE_TICKETS_SUCCESS;
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("GetAvailablePerformanceTicketsCommand.execute()",
+                getResult(),info);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class UpdateProfileCommand implements ICommand{
     protected boolean successResult = true;
-    protected LogStatus logStatus;
+    protected LogStatus logStatus = null;
 
     protected enum LogStatus{
         USER_UPDATE_PROFILE_NOT_LOGGED_IN,

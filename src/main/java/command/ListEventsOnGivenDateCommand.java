@@ -1,13 +1,16 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ListEventsOnGivenDataCommand extends ListEventsCommand {
+public class ListEventsOnGivenDateCommand extends ListEventsCommand {
     private LocalDateTime searchDateTime;
     private List<Event> eventListResult;
     private boolean activeEventsOnly;
@@ -19,7 +22,7 @@ public class ListEventsOnGivenDataCommand extends ListEventsCommand {
         LIST_USER_EVENTS_NOT_LOGGED_IN
     }
 
-    public ListEventsOnGivenDataCommand(boolean userEventsOnly, boolean activeEventsOnly,
+    public ListEventsOnGivenDateCommand(boolean userEventsOnly, boolean activeEventsOnly,
                                         LocalDateTime searchDateTime) {
         super(userEventsOnly,activeEventsOnly);
         this.activeEventsOnly = activeEventsOnly;
@@ -40,7 +43,6 @@ public class ListEventsOnGivenDataCommand extends ListEventsCommand {
         }
         if (this.userEventsOnly && user == null){
             this.logStatus = LogStatus.LIST_USER_EVENTS_NOT_LOGGED_IN;
-            return;
         }
         else if (this.userEventsOnly){
             if (user.getClass() == EntertainmentProvider.class){
@@ -69,23 +71,31 @@ public class ListEventsOnGivenDataCommand extends ListEventsCommand {
 
             }
         }
-        // for date filter
-        for (Event e : eventList){
-            Collection<EventPerformance> ePerformances = e.getPerformances();
-            boolean testResult = false;
-            for(EventPerformance ep :ePerformances){
-                if (searchDateTime.minusDays(1).isBefore(ep.getStartDateTime()) &&
-                    searchDateTime.plusDays(1).isAfter(ep.getEndDateTime())){
-                    testResult = true;
-                    break;
+        if (this.logStatus == null) {
+            // add date filter
+            for (Event e : eventList){
+                Collection<EventPerformance> ePerformances = e.getPerformances();
+                boolean testResult = false;
+                for(EventPerformance ep :ePerformances){
+                    if (searchDateTime.minusDays(1).isBefore(ep.getStartDateTime()) &&
+                            searchDateTime.plusDays(1).isAfter(ep.getEndDateTime())){
+                        testResult = true;
+                        break;
+                    }
+                }
+                if (!testResult){
+                    eventList.remove(e);
                 }
             }
-            if (!testResult){
-                eventList.remove(e);
-            }
+            this.eventListResult = eventList;
+            this.logStatus = LogStatus.LIST_USER_EVENTS_SUCCESS;
         }
-        this.eventListResult = eventList;
-        this.logStatus = LogStatus.LIST_USER_EVENTS_SUCCESS;
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("ListEventsOnGivenDateCommand.execute()",
+                getResult(),info);
     }
 
     @Override

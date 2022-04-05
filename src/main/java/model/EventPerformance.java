@@ -12,7 +12,7 @@ public class EventPerformance extends Object {
     private LocalDateTime endDateTime;
     private List<String> performerNames = new ArrayList<>();
     private boolean hasSocialDistancing;
-    private boolean hasAirFiltretion;
+    private boolean hasAirFiltration;
     private boolean isOutdoors;
     private int capacityLimit;
     private int venueSize;
@@ -28,7 +28,7 @@ public class EventPerformance extends Object {
         this.endDateTime = endDateTime;
         this.performerNames = performerNames;
         this.hasSocialDistancing = hasSocialDistancing;
-        this.hasAirFiltretion = hasAirFiltration;
+        this.hasAirFiltration = hasAirFiltration;
         this.isOutdoors = isOutdoors;
         this.capacityLimit = capacityLimit;
         this.venueAddress = venueAddress;
@@ -56,7 +56,7 @@ public class EventPerformance extends Object {
     }
 
     public boolean hasAirFiltration(){
-        return this.hasAirFiltretion;
+        return this.hasAirFiltration;
     }
 
     public boolean isOutdoors(){
