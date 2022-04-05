@@ -29,21 +29,22 @@ public class LoginCommand extends Object implements ICommand{
     public void execute(Context context){
         Map<String, User> users = context.getUserState().getAllUsers();
         for (Map.Entry<String, User> userEntry : users.entrySet()){
-            if (!Objects.equals(userEntry.getValue().getEmail(), this.email)) {
-                this.logStatus = LogStatus.USER_LOGIN_EMAIL_NOT_REGISTERED;
-            }
-            if (!userEntry.getValue().checkPasswordMatch(password)) {
-                this.logStatus = LogStatus.USER_LOGIN_WRONG_PASSWORD;
-            }
             if (Objects.equals(userEntry.getValue().getEmail(), this.email) && userEntry.getValue().checkPasswordMatch(password)){
                 this.logStatus = LogStatus.USER_LOGIN_SUCCESS;
                 userResult = (User) userEntry;
                 break;
             }
+            else if (Objects.equals(userEntry.getValue().getEmail(), this.email) &&
+                    !userEntry.getValue().checkPasswordMatch(password)) {
+                this.logStatus = LogStatus.USER_LOGIN_WRONG_PASSWORD;
+                break;
+            }
+        }
+        if (this.logStatus == null) {
+            this.logStatus = LogStatus.USER_LOGIN_EMAIL_NOT_REGISTERED;
         }
     }
 
-    @Override
     public Object getResult() {
         if (logStatus == LogStatus.USER_LOGIN_SUCCESS){
             return this.userResult;
