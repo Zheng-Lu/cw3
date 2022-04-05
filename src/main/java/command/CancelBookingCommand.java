@@ -14,7 +14,7 @@ public class CancelBookingCommand extends Object implements ICommand{
 
     private long bookingNumber;
     private LogStatus logStatus;
-    private Boolean sucessResult;
+    private Boolean successResult;
     private Object Consumer;
 
     private enum LogStatus{
@@ -35,7 +35,7 @@ public class CancelBookingCommand extends Object implements ICommand{
     public void execute(Context context) {
         if(context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
             logStatus = LogStatus.CANCEL_BOOKING_USER_NOT_CONSUMER;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
@@ -49,26 +49,26 @@ public class CancelBookingCommand extends Object implements ICommand{
         }
         if (!booking_found){
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_FOUND;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
         if (context.getUserState().getCurrentUser() != context.getBookingState().findBookingByNumber(this.bookingNumber).getBooker()){
             logStatus = LogStatus.CANCEL_BOOKING_USER_IS_NOT_BOOKER;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
         if (context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getEvent().getStatus() == EventStatus.CANCELLED){
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_ACTIVE;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
         Duration duration = Duration.between(LocalDateTime.now(),context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getStartDateTime());
         if (duration.toHours() < 24){
             logStatus = LogStatus.CANCEL_BOOKING_NO_CANCELLATIONS_WITHIN_24H;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
@@ -77,18 +77,18 @@ public class CancelBookingCommand extends Object implements ICommand{
         double transactionAmount = context.getBookingState().findBookingByNumber(this.bookingNumber).getAmountPaid();
         if (!context.getPaymentSystem().processRefund(buyerAccountEmail,sellerAccountEmail,transactionAmount)){
             logStatus = LogStatus.CANCEL_BOOKING_REFUND_FAILED;
-            sucessResult = false;
+            successResult = false;
             return;
         }
 
         logStatus = LogStatus.CANCEL_BOOKING_SUCCESS;
-        sucessResult = true;
+        successResult = true;
     }
 
     @Override
     public Object getResult() {
         if (this.logStatus == LogStatus.CANCEL_BOOKING_SUCCESS){
-            return this.sucessResult;
+            return this.successResult;
         }
         return null;
     }
