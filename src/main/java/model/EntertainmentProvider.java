@@ -79,10 +79,4 @@ public class EntertainmentProvider extends User {
     public EntertainmentProviderSystem getProviderSystem(){
         return this.entertainmentProviderSystem;
     }
-
-    @Override
-    public String toString(){
-        return  "";
-    }  // TODO implement toString;
-
 }
