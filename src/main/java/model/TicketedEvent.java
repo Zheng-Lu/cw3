@@ -25,6 +25,12 @@ public class TicketedEvent extends Event{
         }
     }
 
+    /**
+     * get the MAXIMUM possible number of the tickets left
+     * IF want to get the current number of tickets left, ask event provider's system by using
+     * event.getOrganiser().getProviderSystem().getNumTicketsLeft()
+     * @return MAXIMUM possible number of the tickets left
+     */
     public int getNumTickets(){
         return numTickets;
     }

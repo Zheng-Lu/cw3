@@ -1,10 +1,13 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.*;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListEventsCommand implements ICommand{
     private boolean userEventsOnly;
@@ -27,23 +30,14 @@ public class ListEventsCommand implements ICommand{
         User user = context.getUserState().getCurrentUser();
         List<Event> eventList = context.getEventState().getAllEvents();
         if (this.activeEventsOnly){
-            for (Event e : eventList){
-                if(e.getStatus() != EventStatus.ACTIVE){
-                    eventList.remove(e);
-                }
-            }
+            eventList.removeIf(e -> e.getStatus() != EventStatus.ACTIVE);
         }
         if (this.userEventsOnly && user == null){
             this.logStatus = LogStatus.LIST_USER_EVENTS_NOT_LOGGED_IN;
-            return;
         }
         else if (this.userEventsOnly){
             if (user.getClass() == EntertainmentProvider.class){
-                for (Event e : eventList){
-                    if (e.getOrganiser() != context.getUserState().getCurrentUser()){
-                        eventList.remove(e);
-                    }
-                }
+                eventList.removeIf(e -> e.getOrganiser() != user);
             }
             if(user.getClass() == Consumer.class){
                 for (Event e : eventList){
@@ -66,6 +60,12 @@ public class ListEventsCommand implements ICommand{
         }
         this.eventListResult = eventList;
         this.logStatus = LogStatus.LIST_USER_EVENTS_SUCCESS;
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("ListEventsCommand.execute()",
+                getResult(),info);
     }
 
     @Override

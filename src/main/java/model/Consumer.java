@@ -45,8 +45,4 @@ public class Consumer extends User{
         this.phoneNumber = newPhoneNumber;
     }
 
-    @Override
-    public String toString(){
-        return "";
-    }  // TODO implement toString;
 }
