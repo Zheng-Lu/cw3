@@ -17,7 +17,7 @@ public class CancelEventCommand extends Object implements ICommand{
 
     private long eventNumber;
     private String organiserMessage;
-    private Boolean successResult = false;
+    private Boolean successResult;
 
     private LogStatus logStatus;
     private Object EntertainmentProvider;
@@ -124,7 +124,7 @@ public class CancelEventCommand extends Object implements ICommand{
         if (logStatus == LogStatus.CANCEL_EVENT_SUCCESS || logStatus == LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS){
             return successResult;
         }
-        return successResult;
+        return false;
     }
 
 }
