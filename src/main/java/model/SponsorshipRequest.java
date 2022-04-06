@@ -6,7 +6,7 @@ public class SponsorshipRequest {
     private SponsorshipStatus status;
     private Integer sponsoredPricePercent = 0;
     private TicketedEvent attribute;
-    private String sponsorAccuntEmail;
+    private String sponsorAccountEmail;
 
     public SponsorshipRequest(long requestNumber, TicketedEvent event){
         this.requestNumber = requestNumber;
@@ -30,9 +30,9 @@ public class SponsorshipRequest {
         return this.sponsoredPricePercent;
     }
 
-    public String getSponsorAccuntEmail(){
+    public String getSponsorAccountEmail(){
         if(status.equals(SponsorshipStatus.ACCEPTED)){
-        return this.sponsorAccuntEmail;}
+        return this.sponsorAccountEmail;}
         else {
             return null;
         }
@@ -40,7 +40,7 @@ public class SponsorshipRequest {
 
     public void accept(int percent, String sponsorAccuntEmail){
         this.status = SponsorshipStatus.ACCEPTED;
-        this.sponsorAccuntEmail = sponsorAccuntEmail;
+        this.sponsorAccountEmail = sponsorAccuntEmail;
         this.sponsoredPricePercent = percent;
     }
 
