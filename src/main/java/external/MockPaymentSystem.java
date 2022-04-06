@@ -1,6 +1,7 @@
 package external;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,9 +52,11 @@ public class MockPaymentSystem implements PaymentSystem{
     public boolean processRefund(String buyerAccountEmail, String sellerAccountEmail,
                                  double transactionAmount){
         Transaction t = new Transaction(buyerAccountEmail,sellerAccountEmail,transactionAmount);
-        for(Transaction T: transactions){
-            if(T.equals(t)){
-                transactions.remove(T);
+        Iterator<Transaction> T = this.transactions.iterator();
+        while (T.hasNext()){
+            Transaction trans = T.next();
+            if (trans.equals(t)){
+                T.remove();
                 return true;
             }
         }
