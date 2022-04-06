@@ -48,6 +48,7 @@ public class RegisterConsumerCommand extends Object implements ICommand{
         logStatus = LogStatus.REGISTER_CONSUMER_SUCCESS;
         this.newConsumerResult = (Consumer) context.getUserState().getCurrentUser();
         context.getUserState().addUser(newConsumerResult);
+        context.getUserState().setCurrentUser(newConsumerResult);
     }
 
     @Override

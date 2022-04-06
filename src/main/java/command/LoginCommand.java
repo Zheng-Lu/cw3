@@ -32,6 +32,7 @@ public class LoginCommand extends Object implements ICommand{
             if (Objects.equals(userEntry.getValue().getEmail(), this.email) && userEntry.getValue().checkPasswordMatch(password)){
                 this.logStatus = LogStatus.USER_LOGIN_SUCCESS;
                 userResult = (User) userEntry;
+                context.getUserState().setCurrentUser(userEntry.getValue());
                 break;
             }
             else if (Objects.equals(userEntry.getValue().getEmail(), this.email) && !userEntry.getValue().checkPasswordMatch(password)) {

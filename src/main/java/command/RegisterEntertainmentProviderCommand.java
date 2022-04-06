@@ -75,6 +75,7 @@ public class RegisterEntertainmentProviderCommand extends Object implements ICom
         logStatus = LogStatus.REGISTER_ENTERTAINMENT_PROVIDER_SUCCESS;
         newEntertainmentProviderResult = new EntertainmentProvider(orgName,orgAddress,paymentAccountEmail,mainRepName,mainRepEmail,password, otherRepNames,otherRepEmails);
         context.getUserState().addUser(newEntertainmentProviderResult);
+        context.getUserState().setCurrentUser(newEntertainmentProviderResult);
     }
 
     @Override
