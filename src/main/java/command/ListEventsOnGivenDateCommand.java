@@ -35,22 +35,14 @@ public class ListEventsOnGivenDateCommand extends ListEventsCommand {
         User user = context.getUserState().getCurrentUser();
         List<Event> eventList = context.getEventState().getAllEvents();
         if (this.activeEventsOnly){
-            for (Event e : eventList){
-                if(e.getStatus() != EventStatus.ACTIVE){
-                    eventList.remove(e);
-                }
-            }
+            eventList.removeIf(e -> e.getStatus() != EventStatus.ACTIVE);
         }
         if (this.userEventsOnly && user == null){
             this.logStatus = LogStatus.LIST_USER_EVENTS_NOT_LOGGED_IN;
         }
         else if (this.userEventsOnly){
             if (user.getClass() == EntertainmentProvider.class){
-                for (Event e : eventList){
-                    if (e.getOrganiser() != context.getUserState().getCurrentUser()){
-                        eventList.remove(e);
-                    }
-                }
+                eventList.removeIf(e -> e.getOrganiser() != context.getUserState().getCurrentUser());
             }
             if(user.getClass() == Consumer.class){
                 for (Event e : eventList){
