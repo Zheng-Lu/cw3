@@ -17,7 +17,7 @@ public class CancelEventCommand extends Object implements ICommand{
 
     private long eventNumber;
     private String organiserMessage;
-    private Boolean successResult;
+    private Boolean successResult = false;
 
     private LogStatus logStatus;
     private Object EntertainmentProvider;
@@ -94,12 +94,37 @@ public class CancelEventCommand extends Object implements ICommand{
                 return;
             }
         }
-        // still needs the last part of sponsorship and booking
+
+        if (context.getEventState().findEventByNumber(this.eventNumber).getClass() == TicketedEvent.getClass()) {
+            TicketedEvent ticketedEvent = (TicketedEvent) context.getEventState().findEventByNumber(this.eventNumber);
+            if(ticketedEvent.isSponsored()){
+                logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_SUCCESS;
+                int ticketNum =  ticketedEvent.getNumTickets();
+                double refund_amount = ticketNum * (ticketedEvent.getOriginalTicketPrice()-ticketedEvent.getDiscountedTicketPrice());
+                if(context.getPaymentSystem().processRefund(ticketedEvent.getSponsorAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getEmail(),refund_amount)){
+                    logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS;
+                    this.successResult = true;
+                    return;
+                }else {
+                    logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_FAILED;
+                    return;
+                }
+            }else {
+                logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_ERROR;
+                return;
+            }
+        }
+        logStatus = LogStatus.CANCEL_EVENT_SUCCESS;
+        this.successResult = true;
+
     }
 
     @Override
     public Object getResult() {
-        return null;
+        if (logStatus == LogStatus.CANCEL_EVENT_SUCCESS || logStatus == LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS){
+            return successResult;
+        }
+        return successResult;
     }
 
 }

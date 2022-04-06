@@ -66,6 +66,12 @@ public class BookEventCommand extends Object implements ICommand{
         }
 
         Event event = context.getEventState().findEventByNumber(eventNumber);
+
+        if(event.getStatus() != EventStatus.ACTIVE){
+            logStatus = LogStatus.BOOK_EVENT_EVENT_NOT_ACTIVE;
+            return;
+        }
+
         if(event.getClass() != TicketedEvent.getClass()){
             logStatus = LogStatus.BOOK_EVENT_NOT_A_TICKETED_EVENT;
             return;
