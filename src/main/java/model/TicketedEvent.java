@@ -36,7 +36,7 @@ public class TicketedEvent extends Event{
     }
 
     public String getSponsorAccountEmail(){
-        return sponsorshipRequest.getSponsorAccuntEmail();
+        return sponsorshipRequest.getSponsorAccountEmail();
     }
 
     public boolean isSponsored(){
