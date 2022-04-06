@@ -112,10 +112,6 @@ public class CancelEventCommand extends Object implements ICommand{
         if (context.getEventState().findEventByNumber(this.eventNumber).getClass() == TicketedEvent.getClass()) {
             TicketedEvent ticketedEvent = (TicketedEvent) context.getEventState().findEventByNumber(this.eventNumber);
             if(ticketedEvent.isSponsored()){
-                logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_SUCCESS;
-
-                info.put("STATUS:",this.logStatus);
-
                 int ticketNum =  ticketedEvent.getNumTickets();
                 Collection<EventPerformance>performances = ticketedEvent.getPerformances();
                 //ticketLeft used here
@@ -124,18 +120,33 @@ public class CancelEventCommand extends Object implements ICommand{
                 }
 
                 double refund_amount = ticketNum * (ticketedEvent.getOriginalTicketPrice()-ticketedEvent.getDiscountedTicketPrice());
-                if(context.getPaymentSystem().processRefund(ticketedEvent.getSponsorAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getEmail(),refund_amount)){
+                if(context.getPaymentSystem().processRefund(ticketedEvent.getSponsorAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getPaymentAccountEmail(),refund_amount)){
                     logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS;
                     info.put("STATUS:",this.logStatus);
                 }else {
                     logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_FAILED;
                     info.put("STATUS:",this.logStatus);
+                    Logger.getInstance().logAction("CancelEventCommand.execute()",
+                            getResult(),info);
+                    return;
                 }
-            }else {
-                logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_ERROR;
-                info.put("STATUS:",this.logStatus);
             }
+
+            Collection<Booking> bookings = context.getBookingState().findBookingsByEventNumber(eventNumber);
+
+            for (Booking booking : bookings){
+                if (!context.getPaymentSystem().processRefund(booking.getBooker().getPaymentAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getPaymentAccountEmail(),booking.getAmountPaid())){
+                    logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_ERROR;
+                    info.put("STATUS:",this.logStatus);
+                    Logger.getInstance().logAction("CancelEventCommand.execute()",
+                            getResult(),info);
+                    return;
+                }
+            }
+            logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_SUCCESS;
+            info.put("STATUS:",this.logStatus);
         }
+
         logStatus = LogStatus.CANCEL_EVENT_SUCCESS;
         this.successResult = true;
         context.getEventState().findEventByNumber(this.eventNumber).cancel();
