@@ -1,6 +1,10 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LogoutCommand extends Object implements  ICommand{
 
@@ -18,12 +22,26 @@ public class LogoutCommand extends Object implements  ICommand{
 
     @Override
     public void execute(Context context) {
-      if(context.getUserState().getCurrentUser() == null){
-          logStatus = LogStatus.USER_LOGOUT_NOT_LOGGED_IN;
-          return;
-      }
-      logStatus = LogStatus.USER_LOGOUT_SUCCESS;
-      context.getUserState().setCurrentUser(null);
+
+        // ADD TO LOGGER
+
+        Map<String, Object> info = new HashMap<>();
+
+       if(context.getUserState().getCurrentUser() == null){
+           logStatus = LogStatus.USER_LOGOUT_NOT_LOGGED_IN;
+           info.put("STATUS:",this.logStatus);
+           Logger.getInstance().logAction("LogoutCommand.execute()",
+                  getResult(),info);
+           return;
+       }
+
+       logStatus = LogStatus.USER_LOGOUT_SUCCESS;
+       context.getUserState().setCurrentUser(null);
+
+       info.put("STATUS:",this.logStatus);
+       Logger.getInstance().logAction("LogoutCommand.execute()",
+               getResult(),info);
+
     }
 
     public Void getResult(){

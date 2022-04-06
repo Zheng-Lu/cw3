@@ -1,10 +1,12 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.EntertainmentProvider;
 import model.TicketedEvent;
 import model.User;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,6 +29,10 @@ public class LoginCommand extends Object implements ICommand{
     }
 
     public void execute(Context context){
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         Map<String, User> users = context.getUserState().getAllUsers();
         for (Map.Entry<String, User> userEntry : users.entrySet()){
             if (Objects.equals(userEntry.getValue().getEmail(), this.email) && userEntry.getValue().checkPasswordMatch(password)){
@@ -39,9 +45,13 @@ public class LoginCommand extends Object implements ICommand{
                 this.logStatus = LogStatus.USER_LOGIN_WRONG_PASSWORD;
             }
         }
+
         if (this.logStatus==null) {
             this.logStatus = LogStatus.USER_LOGIN_EMAIL_NOT_REGISTERED;
         }
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("LoginCommand.execute()",
+                getResult(),info);
     }
 
     @Override

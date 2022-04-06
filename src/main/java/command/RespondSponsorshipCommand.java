@@ -1,11 +1,15 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
+import model.Event;
 import model.GovernmentRepresentative;
 import model.SponsorshipRequest;
 import model.SponsorshipStatus;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RespondSponsorshipCommand extends Object implements ICommand{
 
@@ -25,7 +29,7 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
         RESPOND_SPONSORSHIP_INVALID_PERCENTAGE,
         RESPOND_SPONSORSHIP_REQUEST_NOT_PENDING,
         RESPOND_SPONSORSHIP_PAYMENT_SUCCESS,
-        RESPOND_SPONSORSHIP_PAYMENT_FAILED,
+        RESPOND_SPONSORSHIP_PAYMENT_FAILED
     }
 
     public RespondSponsorshipCommand(long requestNumber,
@@ -36,18 +40,31 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if(context.getUserState().getCurrentUser() == null){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_USER_NOT_LOGGED_IN;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass()){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_USER_NOT_GOVERNMENT_REPRESENTATIVE;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (percentToSponsor < 0 && percentToSponsor>100){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_INVALID_PERCENTAGE;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -60,32 +77,55 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
         }
         if (!request_found){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_REQUEST_NOT_FOUND;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if(context.getSponsorshipState().findRequestByNumber(this.requestNumber).getStatus() != SponsorshipStatus.PENDING){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_REQUEST_NOT_PENDING;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
             return;
         }
+
+        Event event = context.getSponsorshipState().findRequestByNumber(requestNumber).getEvent();
+        long eventNum = event.getEventNumber();
 
         if(percentToSponsor == 0){
             this.successResult = false;
             logStatus = LogStatus.RESPOND_SPONSORSHIP_REJECT;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
+            event.getOrganiser().getProviderSystem().recordSponsorshipRejection(eventNum);
         }else{
-            this.successResult = true;
-            logStatus = LogStatus.RESPOND_SPONSORSHIP_APPROVE;
-        /*    if(context.getPaymentSystem().processPayment(context.getUserState().getCurrentUser().getPaymentAccountEmail(),
+            if(context.getPaymentSystem().processPayment(context.getUserState().getCurrentUser().getPaymentAccountEmail(),
                     context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOrganiser().getPaymentAccountEmail(),
-                    context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getNumTickets()*context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOriginalTicketPrice()*percentToSponsor/100))
+                    (double) context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getNumTickets()*context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOriginalTicketPrice()*percentToSponsor/100))
             {
                 logStatus = LogStatus.RESPOND_SPONSORSHIP_PAYMENT_SUCCESS;
-                return;
             }else{
                 logStatus = LogStatus.RESPOND_SPONSORSHIP_PAYMENT_FAILED;
+
+                info.put("STATUS:",this.logStatus);
+                Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                        getResult(),info);
                 return;
             }
 
-         */
+            info.put("STATUS:",this.logStatus);
+
+            this.successResult = true;
+            logStatus = LogStatus.RESPOND_SPONSORSHIP_APPROVE;
+
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
+                    getResult(),info);
+
+            event.getOrganiser().getProviderSystem().recordSponsorshipAcceptance(eventNum,percentToSponsor);
         }
     }
 

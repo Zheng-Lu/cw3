@@ -1,9 +1,12 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListEventBookingsCommand extends Object implements ICommand{
 
@@ -28,8 +31,15 @@ public class ListEventBookingsCommand extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if (context.getUserState().getCurrentUser() == null){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_USER_NOT_LOGGED_IN;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -43,20 +53,34 @@ public class ListEventBookingsCommand extends Object implements ICommand{
         }
         if (!event_found){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_EVENT_NOT_FOUND;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getEventState().findEventByNumber(this.eventNumber).getClass() != TicketedEvent.getClass()){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_EVENT_NOT_TICKETED;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass() || context.getUserState().getCurrentUser() != context.getEventState().findEventByNumber(this.eventNumber).getOrganiser()){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_USER_NOT_ORGANISER_NOR_GOV;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
+                    getResult(),info);
             return;
         }
+
         logStatus = LogStatus.LIST_EVENT_BOOKINGS_SUCCESS;
         this.bookingListResult = context.getBookingState().findBookingsByEventNumber(this.eventNumber);
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
+                getResult(),info);
     }
 
     @Override

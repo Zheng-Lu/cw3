@@ -1,11 +1,14 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.Booking;
 import model.GovernmentRepresentative;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GovernmentReport1Command extends Object implements ICommand{
 
@@ -29,15 +32,26 @@ public class GovernmentReport1Command extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if (context.getUserState().getCurrentUser() == null){
             logStatus = LogStatus.GOVERNMENT_REPORT1_NOT_LOGGED_IN;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("GovernmentReport1Command.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass()){
             logStatus = LogStatus.GOVERNMENT_REPORT1_USER_NOT_GOVERNMENT_REPRESENTATIVE;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("GovernmentReport1Command.execute()",
+                    getResult(),info);
             return;
         }
+
         logStatus = LogStatus.GOVERNMENT_REPORT1_SUCCESS;
         List<Booking> bookingList = context.getBookingState().getBookings();
         for (Booking booking : bookingList){
@@ -46,6 +60,11 @@ public class GovernmentReport1Command extends Object implements ICommand{
                 this.bookingListResult.add(booking);
             }
         }
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("GovernmentReport1Command.execute()",
+                getResult(),info);
+
     }
 
     @Override

@@ -1,11 +1,13 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.Consumer;
 import model.Event;
 import model.GovernmentRepresentative;
 import model.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +33,23 @@ public class GovernmentReport2Command extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if(context.getUserState().getCurrentUser() == null){
             logStatus = LogStatus.GOVERNMENT_REPORT2_NOT_LOGGED_IN;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("GovernmentReport2Command.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser().getClass() == GovernmentRepresentative.getClass()){
             logStatus = LogStatus.GOVERNMENT_REPORT2_USER_NOT_GOVERNMENT_REPRESENTATIVE;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("GovernmentReport2Command.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -51,6 +63,9 @@ public class GovernmentReport2Command extends Object implements ICommand{
         }
         if (!organisation_found){
             logStatus = LogStatus.GOVERNMENT_REPORT2_NO_SUCH_ORGANISATION;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("GovernmentReport2Command.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -61,6 +76,10 @@ public class GovernmentReport2Command extends Object implements ICommand{
                 this.consumerListResult.add((Consumer) userEntry.getValue());
             }
         }
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("GovernmentReport2Command.execute()",
+                getResult(),info);
     }
 
     @Override

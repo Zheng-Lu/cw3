@@ -1,11 +1,15 @@
 package command;
 
 import controller.Context;
+import external.EntertainmentProviderSystem;
+import logging.Logger;
 import model.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookEventCommand extends Object implements ICommand{
 
@@ -45,11 +49,17 @@ public class BookEventCommand extends Object implements ICommand{
     @Override
     public void execute(Context context) {
 
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         Boolean event_found = false;
         Boolean performance_found = false;
 
         if (context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
             logStatus = LogStatus.BOOK_EVENT_USER_NOT_CONSUMER;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -62,6 +72,9 @@ public class BookEventCommand extends Object implements ICommand{
         }
         if (!event_found){
             logStatus = LogStatus.BOOK_EVENT_EVENT_NOT_FOUND;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -69,16 +82,25 @@ public class BookEventCommand extends Object implements ICommand{
 
         if(event.getStatus() != EventStatus.ACTIVE){
             logStatus = LogStatus.BOOK_EVENT_EVENT_NOT_ACTIVE;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if(event.getClass() != TicketedEvent.getClass()){
             logStatus = LogStatus.BOOK_EVENT_NOT_A_TICKETED_EVENT;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (this.numTicketsRequested < 1){
             logStatus = LogStatus.BOOK_EVENT_INVALID_NUM_TICKETS;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -91,16 +113,25 @@ public class BookEventCommand extends Object implements ICommand{
         }
         if (!performance_found){
             logStatus = LogStatus.BOOK_EVENT_PERFORMANCE_NOT_FOUND;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (LocalDateTime.now().isAfter(event.getPerformanceByNumber(performanceNumber).getEndDateTime())){
             logStatus = LogStatus.BOOK_EVENT_ALREADY_OVER;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (this.numTicketsRequested > event.getOrganiser().getProviderSystem().getNumTicketsLeft(this.eventNumber,this.performanceNumber))  {
             logStatus = LogStatus.BOOK_EVENT_NOT_ENOUGH_TICKETS_LEFT;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("BookEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -114,6 +145,9 @@ public class BookEventCommand extends Object implements ICommand{
             transactionAmount = booking.getAmountPaid();
             if (!context.getPaymentSystem().processPayment(buyerAccountEmail,sellerAccountEmail,transactionAmount)) {
                 logStatus = LogStatus.BOOK_EVENT_PAYMENT_FAILED;
+                info.put("STATUS:",this.logStatus);
+                Logger.getInstance().logAction("BookEventCommand.execute()",
+                        getResult(),info);
                 return;
             }
         }
@@ -122,6 +156,13 @@ public class BookEventCommand extends Object implements ICommand{
         Booking newBooking = context.getBookingState().createBooking((Consumer) context.getUserState().getCurrentUser(),
                 event.getPerformanceByNumber(performanceNumber),numTicketsRequested,transactionAmount);
         this.bookingNumberResult = newBooking.getBookingNumber();
+
+        event.getOrganiser().getProviderSystem().recordNewBooking(eventNumber,performanceNumber,bookingNumberResult,
+                ((Consumer) context.getUserState().getCurrentUser()).getName(), context.getUserState().getCurrentUser().getEmail(), numTicketsRequested);
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("BookEventCommand.execute()",
+                getResult(),info);
     }
 
     @Override

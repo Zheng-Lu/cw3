@@ -1,12 +1,11 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.*;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CancelEventCommand extends Object implements ICommand{
     // TODO remember to update the provider's system and relative states in the context
@@ -47,15 +46,22 @@ public class CancelEventCommand extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if(Objects.equals(this.organiserMessage, "")){
             logStatus = LogStatus.CANCEL_EVENT_MESSAGE_MUST_NOT_BE_BLANK;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser().getClass() != EntertainmentProvider.getClass()){
             logStatus = LogStatus.CANCEL_EVENT_USER_NOT_ENTERTAINMENT_PROVIDER;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -69,19 +75,25 @@ public class CancelEventCommand extends Object implements ICommand{
         }
         if (!event_found){
             logStatus = LogStatus.CANCEL_EVENT_EVENT_NOT_FOUND;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getEventState().findEventByNumber(this.eventNumber).getStatus() != EventStatus.ACTIVE){
             logStatus = LogStatus.CANCEL_EVENT_NOT_ACTIVE;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser() != context.getEventState().findEventByNumber(this.eventNumber).getOrganiser()){
             logStatus = LogStatus.CANCEL_EVENT_USER_NOT_ORGANISER;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelEventCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -90,7 +102,9 @@ public class CancelEventCommand extends Object implements ICommand{
         for (EventPerformance eventPerformance : eventPerformances) {
             if (now.isAfter(eventPerformance.getStartDateTime()) || now.isAfter(eventPerformance.getEndDateTime())) {
                 logStatus = LogStatus.CANCEL_EVENT_PERFORMANCE_ALREADY_STARTED;
-                successResult = false;
+                info.put("STATUS:",this.logStatus);
+                Logger.getInstance().logAction("CancelEventCommand.execute()",
+                        getResult(),info);
                 return;
             }
         }
@@ -99,24 +113,38 @@ public class CancelEventCommand extends Object implements ICommand{
             TicketedEvent ticketedEvent = (TicketedEvent) context.getEventState().findEventByNumber(this.eventNumber);
             if(ticketedEvent.isSponsored()){
                 logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_SUCCESS;
+
+                info.put("STATUS:",this.logStatus);
+
                 int ticketNum =  ticketedEvent.getNumTickets();
+                Collection<EventPerformance>performances = ticketedEvent.getPerformances();
+                //ticketLeft used here
+                for (EventPerformance performance: performances){
+                    ticketNum = ticketNum - ticketedEvent.getOrganiser().getProviderSystem().getNumTicketsLeft(eventNumber,performance.getPerformanceNumber());
+                }
+
                 double refund_amount = ticketNum * (ticketedEvent.getOriginalTicketPrice()-ticketedEvent.getDiscountedTicketPrice());
                 if(context.getPaymentSystem().processRefund(ticketedEvent.getSponsorAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getEmail(),refund_amount)){
                     logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS;
-                    this.successResult = true;
-                    return;
+                    info.put("STATUS:",this.logStatus);
                 }else {
                     logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_FAILED;
-                    return;
+                    info.put("STATUS:",this.logStatus);
                 }
             }else {
                 logStatus = LogStatus.CANCEL_EVENT_REFUND_BOOKING_ERROR;
-                return;
+                info.put("STATUS:",this.logStatus);
             }
         }
         logStatus = LogStatus.CANCEL_EVENT_SUCCESS;
         this.successResult = true;
         context.getEventState().findEventByNumber(this.eventNumber).cancel();
+
+        context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getProviderSystem().cancelEvent(eventNumber,organiserMessage);
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("CancelEventCommand.execute()",
+                getResult(),info);
 
     }
 

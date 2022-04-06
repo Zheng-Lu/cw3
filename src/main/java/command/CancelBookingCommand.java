@@ -1,6 +1,7 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.Booking;
 import model.Consumer;
 import model.EventStatus;
@@ -8,7 +9,9 @@ import model.EventStatus;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CancelBookingCommand extends Object implements ICommand{
 
@@ -33,9 +36,15 @@ public class CancelBookingCommand extends Object implements ICommand{
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if(context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
             logStatus = LogStatus.CANCEL_BOOKING_USER_NOT_CONSUMER;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -49,26 +58,34 @@ public class CancelBookingCommand extends Object implements ICommand{
         }
         if (!booking_found){
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_FOUND;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getUserState().getCurrentUser() != context.getBookingState().findBookingByNumber(this.bookingNumber).getBooker()){
             logStatus = LogStatus.CANCEL_BOOKING_USER_IS_NOT_BOOKER;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         if (context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getEvent().getStatus() == EventStatus.CANCELLED){
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_ACTIVE;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         Duration duration = Duration.between(LocalDateTime.now(),context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getStartDateTime());
         if (duration.toHours() < 24){
             logStatus = LogStatus.CANCEL_BOOKING_NO_CANCELLATIONS_WITHIN_24H;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -77,13 +94,22 @@ public class CancelBookingCommand extends Object implements ICommand{
         double transactionAmount = context.getBookingState().findBookingByNumber(this.bookingNumber).getAmountPaid();
         if (!context.getPaymentSystem().processRefund(buyerAccountEmail,sellerAccountEmail,transactionAmount)){
             logStatus = LogStatus.CANCEL_BOOKING_REFUND_FAILED;
-            successResult = false;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                    getResult(),info);
             return;
         }
 
         logStatus = LogStatus.CANCEL_BOOKING_SUCCESS;
         successResult = true;
+
         context.getBookingState().findBookingByNumber(this.bookingNumber).cancelByConsumer();
+
+        context.getBookingState().findBookingByNumber(bookingNumber).getEventPerformance().getEvent().getOrganiser().getProviderSystem().cancelBooking(bookingNumber);
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("CancelBookingCommand.execute()",
+                getResult(),info);
     }
 
     @Override

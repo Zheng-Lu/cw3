@@ -1,10 +1,12 @@
 package command;
 
 import controller.Context;
+import logging.Logger;
 import model.EntertainmentProvider;
 import model.Event;
 import model.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +46,10 @@ public class RegisterEntertainmentProviderCommand extends Object implements ICom
 
     @Override
     public void execute(Context context) {
+
+        // ADD TO LOGGER
+        Map<String, Object> info = new HashMap<>();
+
         if(orgName == null ||
         orgAddress == null ||
         paymentAccountEmail == null ||
@@ -53,6 +59,9 @@ public class RegisterEntertainmentProviderCommand extends Object implements ICom
         otherRepNames == null ||
         otherRepEmails == null){
             logStatus = LogStatus.USER_REGISTER_FIELDS_CANNOT_BE_NULL;
+            info.put("STATUS:",this.logStatus);
+            Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",
+                    getResult(),info);
             return;
         }
 
@@ -60,22 +69,37 @@ public class RegisterEntertainmentProviderCommand extends Object implements ICom
         for (Map.Entry<String, User> userEntry : users.entrySet()){
             if (Objects.equals(userEntry.getValue().getEmail(),this.mainRepEmail)){
                 logStatus = LogStatus.USER_REGISTER_EMAIL_ALREADY_REGISTERED;
+                info.put("STATUS:",this.logStatus);
+                Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",
+                        getResult(),info);
                 return;
             }
         }
 
         List<Event> events =context.getEventState().getAllEvents();
         for (Event event:events){
-            if(event.getOrganiser().getOrgName() == this.orgName && event.getOrganiser().getOrgAddress() == this.orgAddress){
+            if(Objects.equals(event.getOrganiser().getOrgName(), this.orgName) && Objects.equals(event.getOrganiser().getOrgAddress(), this.orgAddress)){
                 logStatus = LogStatus.USER_REGISTER_ORG_ALREADY_REGISTERED;
+                info.put("STATUS:",this.logStatus);
+                Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",
+                        getResult(),info);
                 return;
             }
         }
 
+        context.getUserState().setCurrentUser(newEntertainmentProviderResult);
+        logStatus = LogStatus.USER_LOGIN_SUCCESS;
+        info.put("STATUS:",this.logStatus);
+
         logStatus = LogStatus.REGISTER_ENTERTAINMENT_PROVIDER_SUCCESS;
         newEntertainmentProviderResult = new EntertainmentProvider(orgName,orgAddress,paymentAccountEmail,mainRepName,mainRepEmail,password, otherRepNames,otherRepEmails);
+
         context.getUserState().addUser(newEntertainmentProviderResult);
-        context.getUserState().setCurrentUser(newEntertainmentProviderResult);
+
+        info.put("STATUS:",this.logStatus);
+        Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",
+                getResult(),info);
+
     }
 
     @Override
