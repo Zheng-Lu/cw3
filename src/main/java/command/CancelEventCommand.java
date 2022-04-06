@@ -120,6 +120,7 @@ public class CancelEventCommand extends Object implements ICommand{
                 }
 
                 double refund_amount = ticketNum * (ticketedEvent.getOriginalTicketPrice()-ticketedEvent.getDiscountedTicketPrice());
+
                 if(context.getPaymentSystem().processRefund(ticketedEvent.getSponsorAccountEmail(),context.getEventState().findEventByNumber(this.eventNumber).getOrganiser().getPaymentAccountEmail(),refund_amount)){
                     logStatus = LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS;
                     info.put("STATUS:",this.logStatus);

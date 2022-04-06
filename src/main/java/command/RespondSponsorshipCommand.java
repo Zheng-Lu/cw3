@@ -97,9 +97,12 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
         if(percentToSponsor == 0){
             this.successResult = false;
             logStatus = LogStatus.RESPOND_SPONSORSHIP_REJECT;
+
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
                     getResult(),info);
+
+            context.getSponsorshipState().findRequestByNumber(requestNumber).reject();
             event.getOrganiser().getProviderSystem().recordSponsorshipRejection(eventNum);
         }else{
             if(context.getPaymentSystem().processPayment(context.getUserState().getCurrentUser().getPaymentAccountEmail(),
@@ -125,6 +128,7 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
             Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
                     getResult(),info);
 
+            context.getSponsorshipState().findRequestByNumber(requestNumber).accept(percentToSponsor,context.getUserState().getCurrentUser().getPaymentAccountEmail());
             event.getOrganiser().getProviderSystem().recordSponsorshipAcceptance(eventNum,percentToSponsor);
         }
     }
