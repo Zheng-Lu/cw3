@@ -23,7 +23,7 @@ public class LogoutCommand extends Object implements  ICommand{
           return;
       }
       logStatus = LogStatus.USER_LOGOUT_SUCCESS;
-
+      context.getUserState().setCurrentUser(null);
     }
 
     public Void getResult(){
