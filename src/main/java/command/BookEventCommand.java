@@ -107,10 +107,11 @@ public class BookEventCommand extends Object implements ICommand{
 
         List<Booking> bookings = context.getBookingState().findBookingsByEventNumber(this.eventNumber);
         String sellerAccountEmail = event.getOrganiser().getEmail();
+        double transactionAmount=0;
 
         for (Booking booking: bookings) {
             String buyerAccountEmail = booking.getBooker().getEmail();
-            double transactionAmount = booking.getAmountPaid();
+            transactionAmount = booking.getAmountPaid();
             if (!context.getPaymentSystem().processPayment(buyerAccountEmail,sellerAccountEmail,transactionAmount)) {
                 logStatus = LogStatus.BOOK_EVENT_PAYMENT_FAILED;
                 return;
@@ -118,12 +119,13 @@ public class BookEventCommand extends Object implements ICommand{
         }
 
         logStatus = LogStatus.BOOK_EVENT_SUCCESS;
-        this.bookingNumberResult = bookings.size();
-
+        Booking newBooking = context.getBookingState().createBooking((Consumer) context.getUserState().getCurrentUser(),
+                event.getPerformanceByNumber(performanceNumber),numTicketsRequested,transactionAmount);
+        this.bookingNumberResult = newBooking.getBookingNumber();
     }
 
     @Override
-    public Object getResult() {
+    public Long getResult() {
         if (logStatus == LogStatus.BOOK_EVENT_SUCCESS){
             return this.bookingNumberResult;
         }

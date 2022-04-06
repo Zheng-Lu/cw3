@@ -121,6 +121,7 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
 
         logStatus = LogStatus.ADD_PERFORMANCE_SUCCESS;
         eventPerformanceResult = context.getEventState().createEventPerformance(eventToAdd,venueAddress,startDateTime,endDateTime,performerNames,hasSocialDistancing,hasAirFiltration,isOutdoors,capacityLimit,venueSize);
+        context.getEventState().findEventByNumber(this.eventNumber).addPerformance(eventPerformanceResult);
     }
 
     @Override

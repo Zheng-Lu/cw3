@@ -10,14 +10,14 @@ import java.util.Objects;
 public class RegisterConsumerCommand extends Object implements ICommand{
 
     private String name, email, phoneNumber, password, paymentAccountEmail;
-    private Consumer newConsumerResul;
+    private Consumer newConsumerResult;
     private LogStatus logStatus;
 
     private enum LogStatus{
         REGISTER_CONSUMER_SUCCESS,
         USER_REGISTER_FIELDS_CANNOT_BE_NULL,
         USER_REGISTER_EMAIL_ALREADY_REGISTERED,
-        USER_LOGIN_SUCCESS,
+        USER_LOGIN_SUCCESS
     }
 
     public RegisterConsumerCommand(String name,
@@ -46,13 +46,14 @@ public class RegisterConsumerCommand extends Object implements ICommand{
             }
         }
         logStatus = LogStatus.REGISTER_CONSUMER_SUCCESS;
-        this.newConsumerResul = (Consumer) context.getUserState().getCurrentUser();
+        this.newConsumerResult = (Consumer) context.getUserState().getCurrentUser();
+        context.getUserState().addUser(newConsumerResult);
     }
 
     @Override
     public Object getResult() {
         if (logStatus == LogStatus.REGISTER_CONSUMER_SUCCESS){
-            return newConsumerResul;
+            return newConsumerResult;
         }
         return null;
     }

@@ -116,6 +116,7 @@ public class CancelEventCommand extends Object implements ICommand{
         }
         logStatus = LogStatus.CANCEL_EVENT_SUCCESS;
         this.successResult = true;
+        context.getEventState().findEventByNumber(this.eventNumber).cancel();
 
     }
 

@@ -74,6 +74,18 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
         }else{
             this.successResult = true;
             logStatus = LogStatus.RESPOND_SPONSORSHIP_APPROVE;
+        /*    if(context.getPaymentSystem().processPayment(context.getUserState().getCurrentUser().getPaymentAccountEmail(),
+                    context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOrganiser().getPaymentAccountEmail(),
+                    context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getNumTickets()*context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOriginalTicketPrice()*percentToSponsor/100))
+            {
+                logStatus = LogStatus.RESPOND_SPONSORSHIP_PAYMENT_SUCCESS;
+                return;
+            }else{
+                logStatus = LogStatus.RESPOND_SPONSORSHIP_PAYMENT_FAILED;
+                return;
+            }
+
+         */
         }
     }
 
