@@ -69,7 +69,7 @@ public class ListEventsCommand implements ICommand{
     }
 
     @Override
-    public Object getResult() {
+    public List<Event> getResult() {
         if (logStatus == LogStatus.LIST_USER_EVENTS_SUCCESS){
             return this.eventListResult;
         }
