@@ -2,11 +2,9 @@ package command;
 
 import controller.Context;
 import logging.Logger;
-import model.Consumer;
-import model.Event;
-import model.GovernmentRepresentative;
-import model.User;
+import model.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +12,9 @@ import java.util.Map;
 public class GovernmentReport2Command extends Object implements ICommand{
 
     private String orgName;
-    private List<Consumer> consumerListResult;
+    private List<Consumer> consumerListResult = new ArrayList<>();
 
     private LogStatus logStatus;
-    private Object GovernmentRepresentative;
-    private Object Consumer;
-
     private enum LogStatus{
         GOVERNMENT_REPORT2_NOT_LOGGED_IN,
         GOVERNMENT_REPORT2_USER_NOT_GOVERNMENT_REPRESENTATIVE,
@@ -45,7 +40,7 @@ public class GovernmentReport2Command extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() == GovernmentRepresentative.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.class){
             logStatus = LogStatus.GOVERNMENT_REPORT2_USER_NOT_GOVERNMENT_REPRESENTATIVE;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("GovernmentReport2Command.execute()",
@@ -56,7 +51,7 @@ public class GovernmentReport2Command extends Object implements ICommand{
         List<Event> events = context.getEventState().getAllEvents();
         boolean organisation_found = false;
         for (Event event: events) {
-            if (event.getOrganiser().getOrgName() == this.orgName){
+            if (event.getOrganiser().getOrgName().equals(this.orgName)){
                 organisation_found = true;
                 break;
             }
@@ -70,10 +65,15 @@ public class GovernmentReport2Command extends Object implements ICommand{
         }
 
         logStatus = LogStatus.GOVERNMENT_REPORT2_SUCCESS;
-        Map<String, User> users = context.getUserState().getAllUsers();
-        for (Map.Entry<String, User> userEntry : users.entrySet()) {
-            if (userEntry.getValue().getClass() == Consumer.getClass()){
-                this.consumerListResult.add((Consumer) userEntry.getValue());
+
+        List<Booking> bookings = context.getBookingState().getBookings();
+        for (Booking b : bookings){
+            if (b.getEventPerformance().getEvent().getClass() == TicketedEvent.class &&
+                    b.getEventPerformance().getEvent().getOrganiser().getOrgName().equals(this.orgName) &&
+                    b.getEventPerformance().getEvent().getStatus() == EventStatus.ACTIVE){
+                if( !this.consumerListResult.contains(b.getBooker()) ){
+                    this.consumerListResult.add(b.getBooker());
+                }
             }
         }
 

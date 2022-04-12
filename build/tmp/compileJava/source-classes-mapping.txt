@@ -1,112 +1,134 @@
-logging/LogEntry.java
- logging.LogEntry
+command/CancelEventCommand.java
+ command.CancelEventCommand
+ command.CancelEventCommand$LogStatus
 state/IEventState.java
  state.IEventState
-command/GovernmentReport2Command.java
- command.GovernmentReport2Command
-command/GovernmentReport1Command.java
- command.GovernmentReport1Command
+command/ListConsumerBookingsCommand.java
+ command.ListConsumerBookingsCommand
+ command.ListConsumerBookingsCommand$LogStatus
+logging/LogEntry.java
+ logging.LogEntry
 controller/Controller.java
  controller.Controller
 state/ISponsorshipState.java
  state.ISponsorshipState
-command/BookEventCommand.java
- command.BookEventCommand
+command/AddEventPerformanceCommand.java
+ command.AddEventPerformanceCommand
+ command.AddEventPerformanceCommand$LogStatus
 external/MockPaymentSystem.java
  external.MockPaymentSystem
+ external.MockPaymentSystem$Transaction
 command/CreateEventCommand.java
  command.CreateEventCommand
-command/ListSponsorshipRequestsCommand.java
- command.ListSponsorshipRequestsCommand
+ command.CreateEventCommand$LogStatus
+command/RegisterConsumerCommand.java
+ command.RegisterConsumerCommand
+ command.RegisterConsumerCommand$LogStatus
 model/BookingStatus.java
  model.BookingStatus
-command/RegisterEntertainmentProviderCommand.java
- command.RegisterEntertainmentProviderCommand
-state/UserState.java
- state.UserState
-model/EventPerfermance.java
- model.EventPerformance
-controller/Context.java
- controller.Context
-command/CancelBookingCommand.java
- command.CancelBookingCommand
-external/MockEntertainmentProviderSystem.java
- external.MockEntertainmentProviderSystem
-model/EventStatus.java
- model.EventStatus
-model/EntertainmentProvider.java
- model.EntertainmentProvider
-command/LoginCommand.java
- command.LoginCommand
+model/User.java
+ model.User
 command/LogoutCommand.java
  command.LogoutCommand
+ command.LogoutCommand$LogStatus
+model/EventPerformance.java
+ model.EventPerformance
+command/CancelBookingCommand.java
+ command.CancelBookingCommand
+ command.CancelBookingCommand$LogStatus
+command/GovernmentReport1Command.java
+ command.GovernmentReport1Command
+ command.GovernmentReport1Command$LogStatus
+external/MockEntertainmentProviderSystem.java
+ external.MockEntertainmentProviderSystem
+model/EntertainmentProvider.java
+ model.EntertainmentProvider
+model/EventStatus.java
+ model.EventStatus
 logging/Logger.java
  logging.Logger
-command/CancelEventCommand.java
- command.CancelEventCommand
+command/BookEventCommand.java
+ command.BookEventCommand
+ command.BookEventCommand$LogStatus
+command/ListEventBookingsCommand.java
+ command.ListEventBookingsCommand
+ command.ListEventBookingsCommand$LogStatus
+model/Event.java
+ model.Event
 command/UpdateConsumerProfileCommand.java
  command.UpdateConsumerProfileCommand
-Library.java
- Library
+ command.UpdateConsumerProfileCommand$LogStatus
 model/EventType.java
  model.EventType
 state/SponsorshipState.java
  state.SponsorshipState
 command/UpdateProfileCommand.java
  command.UpdateProfileCommand
+ command.UpdateProfileCommand$LogStatus
 state/IUserState.java
  state.IUserState
 model/Booking.java
  model.Booking
+model/SponsorshipRequest.java
+ model.SponsorshipRequest
+command/LoginCommand.java
+ command.LoginCommand
+ command.LoginCommand$LogStatus
 model/NonTicketedEvent.java
  model.NonTicketedEvent
-model/SponsershipRequest.java
- model.SponsershipRequest
 command/CreateNonTicketedEventCommand.java
  command.CreateNonTicketedEventCommand
-command/AddEventPerformanceCommand.java
- command.AddEventPerformanceCommand
+ command.CreateNonTicketedEventCommand$LogStatus
 external/PaymentSystem.java
  external.PaymentSystem
 command/GetAvailablePerformanceTicketsCommand.java
  command.GetAvailablePerformanceTicketsCommand
+ command.GetAvailablePerformanceTicketsCommand$LogStatus
 model/TicketedEvent.java
  model.TicketedEvent
 command/ListEventsCommand.java
  command.ListEventsCommand
+ command.ListEventsCommand$LogStatus
+command/ListEventsOnGivenDateCommand.java
+ command.ListEventsOnGivenDateCommand
+ command.ListEventsOnGivenDateCommand$LogStatus
 command/UpdateEntertainmentProviderProfileCommand.java
  command.UpdateEntertainmentProviderProfileCommand
+ command.UpdateEntertainmentProviderProfileCommand$LogStatus
 state/BookingState.java
  state.BookingState
-command/ListConsumerBookingsCommand.java
- command.ListConsumerBookingsCommand
+command/ICommand.java
+ command.ICommand
 model/Consumer.java
  model.Consumer
 model/ConsumerPreferences.java
  model.ConsumerPreferences
-command/RespondSponsorshipCommand.java
- command.RespondSponsorshipCommand
+state/UserState.java
+ state.UserState
 state/IBookingState.java
  state.IBookingState
 state/EventState.java
  state.EventState
-command/ListEventsOnGivenDataCommand.java
- command.ListEventsOnGivenDataCommand
 command/CreateTicketedEventCommand.java
  command.CreateTicketedEventCommand
-command/RegisterConsumerCommand.java
- command.RegisterConsumerCommand
+ command.CreateTicketedEventCommand$LogStatus
+command/RegisterEntertainmentProviderCommand.java
+ command.RegisterEntertainmentProviderCommand
+ command.RegisterEntertainmentProviderCommand$LogStatus
 external/EntertainmentProviderSystem.java
  external.EntertainmentProviderSystem
 model/SponsorshipStatus.java
  model.SponsorshipStatus
 model/GovernmentRepresentative.java
  model.GovernmentRepresentative
-model/Event.java
- model.Event
-command/ICommand.java
- command.ICommand
-command/ListEventBookingsCommand.java
- command.ListEventBookingsCommand
-model/User.java
- model.User
+command/ListSponsorshipRequestsCommand.java
+ command.ListSponsorshipRequestsCommand
+ command.ListSponsorshipRequestsCommand$LogStatus
+controller/Context.java
+ controller.Context
+command/RespondSponsorshipCommand.java
+ command.RespondSponsorshipCommand
+ command.RespondSponsorshipCommand$LogStatus
+command/GovernmentReport2Command.java
+ command.GovernmentReport2Command
+ command.GovernmentReport2Command$LogStatus

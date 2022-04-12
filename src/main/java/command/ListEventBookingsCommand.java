@@ -84,7 +84,7 @@ public class ListEventBookingsCommand extends Object implements ICommand{
     }
 
     @Override
-    public Object getResult() {
+    public List<Booking> getResult() {
         if (logStatus == LogStatus.LIST_EVENT_BOOKINGS_SUCCESS){
             return this.bookingListResult;
         }

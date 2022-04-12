@@ -10,7 +10,11 @@ public class LogEntry {
 
     public LogEntry(String callername, Object result, Map<String,Object> additionalInfo){
         this.callername = callername;
-        this.result = result.toString();
+        if(result == null){
+            this.result = "null";
+        }else {
+            this.result = result.toString();
+        }
         this.additionalInfo = additionalInfo.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 entry -> String.valueOf(entry.getValue())));

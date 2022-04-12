@@ -1,9 +1,6 @@
 package state;
 
-import model.Booking;
-import model.Consumer;
-import model.EventPerformance;
-import model.User;
+import model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +29,11 @@ public class UserState implements IUserState{
         // GovernmentRepresentative gr = new GovernmentRepresentative(........);
         // this.users.put(toString(gr), gr)
         // to add PRE-registered government representatives to the User list
+
+        // add representatives for testing
+        GovernmentRepresentative gr = new GovernmentRepresentative("margaret.thatcher@gov.uk", "The Good times  ",
+                "financial-payment@gov.uk");
+        this.users.put(gr.toString(),gr);
     }
 
     @Override

@@ -58,16 +58,15 @@ public class RegisterConsumerCommand extends Object implements ICommand{
             }
         }
 
-        context.getUserState().setCurrentUser(newConsumerResult);
-        logStatus = LogStatus.USER_LOGIN_SUCCESS;
-
-        info.put("STATUS:",this.logStatus);
-
+        this.newConsumerResult = new Consumer(this.name, this.email, this.phoneNumber, this.password, this.paymentAccountEmail);
+        context.getUserState().addUser(this.newConsumerResult);
         logStatus = LogStatus.REGISTER_CONSUMER_SUCCESS;
-        this.newConsumerResult = (Consumer) context.getUserState().getCurrentUser();
-        context.getUserState().addUser(newConsumerResult);
-
         info.put("STATUS:",this.logStatus);
+
+        context.getUserState().setCurrentUser(this.newConsumerResult);
+        logStatus = LogStatus.USER_LOGIN_SUCCESS;
+        info.put("STATUS:",this.logStatus);
+
         Logger.getInstance().logAction("RegisterConsumerCommand.execute()",
                 getResult(),info);
     }

@@ -28,7 +28,6 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
     private int capacityLimit, venueSize;
     private EventPerformance eventPerformanceResult;
     private LogStatus logStatus;
-    private Object EntertainmentProvider;
 
     private enum LogStatus{
         ADD_PERFORMANCE_SUCCESS,
@@ -103,7 +102,7 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != EntertainmentProvider.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != EntertainmentProvider.class){
             logStatus = LogStatus.ADD_PERFORMANCE_USER_NOT_ENTERTAINMENT_PROVIDER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("AddEventPerformanceCommand.execute()",
@@ -127,7 +126,7 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
             return;
         }
 
-        if (context.getEventState().findEventByNumber(this.eventNumber).getOrganiser() == context.getUserState().getCurrentUser()){
+        if (context.getEventState().findEventByNumber(this.eventNumber).getOrganiser() != context.getUserState().getCurrentUser()){
             logStatus = LogStatus.ADD_PERFORMANCE_USER_NOT_EVENT_ORGANISER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("AddEventPerformanceCommand.execute()",
@@ -136,7 +135,7 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
         }
         Event eventToAdd = context.getEventState().findEventByNumber(this.eventNumber);
         for (Event event: events){
-            if (event.getTitle() == eventToAdd.getTitle()){
+            if (event.getTitle().equals(eventToAdd.getTitle())){
                 Collection<EventPerformance> performances = event.getPerformances();
                 for (EventPerformance performance: performances){
                     if(performance.getStartDateTime() == startDateTime && performance.getEndDateTime() == endDateTime){
@@ -151,7 +150,8 @@ public class AddEventPerformanceCommand extends Object implements  ICommand{
         }
 
         logStatus = LogStatus.ADD_PERFORMANCE_SUCCESS;
-        eventPerformanceResult = context.getEventState().createEventPerformance(eventToAdd,venueAddress,startDateTime,endDateTime,performerNames,hasSocialDistancing,hasAirFiltration,isOutdoors,capacityLimit,venueSize);
+        eventPerformanceResult = context.getEventState().createEventPerformance(context.getEventState().findEventByNumber(this.eventNumber),
+                venueAddress,startDateTime,endDateTime,performerNames,hasSocialDistancing,hasAirFiltration,isOutdoors,capacityLimit,venueSize);
         context.getEventState().findEventByNumber(this.eventNumber).addPerformance(eventPerformanceResult);
 
         context.getEventState().findEventByNumber(eventNumber).getOrganiser().getProviderSystem().recordNewPerformance(eventNumber, eventPerformanceResult.getPerformanceNumber(),startDateTime,endDateTime);
