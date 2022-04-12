@@ -54,13 +54,13 @@ public class LoginSystemTests {
 
         LoginCommand cmd1 = new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2");
         controller.runCommand(cmd1);
-        System.out.println("cmd1.getResult()");
+        System.out.println(cmd1.getResult());
 //        List<Consumer> consumers1 = cmd1.getResult();
 //        assertTrue(consumers1.stream().anyMatch(consumer -> consumer.getName().equals("John Biggson")));
 
         LoginCommand cmd2 = new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool");
         controller.runCommand(cmd2);
-        System.out.println("cmd2.getResult()");
+        System.out.println(cmd2.getResult());
 //        List<Consumer> consumers2 = cmd2.getResult();
 //        assertTrue(consumers2.stream().anyMatch(consumer -> consumer.getName().equals("Jane Giantsdottir")));
     }
@@ -72,5 +72,6 @@ public class LoginSystemTests {
 
         LoginCommand cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
         controller.runCommand(cmd);
+        System.out.println(cmd.getResult());
     }
 }
