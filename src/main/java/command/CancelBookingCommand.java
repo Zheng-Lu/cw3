@@ -18,7 +18,6 @@ public class CancelBookingCommand extends Object implements ICommand{
     private long bookingNumber;
     private LogStatus logStatus;
     private Boolean successResult;
-    private Object Consumer;
 
     private enum LogStatus{
         CANCEL_BOOKING_SUCCESS,
@@ -40,7 +39,7 @@ public class CancelBookingCommand extends Object implements ICommand{
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
 
-        if(context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
+        if(context.getUserState().getCurrentUser().getClass() != Consumer.class){
             logStatus = LogStatus.CANCEL_BOOKING_USER_NOT_CONSUMER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",

@@ -15,7 +15,6 @@ public class ListSponsorshipRequestsCommand extends Object implements ICommand{
     private List<SponsorshipRequest> requestListResult;
 
     private LogStatus logStatus;
-    private Object GovernmentRepresentative;
 
     private enum LogStatus{
         LIST_SPONSORSHIP_REQUESTS_NOT_LOGGED_IN,
@@ -41,7 +40,7 @@ public class ListSponsorshipRequestsCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.class){
             logStatus = LogStatus.LIST_SPONSORSHIP_REQUESTS_NOT_GOVERNMENT_REPRESENTATIVE;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("ListSponsorshipRequestsCommand.execute()",
@@ -58,7 +57,7 @@ public class ListSponsorshipRequestsCommand extends Object implements ICommand{
     }
 
     @Override
-    public Object getResult() {
+    public List<SponsorshipRequest> getResult() {
         if (logStatus == LogStatus.LIST_SPONSORSHIP_REQUESTS_SUCCESS){
             return requestListResult;
         }

@@ -1,2 +1,28 @@
+LogoutSystemTests.java
+ LogoutSystemTests
+GovernmentReport1SystemTest.java
+ GovernmentReport1SystemTest
+CancelEventSystemTests.java
+ CancelEventSystemTests
+ListSponsorshipRequestsSystemTests.java
+ ListSponsorshipRequestsSystemTests
+RespondSponsorshipSystemTests.java
+ RespondSponsorshipSystemTests
+RegisterConsumerSystemTests.java
+ RegisterConsumerSystemTests
+GovernmentReport2SystemTest.java
+ GovernmentReport2SystemTest
+LoginSystemTests.java
+ LoginSystemTests
+ListEventsSystemTests.java
+ ListEventsSystemTests
+BookEventSystemTests.java
+ BookEventSystemTests
+CreateTicketedEventSystemTests.java
+ CreateTicketedEventSystemTests
+CreateNonTicketedEventSystemTests.java
+ CreateNonTicketedEventSystemTests
+RegisterEntertainmentProviderSystemTests.java
+ RegisterEntertainmentProviderSystemTests
 AddEventPerformanceSystemTests.java
  AddEventPerformanceSystemTests

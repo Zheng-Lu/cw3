@@ -37,7 +37,7 @@ public class LoginCommand extends Object implements ICommand{
         for (Map.Entry<String, User> userEntry : users.entrySet()){
             if (Objects.equals(userEntry.getValue().getEmail(), this.email) && userEntry.getValue().checkPasswordMatch(password)){
                 this.logStatus = LogStatus.USER_LOGIN_SUCCESS;
-                userResult = (User) userEntry;
+                userResult = userEntry.getValue();
                 context.getUserState().setCurrentUser(userEntry.getValue());
                 break;
             }

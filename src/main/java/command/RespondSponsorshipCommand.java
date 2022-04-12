@@ -18,7 +18,6 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
     private int percentToSponsor;
     private Boolean successResult;
     private LogStatus logStatus;
-    private Object GovernmentRepresentative;
 
     private enum LogStatus{
         RESPOND_SPONSORSHIP_APPROVE,
@@ -52,7 +51,7 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.class){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_USER_NOT_GOVERNMENT_REPRESENTATIVE;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
@@ -60,7 +59,7 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
             return;
         }
 
-        if (percentToSponsor < 0 && percentToSponsor>100){
+        if (percentToSponsor < 0 || percentToSponsor>100){
             logStatus = LogStatus.RESPOND_SPONSORSHIP_INVALID_PERCENTAGE;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("RespondSponsorshipCommand.execute()",
@@ -71,8 +70,9 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
         List<SponsorshipRequest> requests =context.getSponsorshipState().getAllSponsorshipRequest();
         boolean request_found =false;
         for (SponsorshipRequest request: requests) {
-            if (request.getRequestNumber() == this.requestNumber){
+            if (request.getRequestNumber() == this.requestNumber) {
                 request_found = true;
+                break;
             }
         }
         if (!request_found){
@@ -105,9 +105,13 @@ public class RespondSponsorshipCommand extends Object implements ICommand{
             context.getSponsorshipState().findRequestByNumber(requestNumber).reject();
             event.getOrganiser().getProviderSystem().recordSponsorshipRejection(eventNum);
         }else{
+            int numberOfTotalPerformances = context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getPerformances().size();
             if(context.getPaymentSystem().processPayment(context.getUserState().getCurrentUser().getPaymentAccountEmail(),
                     context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOrganiser().getPaymentAccountEmail(),
-                    (double) context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getNumTickets()*context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOriginalTicketPrice()*percentToSponsor/100))
+                    (double) context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getNumTickets()*
+                            numberOfTotalPerformances
+                            *context.getSponsorshipState().findRequestByNumber(this.requestNumber).getEvent().getOriginalTicketPrice()*percentToSponsor/100))
+                // the representative can still accept even the event has 0 tickets allocated
             {
                 logStatus = LogStatus.RESPOND_SPONSORSHIP_PAYMENT_SUCCESS;
             }else{

@@ -15,7 +15,6 @@ public class GovernmentReport1Command extends Object implements ICommand{
     private LocalDateTime intervalStartInclusive, intervalEndInclusive;
     private List<Booking> bookingListResult;
     private LogStatus logStatus;
-    private Object GovernmentRepresentative;
 
     private enum LogStatus{
         GOVERNMENT_REPORT1_NOT_LOGGED_IN,
@@ -23,7 +22,7 @@ public class GovernmentReport1Command extends Object implements ICommand{
         GOVERNMENT_REPORT1_SUCCESS
     }
 
-    GovernmentReport1Command(LocalDateTime intervalStartInclusive, LocalDateTime intervalEndInclusive){
+    public GovernmentReport1Command(LocalDateTime intervalStartInclusive, LocalDateTime intervalEndInclusive){
         this.intervalStartInclusive = intervalStartInclusive;
         this.intervalEndInclusive = intervalEndInclusive;
     }
@@ -44,7 +43,7 @@ public class GovernmentReport1Command extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.class){
             logStatus = LogStatus.GOVERNMENT_REPORT1_USER_NOT_GOVERNMENT_REPRESENTATIVE;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("GovernmentReport1Command.execute()",

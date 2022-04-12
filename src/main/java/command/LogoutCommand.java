@@ -23,8 +23,6 @@ public class LogoutCommand extends Object implements  ICommand{
     @Override
     public void execute(Context context) {
 
-        // ADD TO LOGGER
-
         Map<String, Object> info = new HashMap<>();
 
        if(context.getUserState().getCurrentUser() == null){

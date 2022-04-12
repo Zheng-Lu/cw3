@@ -87,16 +87,15 @@ public class RegisterEntertainmentProviderCommand extends Object implements ICom
             }
         }
 
-        context.getUserState().setCurrentUser(newEntertainmentProviderResult);
+        logStatus = LogStatus.REGISTER_ENTERTAINMENT_PROVIDER_SUCCESS;
+        this.newEntertainmentProviderResult = new EntertainmentProvider(orgName,orgAddress,paymentAccountEmail,mainRepName,mainRepEmail,password, otherRepNames,otherRepEmails);
+        info.put("STATUS:",this.logStatus);
+        context.getUserState().addUser(this.newEntertainmentProviderResult);
+
+        context.getUserState().setCurrentUser(this.newEntertainmentProviderResult);
         logStatus = LogStatus.USER_LOGIN_SUCCESS;
         info.put("STATUS:",this.logStatus);
 
-        logStatus = LogStatus.REGISTER_ENTERTAINMENT_PROVIDER_SUCCESS;
-        newEntertainmentProviderResult = new EntertainmentProvider(orgName,orgAddress,paymentAccountEmail,mainRepName,mainRepEmail,password, otherRepNames,otherRepEmails);
-
-        context.getUserState().addUser(newEntertainmentProviderResult);
-
-        info.put("STATUS:",this.logStatus);
         Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",
                 getResult(),info);
 

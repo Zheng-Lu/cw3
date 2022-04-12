@@ -19,8 +19,6 @@ public class CancelEventCommand extends Object implements ICommand{
     private Boolean successResult;
 
     private LogStatus logStatus;
-    private Object EntertainmentProvider;
-    private Object TicketedEvent;
 
 
     //shown in uml but not in javadoc, needs better looking
@@ -39,7 +37,7 @@ public class CancelEventCommand extends Object implements ICommand{
     }
 
 
-    CancelEventCommand(long eventNumber, String organiserMessage){
+    public CancelEventCommand(long eventNumber, String organiserMessage){
         this.eventNumber = eventNumber;
         this.organiserMessage = organiserMessage;
     }
@@ -57,7 +55,7 @@ public class CancelEventCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != EntertainmentProvider.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != EntertainmentProvider.class){
             logStatus = LogStatus.CANCEL_EVENT_USER_NOT_ENTERTAINMENT_PROVIDER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("CancelEventCommand.execute()",
@@ -66,7 +64,7 @@ public class CancelEventCommand extends Object implements ICommand{
         }
 
         List<Event> events = context.getEventState().getAllEvents();
-        Boolean event_found = false;
+        boolean event_found = false;
         for (Event event : events) {
             if (event.getEventNumber() == this.eventNumber){
                 event_found = true;
@@ -109,7 +107,7 @@ public class CancelEventCommand extends Object implements ICommand{
             }
         }
 
-        if (context.getEventState().findEventByNumber(this.eventNumber).getClass() == TicketedEvent.getClass()) {
+        if (context.getEventState().findEventByNumber(this.eventNumber).getClass() == TicketedEvent.class) {
             TicketedEvent ticketedEvent = (TicketedEvent) context.getEventState().findEventByNumber(this.eventNumber);
             if(ticketedEvent.isSponsored()){
                 int ticketNum =  ticketedEvent.getNumTickets();

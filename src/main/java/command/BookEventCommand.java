@@ -23,8 +23,6 @@ public class BookEventCommand extends Object implements ICommand{
     private long bookingNumberResult, eventNumber, performanceNumber;
 
     private LogStatus logStatus;
-    private Object Consumer;
-    private Object TicketedEvent;
 
     private enum LogStatus{
         BOOK_EVENT_SUCCESS,
@@ -55,7 +53,7 @@ public class BookEventCommand extends Object implements ICommand{
         Boolean event_found = false;
         Boolean performance_found = false;
 
-        if (context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != Consumer.class){
             logStatus = LogStatus.BOOK_EVENT_USER_NOT_CONSUMER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("BookEventCommand.execute()",
@@ -88,7 +86,7 @@ public class BookEventCommand extends Object implements ICommand{
             return;
         }
 
-        if(event.getClass() != TicketedEvent.getClass()){
+        if(event.getClass() != TicketedEvent.class){
             logStatus = LogStatus.BOOK_EVENT_NOT_A_TICKETED_EVENT;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("BookEventCommand.execute()",
