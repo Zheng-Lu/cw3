@@ -24,6 +24,10 @@ public class ListEventsSystemTests {
         System.out.println("---");
     }
 
+    private static void loginOlympicsProvider(Controller controller) {
+        controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
+    }
+
     private static void createBuskingProviderWith1Event(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "No org",
@@ -246,6 +250,13 @@ public class ListEventsSystemTests {
         controller.runCommand(new LogoutCommand());
     }
 
+    private static void providerCancelFirstEvent(Controller controller) {
+        ListEventsCommand cmd = new ListEventsCommand(true, true);
+        controller.runCommand(cmd);
+        List<Event> events = cmd.getResult();
+        controller.runCommand(new CancelEventCommand(events.get(0).getEventNumber(), "Cancel First Event"));
+    }
+
     @Test
     @DisplayName("List Events should work")
     void testListEvents() {
@@ -259,5 +270,24 @@ public class ListEventsSystemTests {
         controller.runCommand(cmd);
         List<Event> events = cmd.getResult();
         assertEquals(6, events.size());
+    }
+
+    @Test
+    @DisplayName("List Events after the cancellation should work")
+    void testListEventsAfterCancel() {
+        Controller controller = new Controller();
+
+        createOlympicsProviderWith2Events(controller);
+        createCinemaProviderWith3Events(controller);
+        createBuskingProviderWith1Event(controller);
+
+        loginOlympicsProvider(controller);
+        providerCancelFirstEvent(controller);
+        controller.runCommand(new LogoutCommand());
+
+        ListEventsCommand cmd = new ListEventsCommand(true, true);
+        controller.runCommand(cmd);
+        List<Event> events = cmd.getResult();
+        assertEquals(5, events.size());
     }
 }
