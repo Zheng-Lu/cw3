@@ -37,14 +37,52 @@ public class CreateTicketedEventSystemTests {
         ));
     }
 
+    private static void registerCinemaProvider(Controller controller) {
+        controller.runCommand(new RegisterEntertainmentProviderCommand(
+                "Cinema Conglomerate",
+                "Global Office, International Space Station",
+                "$$$@there'sNoEmailValidation.wahey!",
+                "Mrs Representative",
+                "odeon@cineworld.com",
+                "F!ghT th3 R@Pture",
+                List.of("Dr Strangelove"),
+                List.of("we_dont_get_involved@cineworld.com")
+        ));
+    }
+
+    private static void registerBuskingProvider(Controller controller) {
+        controller.runCommand(new RegisterEntertainmentProviderCommand(
+                "No org",
+                "Leith Walk",
+                "a hat on the ground",
+                "the best musicican ever",
+                "busk@every.day",
+                "When they say 'you can't do this': Ding Dong! You are wrong!",
+                Collections.emptyList(),
+                Collections.emptyList()
+        ));
+    }
+
+    private static void loginCinemaProvider(Controller controller) {
+        controller.runCommand(new LoginCommand("odeon@cineworld.com", "F!ghT th3 R@Pture"));
+    }
+
+    private static void loginBuskingProvider(Controller controller) {
+        controller.runCommand(new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!"));
+    }
+
+    private static void loginOlympicsProvider(Controller controller) {
+        controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
+    }
+
     @Test
     @DisplayName("Creat Ticketed Event should work")
     void canCreateTicketedEvent() {
         Controller controller = new Controller();
 
         registerOlympicsProvider(controller);
-
-        // Test 1
+        controller.runCommand(new LogoutCommand());
+        loginOlympicsProvider(controller);
         CreateTicketedEventCommand eventCmd1 = new CreateTicketedEventCommand(
                 "London Summer Olympics",
                 EventType.Sports,
@@ -53,9 +91,7 @@ public class CreateTicketedEventSystemTests {
                 true
         );
         controller.runCommand(eventCmd1);
-        System.out.println(eventCmd1.getResult());
-
-        // Test 2
+        long numEvents1 = eventCmd1.getResult();
         CreateTicketedEventCommand eventCmd2 = new CreateTicketedEventCommand(
                 "Winter Olympics",
                 EventType.Sports,
@@ -64,7 +100,30 @@ public class CreateTicketedEventSystemTests {
                 true
         );
         controller.runCommand(eventCmd2);
-        System.out.println(eventCmd2.getResult());
+        long numEvents2 = eventCmd2.getResult();
+        controller.runCommand(new LogoutCommand());
+
+
+        registerCinemaProvider(controller);
+        controller.runCommand(new LogoutCommand());
+        loginCinemaProvider(controller);
+        CreateTicketedEventCommand eventCmd3 = new CreateTicketedEventCommand(
+                "The LEGO Movie",
+                EventType.Movie,
+                50,
+                15.75,
+                false
+        );
+        controller.runCommand(eventCmd3);
+        long numEvents3 = eventCmd3.getResult();
+        controller.runCommand(new LogoutCommand());
+
+        assertEquals(1, numEvents1,
+                "Number of events should match the expectation");
+        assertEquals(2, numEvents2,
+                "Number of events should match the expectation");
+        assertEquals(3, numEvents3,
+                "Number of events should match the expectation");
 
     }
 }
