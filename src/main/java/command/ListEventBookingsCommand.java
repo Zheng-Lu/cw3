@@ -13,9 +13,6 @@ public class ListEventBookingsCommand extends Object implements ICommand{
     private long eventNumber;
     private List<Booking> bookingListResult;
     private LogStatus logStatus;
-    private Object TicketedEvent;
-    private Object GovernmentRepresentative;
-    private Object EntertainmentProvider;
 
     private enum LogStatus{
         LIST_EVENT_BOOKINGS_USER_NOT_LOGGED_IN,
@@ -59,7 +56,7 @@ public class ListEventBookingsCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getEventState().findEventByNumber(this.eventNumber).getClass() != TicketedEvent.getClass()){
+        if (context.getEventState().findEventByNumber(this.eventNumber).getClass() != TicketedEvent.class){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_EVENT_NOT_TICKETED;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
@@ -67,7 +64,7 @@ public class ListEventBookingsCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.getClass() || context.getUserState().getCurrentUser() != context.getEventState().findEventByNumber(this.eventNumber).getOrganiser()){
+        if (context.getUserState().getCurrentUser().getClass() != GovernmentRepresentative.class && context.getUserState().getCurrentUser() != context.getEventState().findEventByNumber(this.eventNumber).getOrganiser()){
             logStatus = LogStatus.LIST_EVENT_BOOKINGS_USER_NOT_ORGANISER_NOR_GOV;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("ListEventBookingsCommand.execute()",
