@@ -5,8 +5,6 @@ import model.*;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +39,7 @@ public class CancelEventSystemTests {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
     }
 
-    private static void createOlympicsProviderWith2Events(Controller controller) {
+    private static long createOlympicsProviderWith2Events(Controller controller) {
         CreateTicketedEventCommand eventCmd1 = new CreateTicketedEventCommand(
                 "London Summer Olympics",
                 EventType.Sports,
@@ -123,13 +121,8 @@ public class CancelEventSystemTests {
                 4000,
                 10000
         ));
-    }
 
-    private static void providerCancelFirstEvent(Controller controller) {
-        ListEventsCommand cmd = new ListEventsCommand(true, true);
-        controller.runCommand(cmd);
-        List<Event> events = cmd.getResult();
-        controller.runCommand(new CancelEventCommand(events.get(0).getEventNumber(), "Trololol"));
+        return eventNumber2;
     }
 
     @Test
@@ -143,11 +136,18 @@ public class CancelEventSystemTests {
 
         // Login and create the event then Logout
         loginOlympicsProvider(controller);
-        createOlympicsProviderWith2Events(controller);
+        long numEvents1 = createOlympicsProviderWith2Events(controller);
         controller.runCommand(new LogoutCommand());
 
         // Login then cancel the event
         loginOlympicsProvider(controller);
-        providerCancelFirstEvent(controller);
+        ListEventsCommand list_events_cmd = new ListEventsCommand(true, true);
+        controller.runCommand(list_events_cmd);
+        List<Event> events = list_events_cmd.getResult();
+
+        CancelEventCommand cmd = new CancelEventCommand(events.get(0).getEventNumber(), "Event Cancelled");
+        controller.runCommand(cmd);
+        Boolean isCancelSuccessful = cmd.getResult();
+        assertTrue(isCancelSuccessful);
     }
 }
