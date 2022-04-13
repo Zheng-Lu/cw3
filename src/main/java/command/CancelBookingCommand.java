@@ -102,9 +102,8 @@ public class CancelBookingCommand extends Object implements ICommand{
         logStatus = LogStatus.CANCEL_BOOKING_SUCCESS;
         successResult = true;
 
-        context.getBookingState().findBookingByNumber(this.bookingNumber).cancelByConsumer();
-
         context.getBookingState().findBookingByNumber(bookingNumber).getEventPerformance().getEvent().getOrganiser().getProviderSystem().cancelBooking(bookingNumber);
+        context.getBookingState().findBookingByNumber(this.bookingNumber).cancelByConsumer();
 
         info.put("STATUS:",this.logStatus);
         Logger.getInstance().logAction("CancelBookingCommand.execute()",

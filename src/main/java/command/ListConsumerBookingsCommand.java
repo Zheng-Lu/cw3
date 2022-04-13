@@ -13,7 +13,6 @@ public class ListConsumerBookingsCommand extends Object implements ICommand{
 
     private List<Booking> bookingListResult;
     private LogStatus logStatus;
-    private Object Consumer;
 
     private enum LogStatus{
         LIST_CONSUMER_BOOKINGS_NOT_LOGGED_IN,
@@ -39,7 +38,7 @@ public class ListConsumerBookingsCommand extends Object implements ICommand{
             return;
         }
 
-        if (context.getUserState().getCurrentUser().getClass() != Consumer.getClass()){
+        if (context.getUserState().getCurrentUser().getClass() != Consumer.class){
             logStatus = LogStatus.LIST_CONSUMER_BOOKINGS_USER_NOT_CONSUMER;
             info.put("STATUS:",this.logStatus);
             Logger.getInstance().logAction("ListConsumerBookingsCommand.execute()",

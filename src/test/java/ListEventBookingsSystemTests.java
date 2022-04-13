@@ -338,7 +338,20 @@ public class ListEventBookingsSystemTests {
         controller.runCommand(new LogoutCommand());
 
         loginConsumer3(controller);
-        consumerBookNthTicketedEvent(controller, 3);
+        // test for booking event number 3
+        // delete this part if you want to fix your test
+        ListEventsCommand cmd = new ListEventsCommand(false, true);
+        controller.runCommand(cmd);
+        List<Event> eventstest = cmd.getResult();
+        Event event3 = eventstest.get(2);
+        Collection<EventPerformance> performances = event3.getPerformances();
+        BookEventCommand book_cmd = new BookEventCommand(event3.getEventNumber(),
+                performances.iterator().next().getPerformanceNumber(),
+                1
+        );
+        controller.runCommand(book_cmd);
+        // original code :
+        // consumerBookNthTicketedEvent(controller, 3);
         controller.runCommand(new LogoutCommand());
 
         loginGovernmentRepresentative(controller);
