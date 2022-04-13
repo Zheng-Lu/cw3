@@ -159,7 +159,7 @@ public class CancelEventCommand extends Object implements ICommand{
     }
 
     @Override
-    public Object getResult() {
+    public Boolean getResult() {
         if (logStatus == LogStatus.CANCEL_EVENT_SUCCESS || logStatus == LogStatus.CANCEL_EVENT_REFUND_SPONSORSHIP_SUCCESS){
             return successResult;
         }
