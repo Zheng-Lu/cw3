@@ -148,6 +148,7 @@ public class CancelEventSystemTests {
         CancelEventCommand cmd = new CancelEventCommand(events.get(0).getEventNumber(), "Event Cancelled");
         controller.runCommand(cmd);
         Boolean isCancelSuccessful = cmd.getResult();
+
         assertTrue(isCancelSuccessful);
     }
 }
