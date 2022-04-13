@@ -251,7 +251,7 @@ public class ListEventsSystemTests {
     }
 
     private static void providerCancelFirstEvent(Controller controller) {
-        ListEventsCommand cmd = new ListEventsCommand(true, true);
+        ListEventsCommand cmd = new ListEventsCommand(false, true);
         controller.runCommand(cmd);
         List<Event> events = cmd.getResult();
         controller.runCommand(new CancelEventCommand(events.get(0).getEventNumber(), "Cancel First Event"));
@@ -282,14 +282,7 @@ public class ListEventsSystemTests {
         createBuskingProviderWith1Event(controller);
 
         loginOlympicsProvider(controller);
-        // original code : providerCancelFirstEvent(controller);
-        // test cancel
-        ListEventsCommand cmd_test = new ListEventsCommand(false, true);
-        controller.runCommand(cmd_test);
-        List<Event> events_test = cmd_test.getResult();
-        CancelEventCommand cancel_cmd = new CancelEventCommand(events_test.get(0).getEventNumber(), "Cancel First Event");
-        controller.runCommand(cancel_cmd);
-        // test cancel passed
+        providerCancelFirstEvent(controller);
         controller.runCommand(new LogoutCommand());
 
         ListEventsCommand cmd = new ListEventsCommand(false, true);
