@@ -31,6 +31,33 @@ public class LoginSystemTests {
         System.out.println("---");
     }
 
+    private static void register3Consumers(Controller controller) {
+        controller.runCommand(new RegisterConsumerCommand(
+                "John Biggson",
+                "jbiggson1@hotmail.co.uk",
+                "077893153480",
+                "jbiggson2",
+                "jbiggson1@hotmail.co.uk"
+        ));
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new RegisterConsumerCommand(
+                "Jane Giantsdottir",
+                "jane@inf.ed.ac.uk",
+                "04462187232",
+                "giantsRverycool",
+                "jane@aol.com"
+        ));
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new RegisterConsumerCommand(
+                "Wednesday Kebede",
+                "i-will-kick-your@gmail.com",
+                "-",
+                "it is wednesday my dudes",
+                "i-will-kick-your@gmail.com"
+        ));
+        controller.runCommand(new LogoutCommand());
+    }
+
     private static void loginConsumer1(Controller controller) {
         controller.runCommand(new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2"));
     }
@@ -52,17 +79,19 @@ public class LoginSystemTests {
     void successfulConsumerLogin() {
         Controller controller = new Controller();
 
+        register3Consumers(controller);
+
         LoginCommand cmd1 = new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2");
         controller.runCommand(cmd1);
         System.out.println(cmd1.getResult());
-//        List<Consumer> consumers1 = cmd1.getResult();
-//        assertTrue(consumers1.stream().anyMatch(consumer -> consumer.getName().equals("John Biggson")));
+        List<Consumer> consumers1 = cmd1.getResult();
+        assertTrue(consumers1.stream().anyMatch(consumer -> consumer.getName().equals("John Biggson")));
 
         LoginCommand cmd2 = new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool");
         controller.runCommand(cmd2);
         System.out.println(cmd2.getResult());
-//        List<Consumer> consumers2 = cmd2.getResult();
-//        assertTrue(consumers2.stream().anyMatch(consumer -> consumer.getName().equals("Jane Giantsdottir")));
+        List<Consumer> consumers2 = cmd2.getResult();
+        assertTrue(consumers2.stream().anyMatch(consumer -> consumer.getName().equals("Jane Giantsdottir")));
     }
 
     @Test
