@@ -55,7 +55,7 @@ public class LoginCommand extends Object implements ICommand{
     }
 
     @Override
-    public Object getResult() {
+    public User getResult() {
         if (logStatus == LogStatus.USER_LOGIN_SUCCESS){
             return this.userResult;
         }
