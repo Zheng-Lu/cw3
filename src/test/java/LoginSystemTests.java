@@ -105,7 +105,7 @@ public class LoginSystemTests {
         System.out.println(cmd.getResult());
         User government = cmd.getResult();
         assertNotNull(government);
-        assertEquals("jane@inf.ed.ac.uk", government.getEmail());
-        assertTrue(government.checkPasswordMatch("giantsRverycool"));
+        assertEquals("margaret.thatcher@gov.uk", government.getEmail());
+        assertTrue(government.checkPasswordMatch("The Good times  "));
     }
 }
