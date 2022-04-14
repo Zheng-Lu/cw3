@@ -9,14 +9,12 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LoginSystemTests {
@@ -83,15 +81,18 @@ public class LoginSystemTests {
 
         LoginCommand cmd1 = new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2");
         controller.runCommand(cmd1);
-        System.out.println(cmd1.getResult());
-        List<Consumer> consumers1 = cmd1.getResult();
-        assertTrue(consumers1.stream().anyMatch(consumer -> consumer.getName().equals("John Biggson")));
+        User consumers1 = cmd1.getResult();
+        assertNotNull(consumers1);
+        assertEquals("jbiggson1@hotmail.co.uk", consumers1.getEmail());
+        assertTrue(consumers1.checkPasswordMatch("jbiggson2"));
+
 
         LoginCommand cmd2 = new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool");
         controller.runCommand(cmd2);
-        System.out.println(cmd2.getResult());
-        List<Consumer> consumers2 = cmd2.getResult();
-        assertTrue(consumers2.stream().anyMatch(consumer -> consumer.getName().equals("Jane Giantsdottir")));
+        User consumers2 = cmd2.getResult();
+        assertNotNull(consumers2);
+        assertEquals("jane@inf.ed.ac.uk", consumers2.getEmail());
+        assertTrue(consumers2.checkPasswordMatch("giantsRverycool"));
     }
 
     @Test
@@ -102,5 +103,9 @@ public class LoginSystemTests {
         LoginCommand cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
         controller.runCommand(cmd);
         System.out.println(cmd.getResult());
+        User government = cmd.getResult();
+        assertNotNull(government);
+        assertEquals("jane@inf.ed.ac.uk", government.getEmail());
+        assertTrue(government.checkPasswordMatch("giantsRverycool"));
     }
 }
