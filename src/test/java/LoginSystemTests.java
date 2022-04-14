@@ -104,6 +104,24 @@ public class LoginSystemTests {
         assertNull(logout_cmd2.getResult());
     }
 
+    //TODO: Entertainment Provider Test need to be implemented
+    @Test
+    @DisplayName("Entertainment Provider Login should work")
+    void successfulEntertainmentProviderLogin() {
+        Controller controller = new Controller();
+
+        LoginCommand login_cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
+        controller.runCommand(login_cmd);
+        User government = login_cmd.getResult();
+        assertNotNull(government);
+        assertEquals("margaret.thatcher@gov.uk", government.getEmail());
+        assertTrue(government.checkPasswordMatch("The Good times  "));
+
+        LogoutCommand logout_cmd = new LogoutCommand();
+        controller.runCommand(logout_cmd);
+        assertNull(logout_cmd.getResult());
+    }
+
     @Test
     @DisplayName("Government Login should work")
     void successfulGovernmentLogin() {
