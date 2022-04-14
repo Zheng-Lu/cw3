@@ -79,20 +79,29 @@ public class LoginSystemTests {
 
         register3Consumers(controller);
 
-        LoginCommand cmd1 = new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2");
-        controller.runCommand(cmd1);
-        User consumers1 = cmd1.getResult();
+        // Login case 1
+        LoginCommand login_cmd1 = new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2");
+        controller.runCommand(login_cmd1);
+        User consumers1 = login_cmd1.getResult();
         assertNotNull(consumers1);
         assertEquals("jbiggson1@hotmail.co.uk", consumers1.getEmail());
         assertTrue(consumers1.checkPasswordMatch("jbiggson2"));
 
+        LogoutCommand logout_cmd1 = new LogoutCommand();
+        controller.runCommand(logout_cmd1);
+        assertNull(logout_cmd1.getResult());
 
-        LoginCommand cmd2 = new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool");
-        controller.runCommand(cmd2);
-        User consumers2 = cmd2.getResult();
+        // Login case 2
+        LoginCommand login_cmd2 = new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool");
+        controller.runCommand(login_cmd2);
+        User consumers2 = login_cmd2.getResult();
         assertNotNull(consumers2);
         assertEquals("jane@inf.ed.ac.uk", consumers2.getEmail());
         assertTrue(consumers2.checkPasswordMatch("giantsRverycool"));
+
+        LogoutCommand logout_cmd2 = new LogoutCommand();
+        controller.runCommand(logout_cmd2);
+        assertNull(logout_cmd2.getResult());
     }
 
     @Test
@@ -100,12 +109,15 @@ public class LoginSystemTests {
     void successfulGovernmentLogin() {
         Controller controller = new Controller();
 
-        LoginCommand cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
-        controller.runCommand(cmd);
-        System.out.println(cmd.getResult());
-        User government = cmd.getResult();
+        LoginCommand login_cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
+        controller.runCommand(login_cmd);
+        User government = login_cmd.getResult();
         assertNotNull(government);
         assertEquals("margaret.thatcher@gov.uk", government.getEmail());
         assertTrue(government.checkPasswordMatch("The Good times  "));
+
+        LogoutCommand logout_cmd = new LogoutCommand();
+        controller.runCommand(logout_cmd);
+        assertNull(logout_cmd.getResult());
     }
 }
