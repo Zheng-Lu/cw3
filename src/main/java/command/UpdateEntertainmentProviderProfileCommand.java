@@ -72,8 +72,10 @@ public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileComm
         }
         else {
             for (Map.Entry<String, User> userEntry : users.entrySet()) {
-                if (((EntertainmentProvider) userEntry.getValue()).getOrgName().equals(this.newOrgName) &&
-                        ((EntertainmentProvider) userEntry.getValue()).getOrgAddress().equals(this.newOrgAddress)) {
+                if (userEntry.getValue().getClass() == EntertainmentProvider.class &&
+                        ((EntertainmentProvider) userEntry.getValue()).getOrgName().equals(this.newOrgName) &&
+                        ((EntertainmentProvider) userEntry.getValue()).getOrgAddress().equals(this.newOrgAddress)
+                ) {
                     this.logStatus = LogStatus.USER_UPDATE_PROFILE_ORG_ALREADY_REGISTERED;
                     this.successResult = false;
                     break;
@@ -85,6 +87,7 @@ public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileComm
         if (this.successResult && super.logStatus == null) {
             user.updatePassword(newPassword);
             user.setPaymentAccountEmail(newPaymentAccountEmail);
+            user.setEmail(newMainRepEmail);
             ((EntertainmentProvider) user).setMainRepEmail(newMainRepEmail);
             ((EntertainmentProvider) user).setMainRepName(newMainRepName);
             ((EntertainmentProvider) user).setOrgName(newOrgName);
