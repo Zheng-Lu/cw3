@@ -12,6 +12,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestUserState {
     Consumer consumer1;
@@ -92,12 +94,32 @@ public class TestUserState {
         System.out.println("---");
     }
 
+
     @Test
-    @DisplayName("")
-    void testUserState() {
+    void test_addUser_and_getAllUsers () {
         UserState userState = new UserState();
 
-        System.out.println(userState.getAllUsers());
-        System.out.println(userState.getCurrentUser());
+        assertEquals(1, userState.getAllUsers().size());
+
+        assertEquals("Shikai Geng", consumer1.getName());
+        assertEquals("Rays Zhang", consumer2.getName());
+        assertEquals("Lawrence Zhu", consumer3.getName());
+
+        userState.addUser(consumer1);
+        userState.addUser(consumer2);
+        userState.addUser(consumer3);
+        assertEquals(4, userState.getAllUsers().size());
+    }
+
+
+    @Test
+    void test_setCurrentUser_and_getCurrentUser() {
+        UserState userState = new UserState();
+
+        assertNull(userState.getCurrentUser());
+
+        userState.setCurrentUser(consumer1);
+        assertNotNull(userState.getCurrentUser());
+        assertEquals("Shikai_Geng@163.com", userState.getCurrentUser().getEmail());
     }
 }
