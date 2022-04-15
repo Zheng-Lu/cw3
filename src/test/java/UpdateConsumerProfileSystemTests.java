@@ -68,6 +68,7 @@ public class UpdateConsumerProfileSystemTests {
     void testUpdateConsumerProfile() {
         Controller controller = new Controller();
         Context context = new Context();
+        ConsumerPreferences consumerPreferences = new ConsumerPreferences();
 
         register3Consumers(controller);
         loginConsumer1(controller);
@@ -78,7 +79,7 @@ public class UpdateConsumerProfileSystemTests {
                 "07751234567",
                 "Shikai_love_Varian",
                 "Shikai_Geng@163.com",
-                null
+                consumerPreferences
         );
         controller.runCommand(cmd);
         Boolean isUpdateSuccessful = cmd.getResult();

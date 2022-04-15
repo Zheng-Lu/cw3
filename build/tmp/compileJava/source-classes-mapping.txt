@@ -34,9 +34,9 @@ model/EventPerformance.java
  model.EventPerformance
 controller/Context.java
  controller.Context
-command/AddEventPerformanceCommand.java
- command.AddEventPerformanceCommand
- command.AddEventPerformanceCommand$LogStatus
+command/CancelBookingCommand.java
+ command.CancelBookingCommand
+ command.CancelBookingCommand$LogStatus
 external/MockEntertainmentProviderSystem.java
  external.MockEntertainmentProviderSystem
 model/EntertainmentProvider.java
@@ -51,9 +51,9 @@ command/LogoutCommand.java
  command.LogoutCommand$LogStatus
 logging/Logger.java
  logging.Logger
-command/CancelBookingCommand.java
- command.CancelBookingCommand
- command.CancelBookingCommand$LogStatus
+command/CancelEventCommand.java
+ command.CancelEventCommand
+ command.CancelEventCommand$LogStatus
 command/UpdateConsumerProfileCommand.java
  command.UpdateConsumerProfileCommand
  command.UpdateConsumerProfileCommand$LogStatus
@@ -70,9 +70,9 @@ model/Booking.java
  model.Booking
 model/SponsorshipRequest.java
  model.SponsorshipRequest
-command/ListEventBookingsCommand.java
- command.ListEventBookingsCommand
- command.ListEventBookingsCommand$LogStatus
+command/AddEventPerformanceCommand.java
+ command.AddEventPerformanceCommand
+ command.AddEventPerformanceCommand$LogStatus
 model/NonTicketedEvent.java
  model.NonTicketedEvent
 command/CreateNonTicketedEventCommand.java
@@ -96,9 +96,9 @@ command/UpdateEntertainmentProviderProfileCommand.java
  command.UpdateEntertainmentProviderProfileCommand$LogStatus
 state/BookingState.java
  state.BookingState
-command/RegisterEntertainmentProviderCommand.java
- command.RegisterEntertainmentProviderCommand
- command.RegisterEntertainmentProviderCommand$LogStatus
+command/ListConsumerBookingsCommand.java
+ command.ListConsumerBookingsCommand
+ command.ListConsumerBookingsCommand$LogStatus
 model/Consumer.java
  model.Consumer
 model/ConsumerPreferences.java
@@ -126,9 +126,9 @@ command/ICommand.java
  command.ICommand
 model/Event.java
  model.Event
-command/ListConsumerBookingsCommand.java
- command.ListConsumerBookingsCommand
- command.ListConsumerBookingsCommand$LogStatus
-command/CancelEventCommand.java
- command.CancelEventCommand
- command.CancelEventCommand$LogStatus
+command/ListEventBookingsCommand.java
+ command.ListEventBookingsCommand
+ command.ListEventBookingsCommand$LogStatus
+command/RegisterEntertainmentProviderCommand.java
+ command.RegisterEntertainmentProviderCommand
+ command.RegisterEntertainmentProviderCommand$LogStatus
