@@ -9,7 +9,6 @@ import java.util.Map;
 public class LogoutCommand implements ICommand {
 
     private LogStatus logStatus;
-    private Object Void;
 
     public LogoutCommand() {
 
@@ -38,9 +37,6 @@ public class LogoutCommand implements ICommand {
     }
 
     public Void getResult() {
-        if (logStatus == LogStatus.USER_LOGOUT_SUCCESS) {
-            return (java.lang.Void) Void;
-        }
         return null;
     }
 
