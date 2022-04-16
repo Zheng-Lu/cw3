@@ -11,7 +11,7 @@ public interface IEventState {
     Event findEventByNumber(long eventNumber);
 
     NonTicketedEvent createNonTicketedEvent(EntertainmentProvider organiser,
-                                           String title, EventType type);
+                                            String title, EventType type);
 
     TicketedEvent createTicketedEvent(EntertainmentProvider organiser,
                                       String title, EventType type,
@@ -29,5 +29,6 @@ public interface IEventState {
 
     // use for copying EventState
     long getNextEventNumber();
+
     long getNextPerformanceNumber();
 }

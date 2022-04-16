@@ -10,16 +10,11 @@ import model.TicketedEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateTicketedEventCommand extends CreateEventCommand{
-    private int numTickets;
-    private double ticketPrice;
-    private boolean requestSponsorship;
+public class CreateTicketedEventCommand extends CreateEventCommand {
+    private final int numTickets;
+    private final double ticketPrice;
+    private final boolean requestSponsorship;
     private LogStatus logStatus;
-
-    private enum LogStatus{
-        CREATE_TICKETED_EVENT_SUCCESS,
-        CREATE_EVENT_REQUESTED_SPONSORSHIP
-    }
 
     public CreateTicketedEventCommand(String title, EventType type, int numTickets,
                                       double ticketPrice, boolean requestSponsorship) {
@@ -31,37 +26,41 @@ public class CreateTicketedEventCommand extends CreateEventCommand{
 
     @Override
     public void execute(Context context) {
-        if(isUserAllowedToCreateEvent(context)){
+        if (isUserAllowedToCreateEvent(context)) {
             TicketedEvent newEvent = context.getEventState().createTicketedEvent((EntertainmentProvider)
-                    context.getUserState().getCurrentUser(),this.title,this.type,this.ticketPrice,
+                            context.getUserState().getCurrentUser(), this.title, this.type, this.ticketPrice,
                     this.numTickets);
 
-            if (requestSponsorship){
+            if (requestSponsorship) {
                 SponsorshipRequest sponsorshipRequest = context.getSponsorshipState().addSponsorshipRequest(newEvent);
                 newEvent.setSponsorshipRequest(sponsorshipRequest);
                 // inform MockEntertainmentProvider's System about the creation of the event
-                ((EntertainmentProvider)(context.getUserState().getCurrentUser())).getProviderSystem().recordNewEvent(
-                        newEvent.getEventNumber(),this.title,this.numTickets);
+                ((EntertainmentProvider) (context.getUserState().getCurrentUser())).getProviderSystem().recordNewEvent(
+                        newEvent.getEventNumber(), this.title, this.numTickets);
                 this.logStatus = LogStatus.CREATE_EVENT_REQUESTED_SPONSORSHIP;
-            }
-            else {
+            } else {
                 this.logStatus = LogStatus.CREATE_TICKETED_EVENT_SUCCESS;
             }
             // update the provider's system
             context.getEventState().findEventByNumber(newEvent.getEventNumber()).getOrganiser().getProviderSystem().
-                    recordNewEvent(newEvent.getEventNumber(),this.title,this.numTickets);
+                    recordNewEvent(newEvent.getEventNumber(), this.title, this.numTickets);
             this.eventNumberResult = newEvent.getEventNumber();
         }
 
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
-        if (this.logStatus != null){
-            info.put("STATUS:",this.logStatus);
+        if (this.logStatus != null) {
+            info.put("STATUS:", this.logStatus);
         }
-        if (super.logStatus != null){
-            info.put("USER_STATUS:",super.logStatus);
+        if (super.logStatus != null) {
+            info.put("USER_STATUS:", super.logStatus);
         }
         Logger.getInstance().logAction("CreateTicketedEventCommand.execute()",
-                getResult(),info);
+                getResult(), info);
+    }
+
+    private enum LogStatus {
+        CREATE_TICKETED_EVENT_SUCCESS,
+        CREATE_EVENT_REQUESTED_SPONSORSHIP
     }
 }

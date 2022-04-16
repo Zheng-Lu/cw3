@@ -13,7 +13,7 @@ public interface IBookingState {
     List<Booking> findBookingsByEventNumber(long eventNumber);
 
     Booking createBooking(Consumer booker, EventPerformance performance, int numTickets,
-                         double amountPaid);
+                          double amountPaid);
 
     long getNextBookingNumber(); // use for copying BookingState
 

@@ -4,15 +4,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LogEntry {
-    private String callername;
-    private String result;
-    private Map<String,String> additionalInfo;
+    private final String callername;
+    private final String result;
+    private final Map<String, String> additionalInfo;
 
-    public LogEntry(String callername, Object result, Map<String,Object> additionalInfo){
+    public LogEntry(String callername, Object result, Map<String, Object> additionalInfo) {
         this.callername = callername;
-        if(result == null){
+        if (result == null) {
             this.result = "null";
-        }else {
+        } else {
             this.result = result.toString();
         }
         this.additionalInfo = additionalInfo.entrySet().stream().collect(Collectors.toMap(
@@ -20,7 +20,7 @@ public class LogEntry {
                 entry -> String.valueOf(entry.getValue())));
     }
 
-    public String getResult(){
+    public String getResult() {
         return result;
     }
 

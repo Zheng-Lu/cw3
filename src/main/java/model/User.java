@@ -2,11 +2,11 @@ package model;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-public abstract class User extends Object{
+public abstract class User {
 
     private String email, passwordHash, paymentAccountEmail;
 
-    protected User(String email, String password, String paymentAccountEmail){
+    protected User(String email, String password, String paymentAccountEmail) {
         this.email = email;
         this.passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         this.paymentAccountEmail = paymentAccountEmail;
@@ -21,19 +21,19 @@ public abstract class User extends Object{
         this.email = newEmail;
     }
 
-    public boolean checkPasswordMatch(String password){
+    public boolean checkPasswordMatch(String password) {
         return BCrypt.verifyer().verify(password.toCharArray(), this.passwordHash).verified;
     }
 
-    public void updatePassword(String newPassword){
+    public void updatePassword(String newPassword) {
         this.passwordHash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
     }
 
-    public String getPaymentAccountEmail(){
+    public String getPaymentAccountEmail() {
         return this.paymentAccountEmail;
     }
 
-    public void setPaymentAccountEmail(String newPaymentAccountEmail){
+    public void setPaymentAccountEmail(String newPaymentAccountEmail) {
         this.paymentAccountEmail = newPaymentAccountEmail;
     }
 }

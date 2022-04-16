@@ -9,29 +9,23 @@ import model.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateConsumerProfileCommand extends UpdateProfileCommand{
+public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
 
-    private String oldPassword;
-    private String newName;
-    private String newEmail;
-    private String newPhoneNumber;
-    private String newPassword;
-    private String newPaymentAccountEmail;
-    private ConsumerPreferences newPreferences;
+    private final String oldPassword;
+    private final String newName;
+    private final String newEmail;
+    private final String newPhoneNumber;
+    private final String newPassword;
+    private final String newPaymentAccountEmail;
+    private final ConsumerPreferences newPreferences;
     private UpdateConsumerProfileCommand.LogStatus logStatus;
-
-    private enum LogStatus{
-        USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL,
-        USER_UPDATE_PROFILE_NOT_CONSUMER,
-        USER_UPDATE_PROFILE_SUCCESS
-    }
 
     public UpdateConsumerProfileCommand(String oldPassword,
                                         String newName,
                                         String newEmail,
                                         String newPhoneNumber,
                                         String newPassword, String newPaymentAccountEmail,
-                                        ConsumerPreferences newPreferences){
+                                        ConsumerPreferences newPreferences) {
         this.oldPassword = oldPassword;
         this.newName = newName;
         this.newEmail = newEmail;
@@ -47,18 +41,16 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand{
 
         if (this.oldPassword == null || this.newName == null ||
                 this.newEmail == null || this.newPhoneNumber == null ||
-            this.newPassword == null || this.newPaymentAccountEmail == null || this.newPreferences == null){
+                this.newPassword == null || this.newPaymentAccountEmail == null || this.newPreferences == null) {
             this.logStatus = LogStatus.USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL;
             this.successResult = false;
-        }
-        else if (isProfileUpdateInvalid(context,oldPassword,newEmail)){
-        }
-        else if (user.getClass() != Consumer.class){
+        } else if (isProfileUpdateInvalid(context, oldPassword, newEmail)) {
+        } else if (user.getClass() != Consumer.class) {
             this.logStatus = LogStatus.USER_UPDATE_PROFILE_NOT_CONSUMER;
             this.successResult = false;
         }
 
-        if(this.successResult && super.logStatus == null) {
+        if (this.successResult && super.logStatus == null) {
             user.setEmail(newEmail);
             ((Consumer) user).setName(newName);
             user.setPaymentAccountEmail(newPaymentAccountEmail);
@@ -70,12 +62,18 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand{
 
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
-        info.put("STATUS:",this.logStatus);
-        if (super.logStatus != null){
-            info.put("PROFILE_STATUS:",super.logStatus);
+        info.put("STATUS:", this.logStatus);
+        if (super.logStatus != null) {
+            info.put("PROFILE_STATUS:", super.logStatus);
         }
         Logger.getInstance().logAction("UpdateConsumerProfileCommand.execute()",
-                getResult(),info);
+                getResult(), info);
+    }
+
+    private enum LogStatus {
+        USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL,
+        USER_UPDATE_PROFILE_NOT_CONSUMER,
+        USER_UPDATE_PROFILE_SUCCESS
     }
 
 }

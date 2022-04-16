@@ -6,19 +6,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventState implements IEventState{
+public class EventState implements IEventState {
 
     protected List<Event> events;
     private long nextEventNumber;
     private long nextPerformanceNumber;
 
-    public EventState(){
+    public EventState() {
         this.events = new ArrayList<>();
         this.nextEventNumber = 1;
         this.nextPerformanceNumber = 1;
     }
 
-    public EventState(IEventState other){
+    public EventState(IEventState other) {
         this.events = other.getAllEvents();
         this.nextEventNumber = other.getNextEventNumber();
         this.nextPerformanceNumber = other.getNextPerformanceNumber();
@@ -31,8 +31,8 @@ public class EventState implements IEventState{
 
     @Override
     public Event findEventByNumber(long eventNumber) {
-        for (Event e:events){
-            if(e.getEventNumber() == eventNumber){
+        for (Event e : events) {
+            if (e.getEventNumber() == eventNumber) {
                 return e;
             }
         }
@@ -42,19 +42,19 @@ public class EventState implements IEventState{
     @Override
     public NonTicketedEvent createNonTicketedEvent(EntertainmentProvider organiser,
                                                    String title, EventType type) {
-        NonTicketedEvent newEvent = new NonTicketedEvent(this.nextEventNumber,organiser,title,type);
+        NonTicketedEvent newEvent = new NonTicketedEvent(this.nextEventNumber, organiser, title, type);
         this.events.add(newEvent);
-        this.nextEventNumber = this.nextEventNumber+1; // increment next event number by 1
+        this.nextEventNumber = this.nextEventNumber + 1; // increment next event number by 1
         return newEvent;
     }
 
     @Override
     public TicketedEvent createTicketedEvent(EntertainmentProvider organiser, String title,
                                              EventType type, double ticketPrice, int numTickets) {
-        TicketedEvent newEvent = new TicketedEvent(this.nextEventNumber,organiser,title,type,
-                ticketPrice,numTickets);
+        TicketedEvent newEvent = new TicketedEvent(this.nextEventNumber, organiser, title, type,
+                ticketPrice, numTickets);
         this.events.add(newEvent);
-        this.nextEventNumber = this.nextEventNumber+1;
+        this.nextEventNumber = this.nextEventNumber + 1;
         return newEvent;
     }
 
@@ -64,11 +64,11 @@ public class EventState implements IEventState{
                                                    List<String> performerNames, boolean hasSocialDistancing,
                                                    boolean hasAirFiltration, boolean isOutdoors,
                                                    int capacityLimit, int venueSize) {
-        EventPerformance newPerformance = new EventPerformance(this.nextPerformanceNumber,event,venueAddress,
-                startDateTime,endDateTime,performerNames,hasSocialDistancing,hasAirFiltration,isOutdoors,
-                capacityLimit,venueSize);
+        EventPerformance newPerformance = new EventPerformance(this.nextPerformanceNumber, event, venueAddress,
+                startDateTime, endDateTime, performerNames, hasSocialDistancing, hasAirFiltration, isOutdoors,
+                capacityLimit, venueSize);
         event.addPerformance(newPerformance);
-        this.nextPerformanceNumber = this.nextPerformanceNumber+1;
+        this.nextPerformanceNumber = this.nextPerformanceNumber + 1;
         return newPerformance;
     }
 

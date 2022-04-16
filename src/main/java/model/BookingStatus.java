@@ -5,6 +5,6 @@ public enum BookingStatus {
     Active,
     CancelledByConsumer,
     CancelledByProvider,
-    PaymentFailed;
+    PaymentFailed
 
 }

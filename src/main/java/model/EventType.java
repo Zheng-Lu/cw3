@@ -5,5 +5,5 @@ public enum EventType {
     Movie,
     Music,
     Sports,
-    Theatre;
+    Theatre
 }
