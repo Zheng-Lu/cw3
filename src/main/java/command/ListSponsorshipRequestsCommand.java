@@ -4,6 +4,7 @@ import controller.Context;
 import logging.Logger;
 import model.GovernmentRepresentative;
 import model.SponsorshipRequest;
+import model.SponsorshipStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,11 @@ public class ListSponsorshipRequestsCommand implements ICommand {
         }
 
         logStatus = LogStatus.LIST_SPONSORSHIP_REQUESTS_SUCCESS;
-        this.requestListResult = context.getSponsorshipState().getAllSponsorshipRequest();
+        List<SponsorshipRequest> requestList = context.getSponsorshipState().getAllSponsorshipRequest();
+        if (this.pendingRequestsOnly) {
+            requestList.removeIf(r -> r.getStatus() != SponsorshipStatus.PENDING);
+        }
+        this.requestListResult = requestList;
 
         info.put("STATUS:", this.logStatus);
         Logger.getInstance().logAction("ListSponsorshipRequestsCommand.execute()",
