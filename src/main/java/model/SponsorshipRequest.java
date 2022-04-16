@@ -5,7 +5,6 @@ public class SponsorshipRequest {
     private final TicketedEvent event;
     private SponsorshipStatus status;
     private Integer sponsoredPricePercent = 0;
-    private TicketedEvent attribute;
     private String sponsorAccountEmail;
 
     public SponsorshipRequest(long requestNumber, TicketedEvent event) {
@@ -38,9 +37,9 @@ public class SponsorshipRequest {
         }
     }
 
-    public void accept(int percent, String sponsorAccuntEmail) {
+    public void accept(int percent, String sponsorAccountEmail) {
         this.status = SponsorshipStatus.ACCEPTED;
-        this.sponsorAccountEmail = sponsorAccuntEmail;
+        this.sponsorAccountEmail = sponsorAccountEmail;
         this.sponsoredPricePercent = percent;
     }
 

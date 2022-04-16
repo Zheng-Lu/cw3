@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class Event extends Object {
+public abstract class Event {
 
     private final long eventNumber;
     private final EntertainmentProvider organiser;

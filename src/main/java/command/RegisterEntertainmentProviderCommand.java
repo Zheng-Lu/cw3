@@ -21,7 +21,6 @@ public class RegisterEntertainmentProviderCommand implements ICommand {
     private final List<String> otherRepNames;
     private final List<String> otherRepEmails;
     private EntertainmentProvider newEntertainmentProviderResult;
-    private EntertainmentProvider attribute;
 
     private LogStatus logStatus;
 

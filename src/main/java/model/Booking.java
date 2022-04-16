@@ -45,17 +45,14 @@ public class Booking {
 
     public void cancelByConsumer() {
         this.status = BookingStatus.CancelledByConsumer;
-        return;
     }
 
     public void cancelPaymentFailed() {
         this.status = BookingStatus.PaymentFailed;
-        return;
     }
 
     public void cancelByProvider() {
         this.status = BookingStatus.CancelledByProvider;
-        return;
     }
 
 }

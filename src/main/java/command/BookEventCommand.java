@@ -31,8 +31,8 @@ public class BookEventCommand implements ICommand {
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
 
-        Boolean event_found = false;
-        Boolean performance_found = false;
+        boolean event_found = false;
+        boolean performance_found = false;
 
         if (context.getUserState().getCurrentUser().getClass() != Consumer.class) {
             logStatus = LogStatus.BOOK_EVENT_USER_NOT_CONSUMER;

@@ -9,7 +9,7 @@ import java.util.Map;
 public class UserState implements IUserState {
 
     protected User currentUser;
-    private Map<String, User> users = new HashMap<>();
+    private Map<String, User> users;
 
     public UserState() {
         this.users = new HashMap<>();
@@ -24,7 +24,7 @@ public class UserState implements IUserState {
 
     private void registerGovernmentRepresentatives() {
         // register government representatives
-        // not call-able during the runtime, just called when construction
+        // not call-able during the runtime, only called once when construction
         // Something like this:
         // GovernmentRepresentative gr = new GovernmentRepresentative(........);
         // this.users.put(toString(gr), gr)
