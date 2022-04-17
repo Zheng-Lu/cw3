@@ -1,5 +1,6 @@
 import command.*;
 import controller.Controller;
+import logging.LogEntry;
 import logging.Logger;
 import model.*;
 import org.junit.jupiter.api.*;
@@ -9,8 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterEntertainmentProviderSystemTests {
     @BeforeEach
@@ -41,5 +41,8 @@ public class RegisterEntertainmentProviderSystemTests {
                 List.of("unknown@gmail.com", "spy@gmail.com")
         );
         controller.runCommand(cmd);
+        List<LogEntry> logEntries = Logger.getInstance().getLog();
+        System.out.println(logEntries.get(logEntries.size()-1).getResult());
+//        assertNotNull(logEntries.get(logEntries.size()-1).getResult());
     }
 }

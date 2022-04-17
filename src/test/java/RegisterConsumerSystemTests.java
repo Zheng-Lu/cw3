@@ -42,7 +42,7 @@ public class RegisterConsumerSystemTests {
         );
         controller.runCommand(cmd1);
         System.out.println(Logger.getInstance().getLog().get(Logger.getInstance().getLog().size()-1).getResult());
-        assertNull(Logger.getInstance().getLog().get(Logger.getInstance().getLog().size()-1).getResult());
+        assertNotNull(Logger.getInstance().getLog().get(Logger.getInstance().getLog().size()-1).getResult());
 
     }
 }
