@@ -15,9 +15,13 @@ public class LogEntry {
         } else {
             this.result = result.toString();
         }
-        this.additionalInfo = additionalInfo.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> String.valueOf(entry.getValue())));
+        if (additionalInfo == null) {
+            this.additionalInfo = null;
+        } else {
+            this.additionalInfo = additionalInfo.entrySet().stream().collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> String.valueOf(entry.getValue())));
+        }
     }
 
     public String getResult() {
