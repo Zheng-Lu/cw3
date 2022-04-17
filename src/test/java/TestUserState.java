@@ -65,7 +65,8 @@ public class TestUserState {
                 Collections.emptyList()
         );
 
-        entertainmentProvider2 = new EntertainmentProvider("Cinema Conglomerate",
+        entertainmentProvider2 = new EntertainmentProvider(
+                "Cinema Conglomerate",
                 "Global Office, International Space Station",
                 "$$$@there'sNoEmailValidation.wahey!",
                 "Mrs Representative",
@@ -96,7 +97,7 @@ public class TestUserState {
 
 
     @Test
-    void test_addUser_and_getAllUsers () {
+    void test_addUser_and_getAllUsers() {
         UserState userState = new UserState();
 
         assertEquals(1, userState.getAllUsers().size());

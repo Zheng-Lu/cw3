@@ -106,18 +106,13 @@ public class TestBookingState {
                 25
         );
 
-        eventPerformance1 = new EventPerformance(
-                1,
-                ticketedEvent1,
-                "Wimbledon",
-                LocalDateTime.now().plusMonths(1),
-                LocalDateTime.now().plusMonths(1).plusHours(8),
-                List.of("Everyone in disc throw and 400m sprint"),
-                false,
-                true,
-                true,
-                3000,
-                3000
+        ticketedEvent2 = new TicketedEvent(
+                2,
+                entertainmentProvider1,
+                "Winter Olympics",
+                EventType.Sports,
+                40000,
+                400
         );
     }
 
