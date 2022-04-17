@@ -148,6 +148,7 @@ public class LoginSystemTests {
 
         LoginCommand login_cmd1 = new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!");
         controller.runCommand(login_cmd1);
+        System.out.println(Logger.getInstance().getLog().get(Logger.getInstance().getLog().size()-1).getResult());
         User entertainmentProvider1 = login_cmd1.getResult();
         assertNotNull(entertainmentProvider1);
         assertEquals("busk@every.day", entertainmentProvider1.getEmail());
@@ -178,7 +179,6 @@ public class LoginSystemTests {
         LogoutCommand logout_cmd3 = new LogoutCommand();
         controller.runCommand(logout_cmd3);
         assertNull(logout_cmd3.getResult());
-
     }
 
     @Test
