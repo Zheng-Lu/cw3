@@ -70,7 +70,7 @@ public class RegisterConsumerCommand implements ICommand {
 
     @Override
     public Object getResult() {
-        if (logStatus == LogStatus.REGISTER_CONSUMER_SUCCESS) {
+        if (logStatus == LogStatus.USER_LOGIN_SUCCESS) {
             return newConsumerResult;
         }
         return null;
