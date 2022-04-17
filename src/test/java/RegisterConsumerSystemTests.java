@@ -1,19 +1,13 @@
-import command.*;
+import command.LogoutCommand;
+import command.RegisterConsumerCommand;
 import controller.Controller;
 import logging.LogEntry;
 import logging.Logger;
-import model.*;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RegisterConsumerSystemTests {
@@ -30,14 +24,14 @@ public class RegisterConsumerSystemTests {
 
     String getLog() {
         List<LogEntry> entries = Logger.getInstance().getLog();
-        String logStatus = entries.get(entries.size()-1).getAdditionalInfo().toString();
+        String logStatus = entries.get(entries.size() - 1).getAdditionalInfo().toString();
         System.out.println(logStatus);
         return logStatus;
     }
 
     @Test
     @DisplayName("Consumer Registrations should work")
-    void successfulConsumerRegistered(){
+    void successfulConsumerRegistered() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -50,12 +44,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",logStatus);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations With Existed Email should not work")
-    void failedConsumerRegisteredExistedEmail(){
+    void failedConsumerRegisteredExistedEmail() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd1 = new RegisterConsumerCommand(
@@ -68,7 +62,7 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd1);
         String registerStatus1 = getLog();
         assertNotNull(registerStatus1);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",registerStatus1);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}", registerStatus1);
 
         controller.runCommand(new LogoutCommand());
 
@@ -82,12 +76,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd2);
         String registerStatus2 = getLog();
         assertNotNull(registerStatus2);
-        assertEquals("{STATUS:=USER_REGISTER_EMAIL_ALREADY_REGISTERED}",registerStatus2);
+        assertEquals("{STATUS:=USER_REGISTER_EMAIL_ALREADY_REGISTERED}", registerStatus2);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing Name should not work")
-    void failedConsumerRegisteredWithMissingName(){
+    void failedConsumerRegisteredWithMissingName() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -100,12 +94,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing Email should not work")
-    void failedConsumerRegisteredWithMissingEmail(){
+    void failedConsumerRegisteredWithMissingEmail() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -118,12 +112,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing Phone Number should not work")
-    void failedConsumerRegisteredWithMissingPhoneNumber(){
+    void failedConsumerRegisteredWithMissingPhoneNumber() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -136,12 +130,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing Password should not work")
-    void failedConsumerRegisteredWithMissingPassword(){
+    void failedConsumerRegisteredWithMissingPassword() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -154,12 +148,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing Payment Email should not work")
-    void failedConsumerRegisteredWithMissingPaymentEmail(){
+    void failedConsumerRegisteredWithMissingPaymentEmail() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -172,12 +166,12 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 
     @Test
     @DisplayName("Consumer Registrations with Missing All Information should not work")
-    void failedConsumerRegisteredWithoutInformation(){
+    void failedConsumerRegisteredWithoutInformation() {
         Controller controller = new Controller();
 
         RegisterConsumerCommand cmd = new RegisterConsumerCommand(
@@ -190,6 +184,6 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}",logStatus);
+        assertEquals("{STATUS:=USER_REGISTER_FIELDS_CANNOT_BE_NULL}", logStatus);
     }
 }

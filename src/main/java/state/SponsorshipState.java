@@ -9,8 +9,8 @@ import java.util.List;
 
 public class SponsorshipState implements ISponsorshipState {
 
-    private long nextRequestNumber;
     private final List<SponsorshipRequest> sponsorshipRequests;
+    private long nextRequestNumber;
 
     public SponsorshipState() {
         this.nextRequestNumber = 1;

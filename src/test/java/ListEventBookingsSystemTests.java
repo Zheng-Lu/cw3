@@ -10,19 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ListEventBookingsSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
     private static void register3Consumers(Controller controller) {
         controller.runCommand(new RegisterConsumerCommand(
                 "John Biggson",
@@ -314,6 +303,17 @@ public class ListEventBookingsSystemTests {
         ));
 
         controller.runCommand(new LogoutCommand());
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

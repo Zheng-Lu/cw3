@@ -1,29 +1,18 @@
-import command.*;
+import command.CreateTicketedEventCommand;
+import command.LoginCommand;
+import command.LogoutCommand;
+import command.RegisterEntertainmentProviderCommand;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateTicketedEventSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void registerOlympicsProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Olympics Committee",
@@ -73,6 +62,17 @@ public class CreateTicketedEventSystemTests {
 
     private static void loginOlympicsProvider(Controller controller) {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

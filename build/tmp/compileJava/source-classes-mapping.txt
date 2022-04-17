@@ -1,5 +1,6 @@
-logging/LogEntry.java
- logging.LogEntry
+command/RegisterConsumerCommand.java
+ command.RegisterConsumerCommand
+ command.RegisterConsumerCommand$LogStatus
 state/IEventState.java
  state.IEventState
 command/GovernmentReport2Command.java
@@ -29,8 +30,8 @@ state/UserState.java
  state.UserState
 model/EventPerformance.java
  model.EventPerformance
-controller/Context.java
- controller.Context
+model/Event.java
+ model.Event
 command/CancelBookingCommand.java
  command.CancelBookingCommand
  command.CancelBookingCommand$LogStatus
@@ -46,8 +47,9 @@ command/LoginCommand.java
 command/LogoutCommand.java
  command.LogoutCommand
  command.LogoutCommand$LogStatus
-logging/Logger.java
- logging.Logger
+command/ListEventBookingsCommand.java
+ command.ListEventBookingsCommand
+ command.ListEventBookingsCommand$LogStatus
 command/CancelEventCommand.java
  command.CancelEventCommand
  command.CancelEventCommand$LogStatus
@@ -105,27 +107,25 @@ command/RespondSponsorshipCommand.java
  command.RespondSponsorshipCommand$LogStatus
 state/IBookingState.java
  state.IBookingState
-state/EventState.java
- state.EventState
+command/ICommand.java
+ command.ICommand
 command/CreateTicketedEventCommand.java
  command.CreateTicketedEventCommand
  command.CreateTicketedEventCommand$LogStatus
-command/RegisterEntertainmentProviderCommand.java
- command.RegisterEntertainmentProviderCommand
- command.RegisterEntertainmentProviderCommand$LogStatus
+model/GovernmentRepresentative.java
+ model.GovernmentRepresentative
 external/EntertainmentProviderSystem.java
  external.EntertainmentProviderSystem
 model/SponsorshipStatus.java
  model.SponsorshipStatus
-model/GovernmentRepresentative.java
- model.GovernmentRepresentative
-command/ICommand.java
- command.ICommand
-model/Event.java
- model.Event
-command/ListEventBookingsCommand.java
- command.ListEventBookingsCommand
- command.ListEventBookingsCommand$LogStatus
-command/RegisterConsumerCommand.java
- command.RegisterConsumerCommand
- command.RegisterConsumerCommand$LogStatus
+logging/LogEntry.java
+ logging.LogEntry
+logging/Logger.java
+ logging.Logger
+controller/Context.java
+ controller.Context
+state/EventState.java
+ state.EventState
+command/RegisterEntertainmentProviderCommand.java
+ command.RegisterEntertainmentProviderCommand
+ command.RegisterEntertainmentProviderCommand$LogStatus

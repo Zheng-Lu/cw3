@@ -1,27 +1,16 @@
 import command.*;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.Event;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CancelEventSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void registerOlympicsProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Olympics Committee",
@@ -123,6 +112,17 @@ public class CancelEventSystemTests {
         ));
 
         return eventNumber2;
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

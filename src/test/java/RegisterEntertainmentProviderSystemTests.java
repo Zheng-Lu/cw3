@@ -1,16 +1,14 @@
-import command.*;
+import command.LogoutCommand;
+import command.RegisterEntertainmentProviderCommand;
 import controller.Controller;
 import logging.LogEntry;
 import logging.Logger;
-import model.*;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RegisterEntertainmentProviderSystemTests {
     @BeforeEach
@@ -26,14 +24,14 @@ public class RegisterEntertainmentProviderSystemTests {
 
     String getLog() {
         List<LogEntry> entries = Logger.getInstance().getLog();
-        String logStatus = entries.get(entries.size()-1).getAdditionalInfo().toString();
+        String logStatus = entries.get(entries.size() - 1).getAdditionalInfo().toString();
         System.out.println(logStatus);
         return logStatus;
     }
 
     @Test
     @DisplayName("Entertainment Provider Registrations should work")
-    void successfulEntertainmentProviderRegistered(){
+    void successfulEntertainmentProviderRegistered() {
         Controller controller = new Controller();
 
         RegisterEntertainmentProviderCommand cmd = new RegisterEntertainmentProviderCommand(
@@ -49,12 +47,12 @@ public class RegisterEntertainmentProviderSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",logStatus);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}", logStatus);
     }
 
     @Test
     @DisplayName("Entertainment Provider Registrations with existed organisation should not work")
-    void failedEntertainmentProviderRegisteredWithExistedOrg(){
+    void failedEntertainmentProviderRegisteredWithExistedOrg() {
         Controller controller = new Controller();
 
         RegisterEntertainmentProviderCommand cmd1 = new RegisterEntertainmentProviderCommand(
@@ -70,7 +68,7 @@ public class RegisterEntertainmentProviderSystemTests {
         controller.runCommand(cmd1);
         String logStatus1 = getLog();
         assertNotNull(logStatus1);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",logStatus1);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}", logStatus1);
 
         controller.runCommand(new LogoutCommand());
 
@@ -88,12 +86,12 @@ public class RegisterEntertainmentProviderSystemTests {
         controller.runCommand(cmd2);
         String logStatus2 = getLog();
         assertNotNull(logStatus2);
-        assertEquals("{STATUS:=USER_REGISTER_ORG_ALREADY_REGISTERED}",logStatus2);
+        assertEquals("{STATUS:=USER_REGISTER_ORG_ALREADY_REGISTERED}", logStatus2);
     }
 
     @Test
     @DisplayName("Entertainment Provider Registrations with existed email should not work")
-    void failedEntertainmentProviderRegisteredWithExistedEmail(){
+    void failedEntertainmentProviderRegisteredWithExistedEmail() {
         Controller controller = new Controller();
 
         RegisterEntertainmentProviderCommand cmd1 = new RegisterEntertainmentProviderCommand(
@@ -109,7 +107,7 @@ public class RegisterEntertainmentProviderSystemTests {
         controller.runCommand(cmd1);
         String logStatus1 = getLog();
         assertNotNull(logStatus1);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",logStatus1);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}", logStatus1);
 
         controller.runCommand(new LogoutCommand());
 
@@ -127,7 +125,7 @@ public class RegisterEntertainmentProviderSystemTests {
         controller.runCommand(cmd2);
         String logStatus2 = getLog();
         assertNotNull(logStatus2);
-        assertEquals("{STATUS:=USER_REGISTER_EMAIL_ALREADY_REGISTERED}",logStatus2);
+        assertEquals("{STATUS:=USER_REGISTER_EMAIL_ALREADY_REGISTERED}", logStatus2);
     }
 
 }

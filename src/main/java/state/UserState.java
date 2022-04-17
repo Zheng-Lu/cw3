@@ -9,7 +9,7 @@ import java.util.Map;
 public class UserState implements IUserState {
 
     protected User currentUser;
-    private Map<String, User> users;
+    private final Map<String, User> users;
 
     public UserState() {
         this.users = new HashMap<>();

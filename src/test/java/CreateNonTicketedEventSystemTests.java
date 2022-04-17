@@ -1,29 +1,18 @@
-import command.*;
+import command.CreateNonTicketedEventCommand;
+import command.LoginCommand;
+import command.LogoutCommand;
+import command.RegisterEntertainmentProviderCommand;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateNonTicketedEventSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void registerCinemaProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Cinema Conglomerate",
@@ -56,6 +45,17 @@ public class CreateNonTicketedEventSystemTests {
 
     private static void loginBuskingProvider(Controller controller) {
         controller.runCommand(new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!"));
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

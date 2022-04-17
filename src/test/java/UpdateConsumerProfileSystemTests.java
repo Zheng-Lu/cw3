@@ -1,29 +1,17 @@
-import command.*;
+import command.LoginCommand;
+import command.LogoutCommand;
+import command.RegisterConsumerCommand;
+import command.UpdateConsumerProfileCommand;
 import controller.Context;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.ConsumerPreferences;
+import model.User;
 import org.junit.jupiter.api.*;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdateConsumerProfileSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void register3Consumers(Controller controller) {
         controller.runCommand(new RegisterConsumerCommand(
                 "John Biggson",
@@ -63,6 +51,17 @@ public class UpdateConsumerProfileSystemTests {
         controller.runCommand(new LoginCommand("i-will-kick-your@gmail.com", "it is wednesday my dudes"));
     }
 
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
+    }
+
     @Test
     @DisplayName("Updating Consumer Profile should work")
     void testUpdateConsumerProfile() {
@@ -83,7 +82,7 @@ public class UpdateConsumerProfileSystemTests {
         );
         controller.runCommand(cmd);
         Boolean isUpdateSuccessful = cmd.getResult();
-        assertTrue(isUpdateSuccessful,"Updating Profile is failed");
+        assertTrue(isUpdateSuccessful, "Updating Profile is failed");
         controller.runCommand(new LogoutCommand());
 
         LoginCommand login_cmd = new LoginCommand(
@@ -92,8 +91,8 @@ public class UpdateConsumerProfileSystemTests {
         );
         controller.runCommand(login_cmd);
         User consumer1 = login_cmd.getResult();
-        assertNotNull(consumer1,"User not found");
-        assertEquals("Shikai_Geng@163.com", consumer1.getEmail(),"Incorrect Email");
-        assertTrue(consumer1.checkPasswordMatch("Shikai_love_Varian"),"incorrect password");
+        assertNotNull(consumer1, "User not found");
+        assertEquals("Shikai_Geng@163.com", consumer1.getEmail(), "Incorrect Email");
+        assertTrue(consumer1.checkPasswordMatch("Shikai_love_Varian"), "incorrect password");
     }
 }

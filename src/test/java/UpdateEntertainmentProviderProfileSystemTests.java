@@ -1,11 +1,12 @@
-import command.*;
+import command.LoginCommand;
+import command.LogoutCommand;
+import command.RegisterEntertainmentProviderCommand;
+import command.UpdateEntertainmentProviderProfileCommand;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.User;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,17 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class UpdateEntertainmentProviderProfileSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void register3EntertainmentProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Cinema Conglomerate",
@@ -66,9 +56,20 @@ public class UpdateEntertainmentProviderProfileSystemTests {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
     }
 
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
+    }
+
     @Test
     @DisplayName("")
-    void testUpdateAllInformation(){
+    void testUpdateAllInformation() {
         Controller controller = new Controller();
 
         register3EntertainmentProvider(controller);
@@ -86,7 +87,7 @@ public class UpdateEntertainmentProviderProfileSystemTests {
         );
         controller.runCommand(cmd);
         Boolean isUpdateSuccessful = cmd.getResult();
-        assertTrue(isUpdateSuccessful,"Updating Profile is failed");
+        assertTrue(isUpdateSuccessful, "Updating Profile is failed");
         controller.runCommand(new LogoutCommand());
 
         LoginCommand login_cmd = new LoginCommand(
@@ -95,9 +96,9 @@ public class UpdateEntertainmentProviderProfileSystemTests {
         );
         controller.runCommand(login_cmd);
         User consumer1 = login_cmd.getResult();
-        assertNotNull(consumer1,"User not found");
-        assertEquals("BouquinGU@outlook.com", consumer1.getEmail(),"Incorrect Email");
-        assertTrue(consumer1.checkPasswordMatch("07751234567"),"Incorrect password");
+        assertNotNull(consumer1, "User not found");
+        assertEquals("BouquinGU@outlook.com", consumer1.getEmail(), "Incorrect Email");
+        assertTrue(consumer1.checkPasswordMatch("07751234567"), "Incorrect password");
     }
 
 

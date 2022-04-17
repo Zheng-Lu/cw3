@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingState implements IBookingState {
-    private long nextBookingNumber;
     private final List<Booking> bookings;
+    private long nextBookingNumber;
 
     public BookingState() {
         this.nextBookingNumber = 1;

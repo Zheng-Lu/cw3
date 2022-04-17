@@ -16,17 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GovernmentReport2SystemTest {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void loginGovernmentRepresentative(Controller controller) {
         controller.runCommand(new LoginCommand("margaret.thatcher@gov.uk", "The Good times  "));
     }
@@ -335,6 +324,17 @@ public class GovernmentReport2SystemTest {
         ));
 
         controller.runCommand(new LogoutCommand());
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     // Option 2:

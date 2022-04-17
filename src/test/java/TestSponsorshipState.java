@@ -1,20 +1,16 @@
-import command.*;
-import controller.Controller;
 import logging.Logger;
 import model.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import state.SponsorshipState;
-import state.UserState;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestSponsorshipState {
 
@@ -100,7 +96,7 @@ public class TestSponsorshipState {
         SponsorshipRequest sponsorshipRequest = sponsorshipState.addSponsorshipRequest(ticketedEvent1);
         long requestNumber = sponsorshipRequest.getRequestNumber();
         assertNotNull(sponsorshipRequest);
-        assertEquals(1,requestNumber);
+        assertEquals(1, requestNumber);
     }
 
     @Test

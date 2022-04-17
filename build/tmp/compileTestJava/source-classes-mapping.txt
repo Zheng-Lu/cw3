@@ -14,8 +14,8 @@ TestEventState.java
  TestEventState
 UpdateEntertainmentProviderProfileSystemTests.java
  UpdateEntertainmentProviderProfileSystemTests
-AddEventPerformanceSystemTests.java
- AddEventPerformanceSystemTests
+RegisterConsumerSystemTests.java
+ RegisterConsumerSystemTests
 GovernmentReport2SystemTest.java
  GovernmentReport2SystemTest
 LoginSystemTests.java
@@ -32,7 +32,9 @@ TestBookingState.java
  TestBookingState
 CreateNonTicketedEventSystemTests.java
  CreateNonTicketedEventSystemTests
+AddEventPerformanceSystemTests.java
+ AddEventPerformanceSystemTests
+CreateEventSystemTests.java
+ CreateEventSystemTests
 RegisterEntertainmentProviderSystemTests.java
  RegisterEntertainmentProviderSystemTests
-RegisterConsumerSystemTests.java
- RegisterConsumerSystemTests
