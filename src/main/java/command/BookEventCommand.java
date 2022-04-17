@@ -13,10 +13,9 @@ import java.util.Map;
 public class BookEventCommand implements ICommand {
 
     private final int numTicketsRequested;
-    private long bookingNumberResult;
     private final long eventNumber;
     private final long performanceNumber;
-
+    private long bookingNumberResult;
     private LogStatus logStatus;
 
     public BookEventCommand(long eventNumber, long performanceNumber, int numTicketsRequested) {

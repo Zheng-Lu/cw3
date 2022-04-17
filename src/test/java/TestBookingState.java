@@ -1,22 +1,15 @@
-import command.*;
-import controller.Controller;
 import logging.Logger;
 import model.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import state.BookingState;
-import state.UserState;
 
-import java.awt.print.Book;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBookingState {
     Booking booking1;
@@ -128,7 +121,7 @@ public class TestBookingState {
     void testCreateNormalBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,1,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 1, 123456);
         assertNotNull(booking1);
     }
 
@@ -136,7 +129,7 @@ public class TestBookingState {
     void testCreateNullConsumerBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(null,eventPerformance1,1,123456);
+        booking1 = bookingState.createBooking(null, eventPerformance1, 1, 123456);
         assertNotNull(booking1);
     }
 
@@ -144,7 +137,7 @@ public class TestBookingState {
     void testCreateNullEventPerformanceBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,null,1,123456);
+        booking1 = bookingState.createBooking(consumer1, null, 1, 123456);
         assertNotNull(booking1);
     }
 
@@ -152,7 +145,7 @@ public class TestBookingState {
     void testCreateZeroTicketBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,0,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 0, 123456);
         assertNotNull(booking1);
     }
 
@@ -160,7 +153,7 @@ public class TestBookingState {
     void testCreateIncorrectPaymentBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,1,0.0);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 1, 0.0);
         assertNotNull(booking1);
     }
 
@@ -168,7 +161,7 @@ public class TestBookingState {
     void testCreateExcessBooking() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,26,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 26, 123456);
         assertNotNull(booking1);
     }
 
@@ -178,21 +171,21 @@ public class TestBookingState {
     void testFindBookingsByCorrectEventNumber() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,1,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 1, 123456);
 
         List<Booking> bookings = bookingState.findBookingsByEventNumber(1);
-        assertEquals(1, bookings.size(),"Don't match");
-        assertEquals("Shikai Geng", bookings.get(0).getBooker().getName(),"Don't match");
+        assertEquals(1, bookings.size(), "Don't match");
+        assertEquals("Shikai Geng", bookings.get(0).getBooker().getName(), "Don't match");
     }
 
     @Test
     void testFindBookingsByIncorrectEventNumber() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,1,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 1, 123456);
 
         List<Booking> bookings = bookingState.findBookingsByEventNumber(999);
-        assertEquals(0, bookings.size(),"Don't match");
+        assertEquals(0, bookings.size(), "Don't match");
     }
 
 
@@ -201,10 +194,10 @@ public class TestBookingState {
     void testFindBookingsByCorrectNumber() {
         BookingState bookingState = new BookingState();
 
-        booking1 = bookingState.createBooking(consumer1,eventPerformance1,1,123456);
+        booking1 = bookingState.createBooking(consumer1, eventPerformance1, 1, 123456);
 
         Booking booking = bookingState.findBookingByNumber(1);
-        assertEquals(booking1, booking,"Don't match");
+        assertEquals(booking1, booking, "Don't match");
     }
 
     @Test

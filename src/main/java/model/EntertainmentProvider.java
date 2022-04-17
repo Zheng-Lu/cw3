@@ -8,11 +8,11 @@ import java.util.List;
 
 public class EntertainmentProvider extends User {
 
+    private final List<Event> events = new ArrayList<>();
+    private final EntertainmentProviderSystem entertainmentProviderSystem;
     private String orgName, orgAddress, mainRepName, mainRepEmail;
     private List<String> otherRepNames = new ArrayList<>();
     private List<String> otherRepEmails = new ArrayList<>();
-    private final List<Event> events = new ArrayList<>();
-    private final EntertainmentProviderSystem entertainmentProviderSystem;
 
 
     public EntertainmentProvider(String orgName,

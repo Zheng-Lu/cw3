@@ -1,15 +1,12 @@
-import command.*;
-import controller.Controller;
 import logging.Logger;
 import model.*;
-import org.junit.jupiter.api.*;
-import state.BookingState;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import state.EventState;
-import state.UserState;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,7 +119,7 @@ public class TestEventState {
                 3000,
                 3000
         );
-       assertNotNull(eventPerformance);
+        assertNotNull(eventPerformance);
     }
 
     @Test
@@ -263,18 +260,18 @@ public class TestEventState {
     void createNullEventExceptionNonTicketedEventPerformance() {
         EventState eventState = new EventState();
 
-        try{
+        try {
             EventPerformance eventPerformance = eventState.createEventPerformance(
-                null,
-                "Wimbledon",
-                LocalDateTime.of(2030, 3, 20, 4, 20),
-                LocalDateTime.of(2030, 3, 20, 6, 45),
-                List.of("The same musician"),
-                true,
-                true,
-                true,
-                Integer.MAX_VALUE,
-                Integer.MAX_VALUE
+                    null,
+                    "Wimbledon",
+                    LocalDateTime.of(2030, 3, 20, 4, 20),
+                    LocalDateTime.of(2030, 3, 20, 6, 45),
+                    List.of("The same musician"),
+                    true,
+                    true,
+                    true,
+                    Integer.MAX_VALUE,
+                    Integer.MAX_VALUE
             );
             fail("Didn't throw exception when I expected it to");
         } catch (Exception exception) {
@@ -547,7 +544,7 @@ public class TestEventState {
     void getAllEvents_EmptyList() {
         EventState eventState = new EventState();
 
-        assertEquals(0,eventState.getAllEvents().size());
+        assertEquals(0, eventState.getAllEvents().size());
 
     }
 
@@ -561,7 +558,7 @@ public class TestEventState {
                 EventType.Music
         );
 
-        assertEquals(1,eventState.getAllEvents().size());
+        assertEquals(1, eventState.getAllEvents().size());
 
     }
 
@@ -581,7 +578,7 @@ public class TestEventState {
                 EventType.Sports
         );
 
-        assertEquals(2,eventState.getAllEvents().size());
+        assertEquals(2, eventState.getAllEvents().size());
 
     }
 
@@ -597,7 +594,7 @@ public class TestEventState {
             );
         }
 
-        assertEquals(999999,eventState.getAllEvents().size());
+        assertEquals(999999, eventState.getAllEvents().size());
     }
 
     @Test
@@ -612,7 +609,7 @@ public class TestEventState {
                 25
         );
 
-        assertEquals(1,eventState.getAllEvents().size());
+        assertEquals(1, eventState.getAllEvents().size());
 
     }
 
@@ -636,7 +633,7 @@ public class TestEventState {
                 400
         );
 
-        assertEquals(2,eventState.getAllEvents().size());
+        assertEquals(2, eventState.getAllEvents().size());
 
     }
 
@@ -654,7 +651,7 @@ public class TestEventState {
             );
         }
 
-        assertEquals(999999,eventState.getAllEvents().size());
+        assertEquals(999999, eventState.getAllEvents().size());
     }
 
     @Test
@@ -689,7 +686,7 @@ public class TestEventState {
 
         }
 
-        assertEquals(4*999999,eventState.getAllEvents().size());
+        assertEquals(4 * 999999, eventState.getAllEvents().size());
     }
 
 
@@ -721,7 +718,7 @@ public class TestEventState {
         EventState eventState = new EventState();
 
         for (int i = 0; i < 999999; i++) {
-            eventState.createNonTicketedEvent(null,null,null);
+            eventState.createNonTicketedEvent(null, null, null);
         }
         TicketedEvent ticketedEvent = eventState.createTicketedEvent(
                 entertainmentProvider1,

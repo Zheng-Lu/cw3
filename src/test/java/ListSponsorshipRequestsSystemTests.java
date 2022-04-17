@@ -1,16 +1,10 @@
-import command.*;
+import command.ListSponsorshipRequestsCommand;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.SponsorshipRequest;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ListSponsorshipRequestsSystemTests {
     @BeforeEach

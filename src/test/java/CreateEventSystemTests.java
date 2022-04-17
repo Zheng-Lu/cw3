@@ -2,32 +2,15 @@ import command.*;
 import controller.Controller;
 import logging.LogEntry;
 import logging.Logger;
-import model.*;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CreateEventSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void registerCinemaProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Cinema Conglomerate",
@@ -82,9 +65,20 @@ public class CreateEventSystemTests {
         controller.runCommand(new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!"));
     }
 
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
+    }
+
     private String getLog() {
         List<LogEntry> entries = Logger.getInstance().getLog();
-        String logStatus = entries.get(entries.size()-1).getAdditionalInfo().toString();
+        String logStatus = entries.get(entries.size() - 1).getAdditionalInfo().toString();
         System.out.println(logStatus);
         return logStatus;
     }

@@ -7,15 +7,15 @@ import java.util.List;
 public class EventPerformance {
     private final long perfermanceNumber;
     private final Event event;
-    private String venueAddress;
     private final LocalDateTime startDateTime;
     private final LocalDateTime endDateTime;
-    private List<String> performerNames = new ArrayList<>();
     private final boolean hasSocialDistancing;
     private final boolean hasAirFiltration;
     private final boolean isOutdoors;
     private final int capacityLimit;
     private final int venueSize;
+    private String venueAddress;
+    private List<String> performerNames = new ArrayList<>();
 
     public EventPerformance(long performanceNumber, Event event, String venueAddress, LocalDateTime startDateTime,
                             LocalDateTime endDateTime, List<String> performerNames, boolean hasSocialDistancing,

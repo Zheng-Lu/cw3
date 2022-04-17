@@ -1,7 +1,10 @@
 import command.*;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.Event;
+import model.EventPerformance;
+import model.EventType;
+import model.TicketedEvent;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
@@ -9,21 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class BookEventSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void register2Consumers(Controller controller) {
         controller.runCommand(new RegisterConsumerCommand(
                 "John Biggson",
@@ -293,6 +282,17 @@ public class BookEventSystemTests {
                 return;
             }
         }
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

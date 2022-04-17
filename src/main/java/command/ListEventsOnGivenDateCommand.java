@@ -12,9 +12,9 @@ import java.util.Map;
 
 public class ListEventsOnGivenDateCommand extends ListEventsCommand {
     private final LocalDateTime searchDateTime;
-    private List<Event> eventListResult;
     private final boolean activeEventsOnly;
     private final boolean userEventsOnly;
+    private List<Event> eventListResult;
     private LogStatus logStatus;
 
     public ListEventsOnGivenDateCommand(boolean userEventsOnly, boolean activeEventsOnly,

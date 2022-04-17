@@ -1,29 +1,13 @@
 import command.*;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class AddEventPerformanceSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void registerOlympicsProvider(Controller controller) {
         controller.runCommand(new RegisterEntertainmentProviderCommand(
                 "Olympics Committee",
@@ -41,7 +25,7 @@ public class AddEventPerformanceSystemTests {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
     }
 
-    private static void OlympicsProviderCreateEvent1 (Controller controller) {
+    private static void OlympicsProviderCreateEvent1(Controller controller) {
         CreateTicketedEventCommand eventCmd1 = new CreateTicketedEventCommand(
                 "London Summer Olympics",
                 EventType.Sports,
@@ -90,7 +74,7 @@ public class AddEventPerformanceSystemTests {
         ));
     }
 
-    private static void OlympicsProviderCreateEvent2 (Controller controller) {
+    private static void OlympicsProviderCreateEvent2(Controller controller) {
         CreateTicketedEventCommand eventCmd2 = new CreateTicketedEventCommand(
                 "Winter Olympics",
                 EventType.Sports,
@@ -127,9 +111,20 @@ public class AddEventPerformanceSystemTests {
         ));
     }
 
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
+    }
+
     @Test
     @DisplayName("Adding Event Performance should work")
-    void canAddEventPerformanceSystemTests(){
+    void canAddEventPerformanceSystemTests() {
         Controller controller = new Controller();
 
         registerOlympicsProvider(controller);

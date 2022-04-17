@@ -73,10 +73,10 @@ public class RegisterEntertainmentProviderCommand implements ICommand {
             }
         }
 
-        for (Map.Entry<String, User> userEntry : users.entrySet()){
-            if (userEntry.getValue().getClass() == EntertainmentProvider.class){
+        for (Map.Entry<String, User> userEntry : users.entrySet()) {
+            if (userEntry.getValue().getClass() == EntertainmentProvider.class) {
                 if (((EntertainmentProvider) userEntry.getValue()).getOrgName().equals(this.orgName) &&
-                        ((EntertainmentProvider) userEntry.getValue()).getOrgAddress().equals(this.orgAddress)){
+                        ((EntertainmentProvider) userEntry.getValue()).getOrgAddress().equals(this.orgAddress)) {
                     logStatus = LogStatus.USER_REGISTER_ORG_ALREADY_REGISTERED;
                     info.put("STATUS:", this.logStatus);
                     Logger.getInstance().logAction("RegisterEntertainmentProviderCommand.execute()",

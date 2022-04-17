@@ -1,29 +1,17 @@
 import command.*;
 import controller.Controller;
 import logging.Logger;
-import model.*;
+import model.Event;
+import model.EventType;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ListEventsSystemTests {
-    @BeforeEach
-    void printTestName(TestInfo testInfo) {
-        System.out.println(testInfo.getDisplayName());
-    }
-
-    @AfterEach
-    void clearLogs() {
-        Logger.getInstance().clearLog();
-        System.out.println("---");
-    }
-
     private static void loginOlympicsProvider(Controller controller) {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
     }
@@ -255,6 +243,17 @@ public class ListEventsSystemTests {
         controller.runCommand(cmd);
         List<Event> events = cmd.getResult();
         controller.runCommand(new CancelEventCommand(events.get(0).getEventNumber(), "Cancel First Event"));
+    }
+
+    @BeforeEach
+    void printTestName(TestInfo testInfo) {
+        System.out.println(testInfo.getDisplayName());
+    }
+
+    @AfterEach
+    void clearLogs() {
+        Logger.getInstance().clearLog();
+        System.out.println("---");
     }
 
     @Test

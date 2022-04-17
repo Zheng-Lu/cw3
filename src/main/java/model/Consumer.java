@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Consumer extends User {
-    private String name, phoneNumber;
     private final List<Booking> bookingList = new ArrayList<>();
+    private String name, phoneNumber;
     private ConsumerPreferences preferences;
 
     public Consumer(String name, String email, String phoneNumber, String password, String paymentAccountEmail) {
