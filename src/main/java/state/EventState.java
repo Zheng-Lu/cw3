@@ -43,6 +43,7 @@ public class EventState implements IEventState {
     public NonTicketedEvent createNonTicketedEvent(EntertainmentProvider organiser,
                                                    String title, EventType type) {
         NonTicketedEvent newEvent = new NonTicketedEvent(this.nextEventNumber, organiser, title, type);
+        organiser.addEvent(newEvent);
         this.events.add(newEvent);
         this.nextEventNumber = this.nextEventNumber + 1; // increment next event number by 1
         return newEvent;
@@ -53,6 +54,7 @@ public class EventState implements IEventState {
                                              EventType type, double ticketPrice, int numTickets) {
         TicketedEvent newEvent = new TicketedEvent(this.nextEventNumber, organiser, title, type,
                 ticketPrice, numTickets);
+        organiser.addEvent(newEvent);
         this.events.add(newEvent);
         this.nextEventNumber = this.nextEventNumber + 1;
         return newEvent;
