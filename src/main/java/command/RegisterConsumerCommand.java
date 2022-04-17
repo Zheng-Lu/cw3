@@ -9,24 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class RegisterConsumerCommand extends Object implements ICommand{
+public class RegisterConsumerCommand implements ICommand {
 
-    private String name, email, phoneNumber, password, paymentAccountEmail;
+    private final String name;
+    private final String email;
+    private final String phoneNumber;
+    private final String password;
+    private final String paymentAccountEmail;
     private Consumer newConsumerResult;
     private LogStatus logStatus;
 
-    private enum LogStatus{
-        REGISTER_CONSUMER_SUCCESS,
-        USER_REGISTER_FIELDS_CANNOT_BE_NULL,
-        USER_REGISTER_EMAIL_ALREADY_REGISTERED,
-        USER_LOGIN_SUCCESS
-    }
-
     public RegisterConsumerCommand(String name,
-                                    String email,
-                                    String phoneNumber,
-                                    String password,
-                                    String paymentAccountEmail){
+                                   String email,
+                                   String phoneNumber,
+                                   String password,
+                                   String paymentAccountEmail) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -40,20 +37,20 @@ public class RegisterConsumerCommand extends Object implements ICommand{
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
 
-        if(this.name == null || this.email==null || this.phoneNumber == null || this.password==null || this.paymentAccountEmail == null){
+        if (this.name == null || this.email == null || this.phoneNumber == null || this.password == null || this.paymentAccountEmail == null) {
             logStatus = LogStatus.USER_REGISTER_FIELDS_CANNOT_BE_NULL;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("RegisterConsumerCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
         Map<String, User> users = context.getUserState().getAllUsers();
-        for (Map.Entry<String, User> userEntry : users.entrySet()){
+        for (Map.Entry<String, User> userEntry : users.entrySet()) {
             if (Objects.equals(userEntry.getValue().getEmail(), this.email)) {
                 this.logStatus = LogStatus.USER_REGISTER_EMAIL_ALREADY_REGISTERED;
-                info.put("STATUS:",this.logStatus);
+                info.put("STATUS:", this.logStatus);
                 Logger.getInstance().logAction("RegisterConsumerCommand.execute()",
-                        getResult(),info);
+                        getResult(), info);
                 return;
             }
         }
@@ -61,21 +58,28 @@ public class RegisterConsumerCommand extends Object implements ICommand{
         this.newConsumerResult = new Consumer(this.name, this.email, this.phoneNumber, this.password, this.paymentAccountEmail);
         context.getUserState().addUser(this.newConsumerResult);
         logStatus = LogStatus.REGISTER_CONSUMER_SUCCESS;
-        info.put("STATUS:",this.logStatus);
+        info.put("STATUS:", this.logStatus);
 
         context.getUserState().setCurrentUser(this.newConsumerResult);
         logStatus = LogStatus.USER_LOGIN_SUCCESS;
-        info.put("STATUS:",this.logStatus);
+        info.put("STATUS:", this.logStatus);
 
         Logger.getInstance().logAction("RegisterConsumerCommand.execute()",
-                getResult(),info);
+                getResult(), info);
     }
 
     @Override
     public Object getResult() {
-        if (logStatus == LogStatus.REGISTER_CONSUMER_SUCCESS){
+        if (logStatus == LogStatus.REGISTER_CONSUMER_SUCCESS) {
             return newConsumerResult;
         }
         return null;
+    }
+
+    private enum LogStatus {
+        REGISTER_CONSUMER_SUCCESS,
+        USER_REGISTER_FIELDS_CANNOT_BE_NULL,
+        USER_REGISTER_EMAIL_ALREADY_REGISTERED,
+        USER_LOGIN_SUCCESS
     }
 }

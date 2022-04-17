@@ -4,23 +4,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventPerformance extends Object {
-    private long perfermanceNumber;
-    private Event event;
+public class EventPerformance {
+    private final long perfermanceNumber;
+    private final Event event;
     private String venueAddress;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private final LocalDateTime startDateTime;
+    private final LocalDateTime endDateTime;
     private List<String> performerNames = new ArrayList<>();
-    private boolean hasSocialDistancing;
-    private boolean hasAirFiltration;
-    private boolean isOutdoors;
-    private int capacityLimit;
-    private int venueSize;
+    private final boolean hasSocialDistancing;
+    private final boolean hasAirFiltration;
+    private final boolean isOutdoors;
+    private final int capacityLimit;
+    private final int venueSize;
 
     public EventPerformance(long performanceNumber, Event event, String venueAddress, LocalDateTime startDateTime,
                             LocalDateTime endDateTime, List<String> performerNames, boolean hasSocialDistancing,
                             boolean hasAirFiltration,
-                            boolean isOutdoors, int capacityLimit, int venueSize){
+                            boolean isOutdoors, int capacityLimit, int venueSize) {
         this.perfermanceNumber = performanceNumber;
         this.event = event;
         this.venueAddress = venueAddress;
@@ -35,39 +35,39 @@ public class EventPerformance extends Object {
         this.venueSize = venueSize;
     }
 
-    public long getPerformanceNumber(){
+    public long getPerformanceNumber() {
         return this.perfermanceNumber;
     }
 
-    public Event getEvent(){
+    public Event getEvent() {
         return this.event;
     }
 
-    public LocalDateTime getStartDateTime(){
+    public LocalDateTime getStartDateTime() {
         return this.startDateTime;
     }
 
-    public LocalDateTime getEndDateTime(){
+    public LocalDateTime getEndDateTime() {
         return this.endDateTime;
     }
 
-    public boolean hasSocialDistancing(){
+    public boolean hasSocialDistancing() {
         return this.hasSocialDistancing;
     }
 
-    public boolean hasAirFiltration(){
+    public boolean hasAirFiltration() {
         return this.hasAirFiltration;
     }
 
-    public boolean isOutdoors(){
+    public boolean isOutdoors() {
         return this.isOutdoors;
     }
 
-    public int getCapacityLimit(){
+    public int getCapacityLimit() {
         return this.capacityLimit;
     }
 
-    public int getVenueSize(){
+    public int getVenueSize() {
         return this.venueSize;
     }
 

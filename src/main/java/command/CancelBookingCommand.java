@@ -8,28 +8,17 @@ import model.EventStatus;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CancelBookingCommand extends Object implements ICommand{
+public class CancelBookingCommand implements ICommand {
 
-    private long bookingNumber;
+    private final long bookingNumber;
     private LogStatus logStatus;
     private Boolean successResult;
 
-    private enum LogStatus{
-        CANCEL_BOOKING_SUCCESS,
-        CANCEL_BOOKING_USER_NOT_CONSUMER,
-        CANCEL_BOOKING_BOOKING_NOT_FOUND,
-        CANCEL_BOOKING_USER_IS_NOT_BOOKER,
-        CANCEL_BOOKING_BOOKING_NOT_ACTIVE,
-        CANCEL_BOOKING_REFUND_FAILED,
-        CANCEL_BOOKING_NO_CANCELLATIONS_WITHIN_24H
-    }
-
-    public CancelBookingCommand(long bookingNumber){
+    public CancelBookingCommand(long bookingNumber) {
         this.bookingNumber = bookingNumber;
     }
 
@@ -39,11 +28,11 @@ public class CancelBookingCommand extends Object implements ICommand{
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
 
-        if(context.getUserState().getCurrentUser().getClass() != Consumer.class){
+        if (context.getUserState().getCurrentUser().getClass() != Consumer.class) {
             logStatus = LogStatus.CANCEL_BOOKING_USER_NOT_CONSUMER;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
@@ -55,47 +44,47 @@ public class CancelBookingCommand extends Object implements ICommand{
                 break;
             }
         }
-        if (!booking_found){
+        if (!booking_found) {
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_FOUND;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
-        if (context.getUserState().getCurrentUser() != context.getBookingState().findBookingByNumber(this.bookingNumber).getBooker()){
+        if (context.getUserState().getCurrentUser() != context.getBookingState().findBookingByNumber(this.bookingNumber).getBooker()) {
             logStatus = LogStatus.CANCEL_BOOKING_USER_IS_NOT_BOOKER;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
-        if (context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getEvent().getStatus() == EventStatus.CANCELLED){
+        if (context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getEvent().getStatus() == EventStatus.CANCELLED) {
             logStatus = LogStatus.CANCEL_BOOKING_BOOKING_NOT_ACTIVE;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
-        Duration duration = Duration.between(LocalDateTime.now(),context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getStartDateTime());
-        if (duration.toHours() < 24){
+        Duration duration = Duration.between(LocalDateTime.now(), context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getStartDateTime());
+        if (duration.toHours() < 24) {
             logStatus = LogStatus.CANCEL_BOOKING_NO_CANCELLATIONS_WITHIN_24H;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
         String buyerAccountEmail = context.getBookingState().findBookingByNumber(this.bookingNumber).getBooker().getEmail();
         String sellerAccountEmail = context.getBookingState().findBookingByNumber(this.bookingNumber).getEventPerformance().getEvent().getOrganiser().getEmail();
         double transactionAmount = context.getBookingState().findBookingByNumber(this.bookingNumber).getAmountPaid();
-        if (!context.getPaymentSystem().processRefund(buyerAccountEmail,sellerAccountEmail,transactionAmount)){
+        if (!context.getPaymentSystem().processRefund(buyerAccountEmail, sellerAccountEmail, transactionAmount)) {
             logStatus = LogStatus.CANCEL_BOOKING_REFUND_FAILED;
-            info.put("STATUS:",this.logStatus);
+            info.put("STATUS:", this.logStatus);
             Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                    getResult(),info);
+                    getResult(), info);
             return;
         }
 
@@ -105,16 +94,26 @@ public class CancelBookingCommand extends Object implements ICommand{
         context.getBookingState().findBookingByNumber(bookingNumber).getEventPerformance().getEvent().getOrganiser().getProviderSystem().cancelBooking(bookingNumber);
         context.getBookingState().findBookingByNumber(this.bookingNumber).cancelByConsumer();
 
-        info.put("STATUS:",this.logStatus);
+        info.put("STATUS:", this.logStatus);
         Logger.getInstance().logAction("CancelBookingCommand.execute()",
-                getResult(),info);
+                getResult(), info);
     }
 
     @Override
     public Object getResult() {
-        if (this.logStatus == LogStatus.CANCEL_BOOKING_SUCCESS){
+        if (this.logStatus == LogStatus.CANCEL_BOOKING_SUCCESS) {
             return this.successResult;
         }
         return null;
+    }
+
+    private enum LogStatus {
+        CANCEL_BOOKING_SUCCESS,
+        CANCEL_BOOKING_USER_NOT_CONSUMER,
+        CANCEL_BOOKING_BOOKING_NOT_FOUND,
+        CANCEL_BOOKING_USER_IS_NOT_BOOKER,
+        CANCEL_BOOKING_BOOKING_NOT_ACTIVE,
+        CANCEL_BOOKING_REFUND_FAILED,
+        CANCEL_BOOKING_NO_CANCELLATIONS_WITHIN_24H
     }
 }

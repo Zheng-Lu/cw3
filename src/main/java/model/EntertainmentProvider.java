@@ -1,32 +1,30 @@
 package model;
+
 import external.EntertainmentProviderSystem;
 import external.MockEntertainmentProviderSystem;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EntertainmentProvider extends User {
 
     private String orgName, orgAddress, mainRepName, mainRepEmail;
-    private List<String>otherRepNames = new ArrayList<>();
-    private List<String>otherRepEmails = new ArrayList<>();
-    private List<Event>events = new ArrayList<>();
-    private EntertainmentProviderSystem entertainmentProviderSystem;
+    private List<String> otherRepNames = new ArrayList<>();
+    private List<String> otherRepEmails = new ArrayList<>();
+    private final List<Event> events = new ArrayList<>();
+    private final EntertainmentProviderSystem entertainmentProviderSystem;
 
 
     public EntertainmentProvider(String orgName,
-                                  String orgAddress,
-                                  String paymentAccountEmail,
-                                  String mainRepName,
-                                  String mainRepEmail,
-                                  String password,
-                                  List<String> otherRepNames,
-                                  List<String> otherRepEmails){
+                                 String orgAddress,
+                                 String paymentAccountEmail,
+                                 String mainRepName,
+                                 String mainRepEmail,
+                                 String password,
+                                 List<String> otherRepNames,
+                                 List<String> otherRepEmails) {
 
-        super(mainRepEmail,password,paymentAccountEmail);
+        super(mainRepEmail, password, paymentAccountEmail);
         this.orgName = orgName;
         this.orgAddress = orgAddress;
         this.mainRepName = mainRepName;
@@ -36,47 +34,47 @@ public class EntertainmentProvider extends User {
         this.entertainmentProviderSystem = new MockEntertainmentProviderSystem();
     }
 
-    public void addEvent(Event event){
+    public void addEvent(Event event) {
         this.events.add(event);
     }
 
-    public String getOrgName(){
+    public String getOrgName() {
         return this.orgName;
     }
 
-    public void setOrgName(String orgName){
+    public void setOrgName(String orgName) {
         this.orgName = orgName;
     }
 
-    public String getOrgAddress(){
+    public String getOrgAddress() {
         return this.orgAddress;
     }
 
-    public void setOrgAddress(String orgAddress){
+    public void setOrgAddress(String orgAddress) {
         this.orgAddress = orgAddress;
     }
 
-    public List<Event> getEvents(){
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setMainRepName(String mainRepName){
+    public void setMainRepName(String mainRepName) {
         this.mainRepName = mainRepName;
     }
 
-    public void setMainRepEmail(String mainRepEmail){
+    public void setMainRepEmail(String mainRepEmail) {
         this.mainRepEmail = mainRepEmail;
     }
 
-    public void setOtherRepNames(List<String> otherRepNames){
+    public void setOtherRepNames(List<String> otherRepNames) {
         this.otherRepNames = otherRepNames;
     }
 
-    public void setOtherRepEmails(List<String> otherRepEmails){
+    public void setOtherRepEmails(List<String> otherRepEmails) {
         this.otherRepEmails = otherRepEmails;
     }
 
-    public EntertainmentProviderSystem getProviderSystem(){
+    public EntertainmentProviderSystem getProviderSystem() {
         return this.entertainmentProviderSystem;
     }
 }

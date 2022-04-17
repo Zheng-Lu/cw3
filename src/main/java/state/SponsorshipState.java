@@ -7,25 +7,25 @@ import model.TicketedEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SponsorshipState implements ISponsorshipState{
+public class SponsorshipState implements ISponsorshipState {
 
     private long nextRequestNumber;
-    private List<SponsorshipRequest> sponsorshipRequests;
+    private final List<SponsorshipRequest> sponsorshipRequests;
 
-    public SponsorshipState(){
+    public SponsorshipState() {
         this.nextRequestNumber = 1;
         this.sponsorshipRequests = new ArrayList<>();
     }
 
-    public SponsorshipState(ISponsorshipState other){
+    public SponsorshipState(ISponsorshipState other) {
         this.nextRequestNumber = other.getNextRequestNumber();
         this.sponsorshipRequests = other.getAllSponsorshipRequest();
     }
 
     @Override
     public SponsorshipRequest addSponsorshipRequest(TicketedEvent event) {
-        SponsorshipRequest request = new SponsorshipRequest(this.nextRequestNumber,event);
-        this.nextRequestNumber = this.nextRequestNumber+1;
+        SponsorshipRequest request = new SponsorshipRequest(this.nextRequestNumber, event);
+        this.nextRequestNumber = this.nextRequestNumber + 1;
         this.sponsorshipRequests.add(request);
         return request;
     }
@@ -38,8 +38,8 @@ public class SponsorshipState implements ISponsorshipState{
     @Override
     public List<SponsorshipRequest> getPendingSponsorshipRequest() {
         List<SponsorshipRequest> pendingRequests = new ArrayList<>();
-        for (SponsorshipRequest r: this.sponsorshipRequests){
-            if(r.getStatus() == SponsorshipStatus.PENDING){
+        for (SponsorshipRequest r : this.sponsorshipRequests) {
+            if (r.getStatus() == SponsorshipStatus.PENDING) {
                 pendingRequests.add(r);
             }
         }
@@ -48,8 +48,8 @@ public class SponsorshipState implements ISponsorshipState{
 
     @Override
     public SponsorshipRequest findRequestByNumber(long requestNumber) {
-        for(SponsorshipRequest r: this.sponsorshipRequests){
-            if(r.getRequestNumber() == requestNumber){
+        for (SponsorshipRequest r : this.sponsorshipRequests) {
+            if (r.getRequestNumber() == requestNumber) {
                 return r;
             }
         }

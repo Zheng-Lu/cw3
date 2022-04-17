@@ -2,7 +2,6 @@ package command;
 
 
 import controller.Context;
-import logging.LogEntry;
 import logging.Logger;
 import model.EntertainmentProvider;
 import model.User;
@@ -11,24 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileCommand{
-    private String oldPassword;
-    private String newOrgName;
-    private String newOrgAddress;
-    private String newPassword;
-    private String newPaymentAccountEmail;
-    private String newMainRepName;
-    private String newMainRepEmail;
-    private List<String> newOtherRepNames;
-    private List<String> newOtherRepEmails;
+public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileCommand {
+    private final String oldPassword;
+    private final String newOrgName;
+    private final String newOrgAddress;
+    private final String newPassword;
+    private final String newPaymentAccountEmail;
+    private final String newMainRepName;
+    private final String newMainRepEmail;
+    private final List<String> newOtherRepNames;
+    private final List<String> newOtherRepEmails;
     private LogStatus logStatus;
-
-    private enum LogStatus{
-        USER_UPDATE_PROFILE_SUCCESS,
-        USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL,
-        USER_UPDATE_PROFILE_NOT_ENTERTAINMENT_PROVIDER,
-        USER_UPDATE_PROFILE_ORG_ALREADY_REGISTERED
-    }
 
     public UpdateEntertainmentProviderProfileCommand(String oldPassword,
                                                      String newOrgName,
@@ -57,20 +49,17 @@ public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileComm
         Map<String, User> users = context.getUserState().getAllUsers();
 
         if (this.oldPassword == null || this.newOrgName == null || this.newOrgAddress == null ||
-            this.newPassword == null || this.newPaymentAccountEmail == null ||
-            this.newMainRepName == null || this.newMainRepEmail == null ||
-            this.newOtherRepNames == null || this.newOtherRepEmails == null){
+                this.newPassword == null || this.newPaymentAccountEmail == null ||
+                this.newMainRepName == null || this.newMainRepEmail == null ||
+                this.newOtherRepNames == null || this.newOtherRepEmails == null) {
             this.logStatus = LogStatus.USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL;
             this.successResult = false;
-        }
-        else if (isProfileUpdateInvalid(context,oldPassword, newOrgAddress) ||
-                isProfileUpdateInvalid(context,oldPassword,newMainRepEmail)){
-        }
-        else if (user.getClass() != EntertainmentProvider.class) {
-                this.logStatus = LogStatus.USER_UPDATE_PROFILE_NOT_ENTERTAINMENT_PROVIDER;
-                this.successResult = false;
-        }
-        else {
+        } else if (isProfileUpdateInvalid(context, oldPassword, newOrgAddress) ||
+                isProfileUpdateInvalid(context, oldPassword, newMainRepEmail)) {
+        } else if (user.getClass() != EntertainmentProvider.class) {
+            this.logStatus = LogStatus.USER_UPDATE_PROFILE_NOT_ENTERTAINMENT_PROVIDER;
+            this.successResult = false;
+        } else {
             for (Map.Entry<String, User> userEntry : users.entrySet()) {
                 if (userEntry.getValue().getClass() == EntertainmentProvider.class &&
                         ((EntertainmentProvider) userEntry.getValue()).getOrgName().equals(this.newOrgName) &&
@@ -99,13 +88,20 @@ public class UpdateEntertainmentProviderProfileCommand extends UpdateProfileComm
 
         // ADD TO LOGGER
         Map<String, Object> info = new HashMap<>();
-        if (this.logStatus != null){
-            info.put("STATUS:",this.logStatus);
+        if (this.logStatus != null) {
+            info.put("STATUS:", this.logStatus);
         }
-        if (super.logStatus != null){
-            info.put("PROFILE_STATUS:",super.logStatus);
+        if (super.logStatus != null) {
+            info.put("PROFILE_STATUS:", super.logStatus);
         }
         Logger.getInstance().logAction("UpdateEntertainmentProviderProfileCommand.execute()",
-                getResult(),info);
+                getResult(), info);
+    }
+
+    private enum LogStatus {
+        USER_UPDATE_PROFILE_SUCCESS,
+        USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL,
+        USER_UPDATE_PROFILE_NOT_ENTERTAINMENT_PROVIDER,
+        USER_UPDATE_PROFILE_ORG_ALREADY_REGISTERED
     }
 }

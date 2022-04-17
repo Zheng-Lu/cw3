@@ -1,13 +1,13 @@
 package model;
 
 public class ConsumerPreferences {
-    private boolean preferAirFiltration;
-    private boolean preferOutdoorsOnly;
-    private int preferredMaxCapacity;
-    private int preferredMaxVenueSize;
-    private boolean preferSocialDistancing;
+    private final boolean preferAirFiltration;
+    private final boolean preferOutdoorsOnly;
+    private final int preferredMaxCapacity;
+    private final int preferredMaxVenueSize;
+    private final boolean preferSocialDistancing;
 
-    public ConsumerPreferences(){
+    public ConsumerPreferences() {
         this.preferSocialDistancing = false;
         this.preferAirFiltration = false;
         this.preferOutdoorsOnly = false;
@@ -17,7 +17,7 @@ public class ConsumerPreferences {
 
     public ConsumerPreferences(boolean preferAirFiltration, boolean preferOutdoorsOnly,
                                int preferredMaxCapacity, int preferredMaxVenueSize,
-                               boolean preferSocialDistancing){
+                               boolean preferSocialDistancing) {
         this.preferredMaxVenueSize = preferredMaxVenueSize;
         this.preferredMaxCapacity = preferredMaxCapacity;
         this.preferOutdoorsOnly = preferOutdoorsOnly;
@@ -28,30 +28,29 @@ public class ConsumerPreferences {
 
     /**
      * Test if a performance of an event satisfies the preference of the customer
+     *
      * @param performance the performance of an event
      * @return if all preferences are satisfied, return true.
      */
-    public boolean satisfyPreferences(EventPerformance performance){
+    public boolean satisfyPreferences(EventPerformance performance) {
         boolean sizeResult = performance.getVenueSize() <= preferredMaxVenueSize;
         boolean capacityResult = performance.getCapacityLimit() <= preferredMaxCapacity;
         boolean airResult;
         if (!this.preferAirFiltration) {
             airResult = true;
-        }
-        else {
+        } else {
             airResult = performance.hasAirFiltration();
         }
         boolean distancingResult;
-        if (!this.preferSocialDistancing){
+        if (!this.preferSocialDistancing) {
             distancingResult = true;
-        }
-        else {
+        } else {
             distancingResult = performance.hasSocialDistancing();
         }
         boolean outdoorResult;
-        if (!this.preferOutdoorsOnly){
+        if (!this.preferOutdoorsOnly) {
             outdoorResult = true;
-        }else {
+        } else {
             outdoorResult = performance.isOutdoors();
         }
 

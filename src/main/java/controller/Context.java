@@ -5,13 +5,13 @@ import external.PaymentSystem;
 import state.*;
 
 public class Context {
-    private PaymentSystem paymentSystem;
-    private IUserState userState;
-    private IEventState eventState;
-    private IBookingState bookingState;
-    private ISponsorshipState sponsorshipState;
+    private final PaymentSystem paymentSystem;
+    private final IUserState userState;
+    private final IEventState eventState;
+    private final IBookingState bookingState;
+    private final ISponsorshipState sponsorshipState;
 
-    public Context(){
+    public Context() {
         this.paymentSystem = new MockPaymentSystem();
         this.userState = new UserState();
         this.eventState = new EventState();
@@ -19,7 +19,7 @@ public class Context {
         this.sponsorshipState = new SponsorshipState();
     }
 
-    public Context(Context other){
+    public Context(Context other) {
         this.paymentSystem = other.paymentSystem;
         this.userState = other.userState;
         this.eventState = other.eventState;
@@ -27,23 +27,23 @@ public class Context {
         this.sponsorshipState = other.sponsorshipState;
     }
 
-    public PaymentSystem getPaymentSystem(){
+    public PaymentSystem getPaymentSystem() {
         return this.paymentSystem;
     }
 
-    public IUserState getUserState(){
+    public IUserState getUserState() {
         return this.userState;
     }
 
-    public IEventState getEventState(){
+    public IEventState getEventState() {
         return this.eventState;
     }
 
-    public IBookingState getBookingState(){
+    public IBookingState getBookingState() {
         return this.bookingState;
     }
 
-    public ISponsorshipState getSponsorshipState(){
+    public ISponsorshipState getSponsorshipState() {
         return this.sponsorshipState;
     }
 

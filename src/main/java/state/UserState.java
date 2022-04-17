@@ -1,30 +1,30 @@
 package state;
 
-import model.*;
+import model.GovernmentRepresentative;
+import model.User;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class UserState implements IUserState{
+public class UserState implements IUserState {
 
-    private Map<String, User> users = new HashMap<>();
     protected User currentUser;
+    private Map<String, User> users;
 
-    public UserState(){
+    public UserState() {
         this.users = new HashMap<>();
         this.currentUser = null;
         registerGovernmentRepresentatives();
     }
 
-    public UserState(IUserState other){
+    public UserState(IUserState other) {
         this.users = other.getAllUsers();
         this.currentUser = other.getCurrentUser();
     }
 
-    private void registerGovernmentRepresentatives(){
+    private void registerGovernmentRepresentatives() {
         // register government representatives
-        // not call-able during the runtime, just called when construction
+        // not call-able during the runtime, only called once when construction
         // Something like this:
         // GovernmentRepresentative gr = new GovernmentRepresentative(........);
         // this.users.put(toString(gr), gr)
@@ -33,12 +33,12 @@ public class UserState implements IUserState{
         // add representatives for testing
         GovernmentRepresentative gr = new GovernmentRepresentative("margaret.thatcher@gov.uk", "The Good times  ",
                 "financial-payment@gov.uk");
-        this.users.put(gr.toString(),gr);
+        this.users.put(gr.toString(), gr);
     }
 
     @Override
     public void addUser(User user) {
-        this.users.put(user.toString(),user);
+        this.users.put(user.toString(), user);
     }
 
     @Override
