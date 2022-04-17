@@ -54,30 +54,6 @@ public class RegisterConsumerSystemTests {
     }
 
     @Test
-    @DisplayName("Consumer Registrations Then Login should work")
-    void successfulConsumerRegisteredThenLogin(){
-        Controller controller = new Controller();
-
-        RegisterConsumerCommand cmd = new RegisterConsumerCommand(
-                "John Biggson",
-                "jbiggson1@hotmail.co.uk",
-                "077893153480",
-                "jbiggson2",
-                "jbiggson1@hotmail.co.uk"
-        );
-        controller.runCommand(cmd);
-        String registerStatus = getLog();
-        assertNotNull(registerStatus);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",registerStatus);
-
-        LoginCommand login_cmd = new LoginCommand("jbiggson1@hotmail.co.uk","jbiggson2");
-        controller.runCommand(login_cmd);
-        String loginStatus = getLog();
-        assertNotNull(loginStatus);
-        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",loginStatus);
-    }
-
-    @Test
     @DisplayName("Consumer Registrations With Existed Email should not work")
     void failedConsumerRegisteredExistedEmail(){
         Controller controller = new Controller();
