@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="RegisterConsumerSystemTests" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-04-17T13:36:00" hostname="DESKTOP-SNJFDR1" time="0.54">
+<testsuite name="RegisterConsumerSystemTests" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-04-17T15:14:45" hostname="LAPTOP-10QML2S6" time="0.538">
   <properties/>
-  <testcase name="Consumer Registrations should work" classname="RegisterConsumerSystemTests" time="0.54">
-    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;null&gt; but was: &lt;model.Consumer@33a46391&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;null&gt; but was: &lt;model.Consumer@33a46391&gt;
+  <testcase name="Consumer Registrations With Existed Email should not work" classname="RegisterConsumerSystemTests" time="0.538">
+    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;{STATUS:=REGISTER_CONSUMER_SUCCESS}&gt; but was: &lt;{STATUS:=USER_LOGIN_SUCCESS}&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;{STATUS:=REGISTER_CONSUMER_SUCCESS}&gt; but was: &lt;{STATUS:=USER_LOGIN_SUCCESS}&gt;
 	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
-	at org.junit.jupiter.api.AssertNull.failNotNull(AssertNull.java:48)
-	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:37)
-	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:32)
-	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:258)
-	at RegisterConsumerSystemTests.successfulConsumerRegistered(RegisterConsumerSystemTests.java:47)
+	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1124)
+	at RegisterConsumerSystemTests.failedConsumerRegisteredExistedEmail(RegisterConsumerSystemTests.java:95)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -101,8 +101,8 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <system-out><![CDATA[Consumer Registrations should work
-model.Consumer@33a46391
+  <system-out><![CDATA[Consumer Registrations With Existed Email should not work
+{STATUS:=USER_LOGIN_SUCCESS}
 ---
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
