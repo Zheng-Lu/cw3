@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.Test;
+import state.UserState;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -56,21 +57,42 @@ public class LoginSystemTests {
         controller.runCommand(new LogoutCommand());
     }
 
-    private static void loginConsumer1(Controller controller) {
-        controller.runCommand(new LoginCommand("jbiggson1@hotmail.co.uk", "jbiggson2"));
+    private static void register3EntertainmentProviders(Controller controller) {
+        controller.runCommand(new RegisterEntertainmentProviderCommand(
+                "Cinema Conglomerate",
+                "Global Office, International Space Station",
+                "$$$@there'sNoEmailValidation.wahey!",
+                "Mrs Representative",
+                "odeon@cineworld.com",
+                "F!ghT th3 R@Pture",
+                List.of("Dr Strangelove"),
+                List.of("we_dont_get_involved@cineworld.com")
+        ));
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new RegisterEntertainmentProviderCommand(
+                "Olympics Committee",
+                "Mt. Everest",
+                "noreply@gmail.com",
+                "Secret Identity",
+                "anonymous@gmail.com",
+                "anonymous",
+                List.of("Unknown Actor", "Spy"),
+                List.of("unknown@gmail.com", "spy@gmail.com")
+        ));
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new RegisterEntertainmentProviderCommand(
+                "No org",
+                "Leith Walk",
+                "a hat on the ground",
+                "the best musicican ever",
+                "busk@every.day",
+                "When they say 'you can't do this': Ding Dong! You are wrong!",
+                Collections.emptyList(),
+                Collections.emptyList()
+        ));
+        controller.runCommand(new LogoutCommand());
     }
 
-    private static void loginConsumer2(Controller controller) {
-        controller.runCommand(new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool"));
-    }
-
-    private static void loginConsumer3(Controller controller) {
-        controller.runCommand(new LoginCommand("i-will-kick-your@gmail.com", "it is wednesday my dudes"));
-    }
-
-    private static void loginGovernment(Controller controller) {
-        controller.runCommand(new LoginCommand("margaret.thatcher@gov.uk", "The Good times  "));
-    }
 
     @Test
     @DisplayName("Consumer Login should work")
@@ -102,24 +124,61 @@ public class LoginSystemTests {
         LogoutCommand logout_cmd2 = new LogoutCommand();
         controller.runCommand(logout_cmd2);
         assertNull(logout_cmd2.getResult());
+
+        // Login case 3
+        LoginCommand login_cmd3 = new LoginCommand("i-will-kick-your@gmail.com", "it is wednesday my dudes");
+        controller.runCommand(login_cmd3);
+        User consumers3 = login_cmd3.getResult();
+        assertNotNull(consumers3);
+        assertEquals("i-will-kick-your@gmail.com", consumers3.getEmail());
+        assertTrue(consumers3.checkPasswordMatch("it is wednesday my dudes"));
+
+        LogoutCommand logout_cmd3 = new LogoutCommand();
+        controller.runCommand(logout_cmd3);
+        assertNull(logout_cmd3.getResult());
     }
 
-    //TODO: Entertainment Provider Test need to be implemented
+
     @Test
     @DisplayName("Entertainment Provider Login should work")
     void successfulEntertainmentProviderLogin() {
         Controller controller = new Controller();
 
-        LoginCommand login_cmd = new LoginCommand("margaret.thatcher@gov.uk", "The Good times  ");
-        controller.runCommand(login_cmd);
-        User government = login_cmd.getResult();
-        assertNotNull(government);
-        assertEquals("margaret.thatcher@gov.uk", government.getEmail());
-        assertTrue(government.checkPasswordMatch("The Good times  "));
+        register3EntertainmentProviders(controller);
 
-        LogoutCommand logout_cmd = new LogoutCommand();
-        controller.runCommand(logout_cmd);
-        assertNull(logout_cmd.getResult());
+        LoginCommand login_cmd1 = new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!");
+        controller.runCommand(login_cmd1);
+        User entertainmentProvider1 = login_cmd1.getResult();
+        assertNotNull(entertainmentProvider1);
+        assertEquals("busk@every.day", entertainmentProvider1.getEmail());
+        assertTrue(entertainmentProvider1.checkPasswordMatch("When they say 'you can't do this': Ding Dong! You are wrong!"));
+        assertEquals("a hat on the ground", entertainmentProvider1.getPaymentAccountEmail());
+        LogoutCommand logout_cmd1 = new LogoutCommand();
+        controller.runCommand(logout_cmd1);
+        assertNull(logout_cmd1.getResult());
+
+        LoginCommand login_cmd2 = new LoginCommand("odeon@cineworld.com", "F!ghT th3 R@Pture");
+        controller.runCommand(login_cmd2);
+        User entertainmentProvider2 = login_cmd2.getResult();
+        assertNotNull(entertainmentProvider2);
+        assertEquals("odeon@cineworld.com", entertainmentProvider2.getEmail());
+        assertTrue(entertainmentProvider2.checkPasswordMatch("F!ghT th3 R@Pture"));
+        assertEquals("$$$@there'sNoEmailValidation.wahey!", entertainmentProvider2.getPaymentAccountEmail());
+        LogoutCommand logout_cmd2 = new LogoutCommand();
+        controller.runCommand(logout_cmd2);
+        assertNull(logout_cmd2.getResult());
+
+        LoginCommand login_cmd3 = new LoginCommand("anonymous@gmail.com", "anonymous");
+        controller.runCommand(login_cmd3);
+        User entertainmentProvider3 = login_cmd3.getResult();
+        assertNotNull(entertainmentProvider3);
+        assertEquals("anonymous@gmail.com", entertainmentProvider3.getEmail());
+        assertTrue(entertainmentProvider3.checkPasswordMatch("anonymous"));
+        assertEquals("noreply@gmail.com", entertainmentProvider3.getPaymentAccountEmail());
+        LogoutCommand logout_cmd3 = new LogoutCommand();
+        controller.runCommand(logout_cmd3);
+        assertNull(logout_cmd3.getResult());
+
     }
 
     @Test
