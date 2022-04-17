@@ -1,5 +1,6 @@
 import command.*;
 import controller.Controller;
+import logging.LogEntry;
 import logging.Logger;
 import model.*;
 import org.junit.jupiter.api.*;
@@ -24,7 +25,7 @@ public class BookEventSystemTests {
         System.out.println("---");
     }
 
-    private static void register2Consumers(Controller controller) {
+    private static void register3Consumers(Controller controller) {
         controller.runCommand(new RegisterConsumerCommand(
                 "John Biggson",
                 "jbiggson1@hotmail.co.uk",
@@ -33,12 +34,22 @@ public class BookEventSystemTests {
                 "jbiggson1@hotmail.co.uk"
         ));
         controller.runCommand(new LogoutCommand());
+
         controller.runCommand(new RegisterConsumerCommand(
                 "Jane Giantsdottir",
                 "jane@inf.ed.ac.uk",
                 "04462187232",
                 "giantsRverycool",
                 "jane@aol.com"
+        ));
+        controller.runCommand(new LogoutCommand());
+
+        controller.runCommand(new RegisterConsumerCommand(
+                "Wednesday Kebede",
+                "i-will-kick-your@gmail.com",
+                "-",
+                "it is wednesday my dudes",
+                "i-will-kick-your@gmail.com"
         ));
         controller.runCommand(new LogoutCommand());
     }
@@ -49,6 +60,10 @@ public class BookEventSystemTests {
 
     private static void loginConsumer2(Controller controller) {
         controller.runCommand(new LoginCommand("jane@inf.ed.ac.uk", "giantsRverycool"));
+    }
+
+    private static void loginConsumer3(Controller controller) {
+        controller.runCommand(new LoginCommand("i-will-kick-your@gmail.com", "it is wednesday my dudes"));
     }
 
     private static void createBuskingProviderWith1Event(Controller controller) {
@@ -273,46 +288,150 @@ public class BookEventSystemTests {
         controller.runCommand(new LogoutCommand());
     }
 
-    private static void consumerBookNthTicketedEvent(Controller controller, int n) {
-        ListEventsCommand cmd = new ListEventsCommand(false, true);
+    private static void consumerBookXticketsNthTicketedEvent(Controller controller, int x, int n, boolean userOnly, boolean active) {
+        ListEventsCommand cmd = new ListEventsCommand(userOnly, active);
         controller.runCommand(cmd);
         List<Event> events = cmd.getResult();
+        System.out.println(events.get(events.size()-1));
 
-        for (Event event : events) {
-            if (event instanceof TicketedEvent) {
-                n--;
-            }
+        if (n <= events.size()) {
+            for (Event event : events) {
+                if (event instanceof TicketedEvent) {
+                    n--;
+                }
 
-            if (n <= 0) {
-                Collection<EventPerformance> performances = event.getPerformances();
-                controller.runCommand(new BookEventCommand(
-                        event.getEventNumber(),
-                        performances.iterator().next().getPerformanceNumber(),
-                        1
-                ));
-                return;
+                if (n <= 0) {
+                    Collection<EventPerformance> performances = event.getPerformances();
+                    controller.runCommand(new BookEventCommand(
+                            event.getEventNumber(),
+                            performances.iterator().next().getPerformanceNumber(),
+                            x
+                    ));
+                    return;
+                }
             }
+        } else {
+            Collection<EventPerformance> performances = null;
+            controller.runCommand(new BookEventCommand(
+                    n,
+                    0,
+                    x
+            ));
+            return;
         }
+//        for (Event event : events) {
+//            if (event instanceof TicketedEvent) {
+//                n--;
+//            }
+//
+//            if (n <= 0) {
+//                Collection<EventPerformance> performances = event.getPerformances();
+//                controller.runCommand(new BookEventCommand(
+//                        event.getEventNumber(),
+//                        performances.iterator().next().getPerformanceNumber(),
+//                        x
+//                ));
+//                return;
+//            }
+//        }
+    }
+
+    private static String getLog() {
+        List<LogEntry> entries = Logger.getInstance().getLog();
+        String logStatus = entries.get(entries.size()-1).getAdditionalInfo().toString();
+        System.out.println(logStatus);
+        return logStatus;
     }
 
     @Test
-    @DisplayName("Book Event Should Work")
-    void canBookEvent() {
+    @DisplayName("Book Event Should Work >")
+    void testCanBookEvent() {
         Controller controller = new Controller();
 
         createOlympicsProviderWith2Events(controller);
         createCinemaProviderWith3Events(controller);
         createBuskingProviderWith1Event(controller);
-        register2Consumers(controller);
+        register3Consumers(controller);
 
         loginConsumer1(controller);
-        consumerBookNthTicketedEvent(controller, 1);
-        consumerBookNthTicketedEvent(controller, 2);
+        System.out.println("Consumer 1 books 1 ticket for 1st ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 1,1,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_SUCCESS}", getLog());
         controller.runCommand(new LogoutCommand());
 
         loginConsumer2(controller);
-        consumerBookNthTicketedEvent(controller, 2);
+        System.out.println("Consumer 2 books 5 tickets for 2nd ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 5,2,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_SUCCESS}", getLog());
         controller.runCommand(new LogoutCommand());
 
+        loginConsumer3(controller);
+        System.out.println("Consumer 3 books 15 tickets for 3rd ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 15,4,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_SUCCESS}", getLog());
+        controller.runCommand(new LogoutCommand());
     }
+
+    @Test
+    @DisplayName("Book Event with excess or invalid tickets >")
+    void testBookEventWithExcessOrInvalidNumberTickets() {
+        Controller controller = new Controller();
+
+        createOlympicsProviderWith2Events(controller);
+        createCinemaProviderWith3Events(controller);
+        createBuskingProviderWith1Event(controller);
+        register3Consumers(controller);
+
+        loginConsumer1(controller);
+        System.out.println("Consumer 1 books 9999999 ticket for 1st ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 9999999,1,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_NOT_ENOUGH_TICKETS_LEFT}", getLog());
+        controller.runCommand(new LogoutCommand());
+
+        loginConsumer2(controller);
+        System.out.println("Consumer 2 books 0 ticket for 4th ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 0,4,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_INVALID_NUM_TICKETS}", getLog());
+        controller.runCommand(new LogoutCommand());
+    }
+
+    @Test
+    @DisplayName("Book Invalid Events Testing >")
+    void testBookInvalidEvent() {
+        Controller controller = new Controller();
+
+        createOlympicsProviderWith2Events(controller);
+        createCinemaProviderWith3Events(controller);
+        createBuskingProviderWith1Event(controller);
+        register3Consumers(controller);
+
+        loginConsumer1(controller);
+        System.out.println("Consumer 1 books 1 ticket for a event already over:");
+        consumerBookXticketsNthTicketedEvent(controller, 1,3,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_ALREADY_OVER}", getLog());
+        controller.runCommand(new LogoutCommand());
+
+        loginConsumer2(controller);
+        System.out.println("Consumer 2 books 1 ticket for 999th ticketed event:");
+        consumerBookXticketsNthTicketedEvent(controller, 1,999,false,true);
+        assertEquals("{STATUS:=BOOK_EVENT_EVENT_NOT_FOUND}", getLog());
+        controller.runCommand(new LogoutCommand());
+    }
+
+//    @Test
+//    @DisplayName("Book Ticketed Events Testing >")
+//    void testBookTicketedEvent() {
+//        Controller controller = new Controller();
+//
+//        createOlympicsProviderWith2Events(controller);
+//        createCinemaProviderWith3Events(controller);
+//        createBuskingProviderWith1Event(controller);
+//        register3Consumers(controller);
+//
+//        loginConsumer3(controller);
+//        System.out.println("Consumer 3 books 1 ticket for a ticketed event:");
+//        consumerBookXticketsNthTicketedEvent(controller, 1,6,false,true);
+//        assertEquals("{STATUS:=BOOK_EVENT_NOT_A_TICKETED_EVENT}", getLog());
+//        controller.runCommand(new LogoutCommand());
+//    }
 }

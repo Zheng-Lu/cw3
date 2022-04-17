@@ -70,6 +70,87 @@ public class CreateEventSystemTests {
         controller.runCommand(new LogoutCommand());
     }
 
+    private static void BuskingAddEventPerformances(Controller controller, long eventNumber) {
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "Leith as usual",
+                LocalDateTime.of(2030, 3, 20, 4, 20),
+                LocalDateTime.of(2030, 3, 20, 6, 45),
+                List.of("The same musician"),
+                true,
+                true,
+                true,
+                Integer.MAX_VALUE,
+                Integer.MAX_VALUE
+        ));
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "You know it",
+                LocalDateTime.of(2030, 3, 21, 4, 20),
+                LocalDateTime.of(2030, 3, 21, 7, 0),
+                List.of("The usual"),
+                true,
+                true,
+                true,
+                Integer.MAX_VALUE,
+                Integer.MAX_VALUE
+        ));
+    }
+
+    private static void CinemaAddEventPerformances(Controller controller, long eventNumber) {
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "Odeon cinema",
+                LocalDateTime.now().plusWeeks(1).plusDays(2).plusHours(3),
+                LocalDateTime.now().plusWeeks(1).plusDays(2).plusHours(6),
+                Collections.emptyList(),
+                false,
+                true,
+                false,
+                50,
+                50
+        ));
+    }
+
+    private static void OlympicsAddEventPerformances(Controller controller, long eventNumber) {
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "Wimbledon",
+                LocalDateTime.now().plusMonths(1),
+                LocalDateTime.now().plusMonths(1).plusHours(8),
+                List.of("Everyone in disc throw and 400m sprint"),
+                false,
+                true,
+                true,
+                3000,
+                3000
+        ));
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "Swimming arena",
+                LocalDateTime.now().plusMonths(1),
+                LocalDateTime.now().plusHours(8),
+                List.of("Everyone in swimming"),
+                true,
+                true,
+                false,
+                200,
+                300
+        ));
+        controller.runCommand(new AddEventPerformanceCommand(
+                eventNumber,
+                "Wimbledon",
+                LocalDateTime.now().plusMonths(1).plusDays(1),
+                LocalDateTime.now().plusMonths(1).plusDays(1).plusHours(6),
+                List.of("Everyone in javelin throw and long jump"),
+                false,
+                true,
+                true,
+                3000,
+                3000
+        ));
+    }
+
     private static void loginOlympicsProvider(Controller controller) {
         controller.runCommand(new LoginCommand("anonymous@gmail.com", "anonymous"));
     }
@@ -82,7 +163,7 @@ public class CreateEventSystemTests {
         controller.runCommand(new LoginCommand("busk@every.day", "When they say 'you can't do this': Ding Dong! You are wrong!"));
     }
 
-    private String getLog() {
+    private static String getLog() {
         List<LogEntry> entries = Logger.getInstance().getLog();
         String logStatus = entries.get(entries.size()-1).getAdditionalInfo().toString();
         System.out.println(logStatus);
@@ -105,9 +186,10 @@ public class CreateEventSystemTests {
                 true
         );
         controller.runCommand(eventCmd1);
+        assertEquals("{STATUS:=CREATE_EVENT_REQUESTED_SPONSORSHIP}", getLog());
         long numEvents1 = eventCmd1.getResult();
-        String tickedEventStatus1 = getLog();
-        assertEquals("{STATUS:=CREATE_EVENT_REQUESTED_SPONSORSHIP}", tickedEventStatus1);
+        OlympicsAddEventPerformances(controller,numEvents1);
+        assertEquals("{STATUS:=ADD_PERFORMANCE_SUCCESS}", getLog());
 
         System.out.println("Creating Ticketed Event2 without requested Sponsorship:");
         CreateTicketedEventCommand eventCmd2 = new CreateTicketedEventCommand(
@@ -118,9 +200,8 @@ public class CreateEventSystemTests {
                 false
         );
         controller.runCommand(eventCmd2);
+        assertEquals("{STATUS:=CREATE_TICKETED_EVENT_SUCCESS}", getLog());
         long numEvents2 = eventCmd2.getResult();
-        String tickedEventStatus2 = getLog();
-        assertEquals("{STATUS:=CREATE_TICKETED_EVENT_SUCCESS}", tickedEventStatus2);
         controller.runCommand(new LogoutCommand());
 
         registerCinemaProvider(controller);
@@ -134,9 +215,11 @@ public class CreateEventSystemTests {
                 false
         );
         controller.runCommand(eventCmd3);
+        assertEquals("{STATUS:=CREATE_TICKETED_EVENT_SUCCESS}", getLog());
         long numEvents3 = eventCmd3.getResult();
-        String tickedEventStatus3 = getLog();
-        assertEquals("{STATUS:=CREATE_TICKETED_EVENT_SUCCESS}", tickedEventStatus3);
+        CinemaAddEventPerformances(controller,numEvents3);
+        assertEquals("{STATUS:=ADD_PERFORMANCE_SUCCESS}", getLog());
+
         controller.runCommand(new LogoutCommand());
 
         assertEquals(1, numEvents1,
@@ -161,9 +244,10 @@ public class CreateEventSystemTests {
                 EventType.Music
         );
         controller.runCommand(eventCmd1);
+        assertEquals("{STATUS:=CREATE_NON_TICKETED_EVENT_SUCCESS}", getLog());
         long numEvents1 = eventCmd1.getResult();
-        String tickedEventStatus1 = getLog();
-        assertEquals("{STATUS:=CREATE_NON_TICKETED_EVENT_SUCCESS}", tickedEventStatus1);
+        BuskingAddEventPerformances(controller, numEvents1);
+        assertEquals("{STATUS:=ADD_PERFORMANCE_SUCCESS}", getLog());
         controller.runCommand(new LogoutCommand());
 
         registerCinemaProvider(controller);
