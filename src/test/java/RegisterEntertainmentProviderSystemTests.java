@@ -76,7 +76,7 @@ public class RegisterEntertainmentProviderSystemTests {
 
         RegisterEntertainmentProviderCommand cmd2 = new RegisterEntertainmentProviderCommand(
                 "Olympics Committee",
-                "Mr. Meeseek",
+                "Mt. Everest",
                 "nnnnnnnnnnoreply@gmail.com",
                 "Morty Smith",
                 "qc29m734yrc2q8ytrbn@gmail.com",
