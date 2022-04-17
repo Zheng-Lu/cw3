@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="UpdateEntertainmentProviderProfileSystemTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-15T14:36:22" hostname="DESKTOP-SNJFDR1" time="2.34">
-  <properties/>
-  <testcase name="testUpdateAllInformation()" classname="UpdateEntertainmentProviderProfileSystemTests" time="2.34"/>
-  <system-out><![CDATA[testUpdateAllInformation()
----
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

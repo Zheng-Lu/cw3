@@ -101,7 +101,7 @@ public class RegisterEntertainmentProviderCommand implements ICommand {
 
     @Override
     public Object getResult() {
-        if (logStatus == LogStatus.REGISTER_ENTERTAINMENT_PROVIDER_SUCCESS) {
+        if (logStatus == LogStatus.USER_LOGIN_SUCCESS) {
             return newEntertainmentProviderResult;
         }
         return null;

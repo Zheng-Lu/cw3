@@ -24,4 +24,13 @@ public class LogEntry {
         return result;
     }
 
+    /**
+     * Return additional info of a LogEntry
+     *
+     * @return additional info of a LogEntry
+     */
+    public Map<String, String> getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
 }
