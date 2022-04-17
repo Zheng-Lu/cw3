@@ -50,7 +50,7 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String logStatus = getLog();
         assertNotNull(logStatus);
-        assertEquals("{STATUS:=REGISTER_CONSUMER_SUCCESS}",logStatus);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",logStatus);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd);
         String registerStatus = getLog();
         assertNotNull(registerStatus);
-        assertEquals("{STATUS:=REGISTER_CONSUMER_SUCCESS}",registerStatus);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",registerStatus);
 
         LoginCommand login_cmd = new LoginCommand("jbiggson1@hotmail.co.uk","jbiggson2");
         controller.runCommand(login_cmd);
@@ -92,7 +92,7 @@ public class RegisterConsumerSystemTests {
         controller.runCommand(cmd1);
         String registerStatus1 = getLog();
         assertNotNull(registerStatus1);
-        assertEquals("{STATUS:=REGISTER_CONSUMER_SUCCESS}",registerStatus1);
+        assertEquals("{STATUS:=USER_LOGIN_SUCCESS}",registerStatus1);
 
         controller.runCommand(new LogoutCommand());
 
