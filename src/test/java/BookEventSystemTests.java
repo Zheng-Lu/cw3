@@ -319,21 +319,6 @@ public class BookEventSystemTests {
             ));
             return;
         }
-//        for (Event event : events) {
-//            if (event instanceof TicketedEvent) {
-//                n--;
-//            }
-//
-//            if (n <= 0) {
-//                Collection<EventPerformance> performances = event.getPerformances();
-//                controller.runCommand(new BookEventCommand(
-//                        event.getEventNumber(),
-//                        performances.iterator().next().getPerformanceNumber(),
-//                        x
-//                ));
-//                return;
-//            }
-//        }
     }
 
     private static String getLog() {
